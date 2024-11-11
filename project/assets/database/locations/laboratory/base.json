@@ -40,7 +40,7 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 30,
+      "BossChance": 60,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -61,7 +61,7 @@
       "TriggerName": ""
     },
     {
-      "BossChance": 30,
+      "BossChance": 60,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -82,7 +82,7 @@
       "TriggerName": ""
     },
     {
-      "BossChance": 22.5,
+      "BossChance": 45,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -103,7 +103,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 22.5,
+      "BossChance": 45,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -124,7 +124,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 20,
+      "BossChance": 40,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -145,7 +145,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 20,
+      "BossChance": 45,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -166,7 +166,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 17.5,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -187,7 +187,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 17.5,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -208,7 +208,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 17.5,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -229,7 +229,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 17.5,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -250,7 +250,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 17.5,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -271,7 +271,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 17.5,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,2,2,1,1,2,2,2,2,1,1,2,2,3",
       "BossEscortDifficult": "normal",
@@ -292,7 +292,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 17.5,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,2,2,1,1,2,2,2,2,1,1,2,2,3",
       "BossEscortDifficult": "normal",
@@ -313,7 +313,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 17.5,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -334,7 +334,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 17.5,
+      "BossChance": 35,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -355,7 +355,7 @@
       "TriggerName": "interactObject"
     },
     {
-      "BossChance": 22.5,
+      "BossChance": 45,
       "BossDifficult": "normal",
       "BossEscortAmount": "1,1,1,1,2,2,2,1,1,1,1,2,2,2,3",
       "BossEscortDifficult": "normal",
@@ -461,433 +461,127 @@
   "BotHard": 70,
   "BotImpossible": 0,
   "BotLocationModifier": {
-        "AccuracySpeed": 1,
-        "AdditionalHostilitySettings": [{
-                "BotRole": "marksman",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "assault",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "bossTest",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "bossBully",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "followerTest",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "followerBully",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "bossKilla",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "bossKojaniy",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "followerKojaniy",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "pmcBot",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "cursedAssault",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "bossGluhar",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "followerGluharAssault",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "followerGluharSecurity",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "followerGluharScout",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "followerGluharSnipe",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "followerSanitar",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "bossSanitar",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "test",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "assaultGroup",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "sectantWarrior",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "sectantPriest",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "bossTagilla",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "followerTagilla",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "exUsec",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "gifter",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "bossKnight",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "followerBigPipe",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "followerBirdEye",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "bossZryachiy",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "followerZryachiy",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "bossBoar",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "followerBoar",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "arenaFighter",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "arenaFighterEvent",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "bossBoarSniper",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "crazyAssaultEvent",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "peacefullZryachiyEvent",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "sectactPriestEvent",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "ravangeZryachiyEvent",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "followerBoarClose1",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "followerBoarClose2",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "bossKolontay",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "followerKolontayAssault",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "followerKolontaySecurity",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "shooterBTR",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "bossPartisan",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "spiritWinter",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "spiritSpring",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "peacemaker",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "pmcBEAR",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "ChancedEnemies",
-                "BearEnemyChance": 15,
-                "UsecPlayerBehaviour": "ChancedEnemies",
-                "UsecEnemyChance": 30
-            }, {
-                "BotRole": "pmcUSEC",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "ChancedEnemies",
-                "BearEnemyChance": 30,
-                "UsecPlayerBehaviour": "ChancedEnemies",
-                "UsecEnemyChance": 15
-            }, {
-                "BotRole": "skier",
-                "AlwaysEnemies": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "Neutral": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "SavagePlayerBehaviour": "Neutral",
-                "BearPlayerBehaviour": "Neutral",
-                "UsecPlayerBehaviour": "Neutral"
-            }, {
-                "BotRole": "infectedAssault",
-                "AlwaysEnemies": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "AlwaysFriends": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "SavagePlayerBehaviour": "AlwaysEnemies",
-                "BearPlayerBehaviour": "AlwaysEnemies",
-                "UsecPlayerBehaviour": "AlwaysEnemies"
-            }, {
-                "BotRole": "infectedPmc",
-                "AlwaysEnemies": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "AlwaysFriends": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "SavagePlayerBehaviour": "AlwaysEnemies",
-                "BearPlayerBehaviour": "AlwaysEnemies",
-                "UsecPlayerBehaviour": "AlwaysEnemies"
-            }, {
-                "BotRole": "infectedCivil",
-                "AlwaysEnemies": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "AlwaysFriends": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "SavagePlayerBehaviour": "AlwaysEnemies",
-                "BearPlayerBehaviour": "AlwaysEnemies",
-                "UsecPlayerBehaviour": "AlwaysEnemies"
-            }, {
-                "BotRole": "infectedLaborant",
-                "AlwaysEnemies": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "AlwaysFriends": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "SavagePlayerBehaviour": "AlwaysEnemies",
-                "BearPlayerBehaviour": "AlwaysEnemies",
-                "UsecPlayerBehaviour": "AlwaysEnemies"
-            }, {
-                "BotRole": "infectedTagilla",
-                "AlwaysEnemies": ["marksman", "assault", "bossTest", "bossBully", "followerTest", "bossKilla", "bossKojaniy", "followerKojaniy", "pmcBot", "cursedAssault", "bossGluhar", "followerGluharAssault", "followerGluharSecurity", "followerGluharScout", "followerGluharSnipe", "followerSanitar", "bossSanitar", "test", "assaultGroup", "sectantWarrior", "sectantPriest", "bossTagilla", "followerTagilla", "exUsec", "gifter", "bossKnight", "followerBigPipe", "followerBirdEye", "bossZryachiy", "followerZryachiy", "bossBoar", "followerBoar", "arenaFighter", "arenaFighterEvent", "bossBoarSniper", "crazyAssaultEvent", "peacefullZryachiyEvent", "sectactPriestEvent", "ravangeZryachiyEvent", "followerBoarClose1", "followerBoarClose2", "bossKolontay", "followerKolontayAssault", "followerKolontaySecurity", "shooterBTR", "bossPartisan", "spiritWinter", "spiritSpring", "peacemaker", "pmcBEAR", "pmcUSEC", "skier"],
-                "AlwaysFriends": ["infectedAssault", "infectedPmc", "infectedCivil", "infectedLaborant", "infectedTagilla"],
-                "SavagePlayerBehaviour": "AlwaysEnemies",
-                "BearPlayerBehaviour": "AlwaysEnemies",
-                "UsecPlayerBehaviour": "AlwaysEnemies"
-            }
+    "AccuracySpeed": 1,
+    "AdditionalHostilitySettings": [
+      {
+        "AlwaysEnemies": [
+          "pmcBot",
+          "exUsec",
+          "bossBully",
+          "bossBoar",
+          "bossTagilla",
+          "bossKilla",
+          "bossKojaniy",
+          "bossSanitar",
+          "bossKolontay",
+          "bossGluhar",
+          "bossKnight"
         ],
-        "DistToActivate": 140,
-        "DistToActivatePvE": 140,
-        "DistToPersueAxemanCoef": 1,
-        "DistToSleep": 160,
-        "DistToSleepPvE": 160,
-        "GainSight": 1,
-        "KhorovodChance": 0,
-        "MagnetPower": 10,
-        "MarksmanAccuratyCoef": 1,
-        "MaxExfiltrationTime": 1800,
-        "MinExfiltrationTime": 1200,
-        "Scattering": 1,
-        "VisibleDistance": 1
-    },
+        "AlwaysFriends": [
+          "bossZryachiy",
+          "followerZryachiy",
+          "peacefullZryachiyEvent",
+          "ravangeZryachiyEvent",
+          "gifter"
+        ],
+        "BearEnemyChance": 100,
+        "BearPlayerBehaviour": "ChancedEnemies",
+        "BotRole": "pmcBEAR",
+        "ChancedEnemies": [
+          {
+            "EnemyChance": 70,
+            "Role": "assault"
+          },
+          {
+            "EnemyChance": 70,
+            "Role": "marksman"
+          },
+          {
+            "EnemyChance": 75,
+            "Role": "pmcUSEC"
+          }
+        ],
+        "Neutral": [
+          "sectantPriest",
+          "sectantWarrior"
+        ],
+        "SavagePlayerBehaviour": "Warn",
+        "UsecEnemyChance": 100,
+        "UsecPlayerBehaviour": "ChancedEnemies",
+        "Warn": [
+          "sectactPriestEvent"
+        ]
+      },
+      {
+        "AlwaysEnemies": [
+          "pmcBot",
+          "bossBully",
+          "bossBoar",
+          "bossTagilla",
+          "bossKilla",
+          "bossKojaniy",
+          "bossSanitar",
+          "bossKolontay",
+          "bossGluhar"
+        ],
+        "AlwaysFriends": [
+          "bossZryachiy",
+          "followerZryachiy",
+          "peacefullZryachiyEvent",
+          "ravangeZryachiyEvent",
+          "gifter"
+        ],
+        "BearEnemyChance": 100,
+        "BearPlayerBehaviour": "ChancedEnemies",
+        "BotRole": "pmcUSEC",
+        "ChancedEnemies": [
+          {
+            "EnemyChance": 70,
+            "Role": "assault"
+          },
+          {
+            "EnemyChance": 70,
+            "Role": "marksman"
+          },
+          {
+            "EnemyChance": 75,
+            "Role": "pmcBEAR"
+          },
+          {
+            "EnemyChance": 15,
+            "Role": "exUsec"
+          },
+          {
+            "EnemyChance": 15,
+            "Role": "bossKnight"
+          }
+        ],
+        "Neutral": [
+          "sectantPriest",
+          "sectantWarrior"
+        ],
+        "SavagePlayerBehaviour": "Warn",
+        "UsecEnemyChance": 100,
+        "UsecPlayerBehaviour": "ChancedEnemies",
+        "Warn": [
+          "sectactPriestEvent"
+        ]
+      }
+    ],
+    "DistToActivate": 140,
+    "DistToActivatePvE": 140,
+    "DistToPersueAxemanCoef": 1,
+    "DistToSleep": 160,
+    "DistToSleepPvE": 160,
+    "GainSight": 1,
+    "KhorovodChance": 0,
+    "MagnetPower": 10,
+    "MarksmanAccuratyCoef": 1,
+    "MaxExfiltrationTime": 1800,
+    "MinExfiltrationTime": 1200,
+    "Scattering": 1,
+    "VisibleDistance": 1
+  },
   "BotMarksman": 0,
   "BotMax": 25,
   "BotMaxPlayer": 0,
