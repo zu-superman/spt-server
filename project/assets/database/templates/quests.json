@@ -125794,7 +125794,7 @@
     "type": "Discover"
   },
   "67165d59a9c06627040a9094": {
-    "QuestName": "Highest Priority",
+    "QuestName": "Forced measure",
     "_id": "67165d59a9c06627040a9094",
     "acceptPlayerMessage": "67165d59a9c06627040a9094 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -126807,7 +126807,7 @@
     "type": "Elimination"
   },
   "671910d5dbd4354ac10e9784": {
-    "QuestName": "Hold the High Ground",
+    "QuestName": "Conservation Area",
     "_id": "671910d5dbd4354ac10e9784",
     "acceptPlayerMessage": "671910d5dbd4354ac10e9784 acceptPlayerMessage",
     "canShowNotificationsInGame": true,
@@ -127562,7 +127562,7 @@
     "type": "Exploration"
   },
   "6727ef2c6015b7cc540ea754": {
-    "QuestName": "Unknown quest",
+    "QuestName": "Contagious Beast",
     "_id": "6727ef2c6015b7cc540ea754",
     "acceptPlayerMessage": "6727ef2c6015b7cc540ea754 acceptPlayerMessage",
     "canShowNotificationsInGame": true,

@@ -29134,7 +29134,7 @@
           "PriceModDelivery": 2000,
           "PriceModTaxi": 1000,
           "PriceModifier": 0.8,
-          "ReactOnMarkOnUnknowns": false,
+          "ReactOnMarkOnUnknowns": true,
           "ReactOnMarkOnUnknownsPVE": true,
           "SavageCooldownModifier": 0.4,
           "ScavAttackSupport": true,
@@ -33728,8 +33728,8 @@
     "SavagePlayCooldownNdaFree": 1500,
     "SeasonActivity": {
       "InfectionHalloween": {
-        "DisplayUIEnabled": true,
-        "Enabled": true,
+        "DisplayUIEnabled": false,
+        "Enabled": false,
         "ZombieBleedMul": 10
       }
     },
