@@ -106,7 +106,7 @@ export class LocationLifecycleService {
             locationLoot: this.generateLocationAndLoot(request.location, !request.sptSkipLootGeneration),
             transition: {
                 isLocationTransition: false,
-                transitionRaidId: "66f5750951530ca5ae09876d",
+                transitionRaidId: this.hashUtil.generate(),
                 transitionCount: 0,
                 visitedLocations: [],
             },
@@ -114,7 +114,7 @@ export class LocationLifecycleService {
 
         // Only has value when transitioning into map from previous one
         if (request.transition) {
-            // TODO - why doesnt the second raid after transit have any transition data?
+            // TODO - why doesnt the raid after transit have any transition data?
             result.transition = request.transition;
         }
 
