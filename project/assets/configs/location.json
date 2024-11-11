@@ -541,5 +541,6 @@
 	"reserveRaiderSpawnChanceOverrides": {
 		"nonTriggered": 80,
 		"triggered": 90
-	}
+	},
+	"nonMaps": ["base", "develop", "hideout", "privatearea", "suburbs", "terminal", "town"]
 }
