@@ -36,6 +36,8 @@ export interface ILocationTransit {
     raidMode: string;
     side: string;
     dayTime: string;
+    /** The location player last visited */
+    sptLastVisitedLocation: string;
 }
 
 export interface ITransitProfile {

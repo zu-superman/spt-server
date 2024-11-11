@@ -114,7 +114,7 @@ export class LocationLifecycleService {
 
         // Only has value when transitioning into map from previous one
         if (request.transition) {
-            // TODO - why doesnt the raid after transit have any transition data?
+            // TODO - why doesnt the raid after transit have any transit data?
             result.transition = request.transition;
         }
 
@@ -126,9 +126,11 @@ export class LocationLifecycleService {
             result.transition.isLocationTransition = true;
             result.transition.transitionRaidId = transitionData.transitionRaidId;
             result.transition.transitionCount += 1;
-            result.transition.visitedLocations.push(transitionData.location); // TODO - check doesnt exist before adding to prevent dupes
 
-            // Complete, clean up
+            // Used by client to determine infil location) - client adds the map player is transiting to later
+            result.transition.visitedLocations.push(transitionData.sptLastVisitedLocation);
+
+            // Complete, clean up as no longer needed
             this.applicationContext.clearValues(ContextVariableType.TRANSIT_INFO);
         }
 
@@ -351,6 +353,9 @@ export class LocationLifecycleService {
 
         // Player is moving between maps
         if (isTransfer) {
+            // Manually store the map player just left
+            request.locationTransit.sptLastVisitedLocation = locationName;
+            // TODO - Persist each players last visited location history over multiple transits, e.g using InMemoryCacheService, need to take care to not let data get stored forever
             // Store transfer data for later use in `startLocalRaid()` when next raid starts
             this.applicationContext.addValue(ContextVariableType.TRANSIT_INFO, request.locationTransit);
         }
