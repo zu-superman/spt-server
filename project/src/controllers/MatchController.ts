@@ -91,9 +91,6 @@ export class MatchController {
                 request.wavesSettings.botDifficulty,
             );
         }
-
-        // Store the profile as-is for later use on the post-raid exp screen
-        const currentProfile = this.saveServer.getProfile(sessionID);
     }
 
     /**
