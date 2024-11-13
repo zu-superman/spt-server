@@ -73,7 +73,11 @@
         "directRewardStackSize": {
             "exampleParentId": { "min": 1000, "max": 50000 }
         },
-        "rewardItemBlacklist": [],
+        "rewardItemBlacklist": [
+			"5696686a4bdc2da3298b456a",
+			"5449016a4bdc2d6f028b456f",
+			"569668774bdc2da2298b4568"
+		],
         "additionalRewardItemPool": [],
         "currencyRewards": {
             "5449016a4bdc2d6f028b456f": { "min": 20, "max": 50 },

@@ -464,6 +464,7 @@ export class CircleOfCultistService {
 
         // Merge reward item blacklist with cultist circle blacklist from config
         const itemRewardBlacklist = [
+            ...this.seasonalEventService.getInactiveSeasonalEventItems(),
             ...this.itemFilterService.getItemRewardBlacklist(),
             ...cultistCircleConfig.rewardItemBlacklist,
         ];
