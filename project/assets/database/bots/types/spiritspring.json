@@ -2028,16 +2028,23 @@
     }
   },
   "experience": {
-    "aggressorBonus": 0,
+    "aggressorBonus": {
+      "normal": 0
+    },
     "level": {
       "max": 1,
       "min": 0
     },
     "reward": {
-      "max": 275,
-      "min": 275
+      "normal": {
+        "max": 275,
+        "min": 275
+      }
     },
-    "standingForKill": 0
+    "standingForKill": {
+      "normal": 0
+    },
+    "useSimpleAnimator": false
   },
   "firstName": [
     "Ирбис",

@@ -20,8 +20,11 @@
       "5f68c4c217d579077152a252": 1
     },
     "voice": {
-      "Scav_3": 1,
-      "Scav_5": 2
+      "Scav_1": 2,
+      "Scav_2": 2,
+      "Scav_4": 2,
+      "Scav_5": 3,
+      "Scav_6": 1
     }
   },
   "chances": {
@@ -438,7 +441,10 @@
         "TIME_TO_FORGOR_ABOUT_ENEMY_SEC": 52,
         "TIME_TO_RUN_TO_COVER_CAUSE_SHOOT_SEC": 15,
         "USE_ADD_TO_ENEMY_VALIDATION": true,
-        "VALID_REASONS_TO_ADD_ENEMY": ["attackBTR", "serviceBTR"],
+        "VALID_REASONS_TO_ADD_ENEMY": [
+          "attackBTR",
+          "serviceBTR"
+        ],
         "WARN_BOT_TYPES": [],
         "WILL_PERSUE_AXEMAN": false
       },
@@ -951,7 +957,10 @@
         "TIME_TO_FORGOR_ABOUT_ENEMY_SEC": 52,
         "TIME_TO_RUN_TO_COVER_CAUSE_SHOOT_SEC": 15,
         "USE_ADD_TO_ENEMY_VALIDATION": true,
-        "VALID_REASONS_TO_ADD_ENEMY": ["attackBTR", "serviceBTR"],
+        "VALID_REASONS_TO_ADD_ENEMY": [
+          "attackBTR",
+          "serviceBTR"
+        ],
         "WARN_BOT_TYPES": [],
         "WILL_PERSUE_AXEMAN": false
       },
@@ -1464,7 +1473,10 @@
         "TIME_TO_FORGOR_ABOUT_ENEMY_SEC": 52,
         "TIME_TO_RUN_TO_COVER_CAUSE_SHOOT_SEC": 15,
         "USE_ADD_TO_ENEMY_VALIDATION": true,
-        "VALID_REASONS_TO_ADD_ENEMY": ["attackBTR", "serviceBTR"],
+        "VALID_REASONS_TO_ADD_ENEMY": [
+          "attackBTR",
+          "serviceBTR"
+        ],
         "WARN_BOT_TYPES": [],
         "WILL_PERSUE_AXEMAN": false
       },
@@ -2111,20 +2123,33 @@
     }
   },
   "experience": {
-    "aggressorBonus": 0,
+    "aggressorBonus": {
+      "normal": 0
+    },
     "level": {
       "max": 1,
       "min": 0
     },
     "reward": {
+      "normal": {
       "max": -1,
       "min": -1
+      }
     },
-    "standingForKill": 0
+    "standingForKill": {
+      "normal": 0
+    },
+    "useSimpleAnimator": false
   },
   "firstName": [
-    "Ярик",
-    "Витя"
+    "Тоха",
+    "Сева",
+    "Илья",
+    "Олег",
+    "Антон",
+    "Володя",
+    "Борис",
+    "Серёга"
   ],
   "generation": {
     "items": {
@@ -2369,9 +2394,15 @@
     }
   },
   "lastName": [
-    "Бан",
-    "Бритва",
-    "Нелегальный"
+    "Хряк",
+    "Реднек",
+    "Подснежник",
+    "Ходка",
+    "Горыныч",
+    "Клоун",
+    "Кола",
+    "Никсон",
+    "Сталлоне"
   ],
   "skills": {
     "Common": {}

@@ -1,26 +1,26 @@
 {
   "appearance": {
     "body": {
-      "671654d56ccf4799d007d4b9": 3260,
-      "671654b5f68df05790043128": 3351
+      "671654d56ccf4799d007d4b9": 19894,
+      "671654b5f68df05790043128": 20077
     },
     "feet": {
-      "670d1907b7a8f34fce07fdab": 2213,
-      "670d18f87ca0004a2a022606": 2181,
-      "670d18e2e002387b88029112": 2217
+      "670d1907b7a8f34fce07fdab": 13328,
+      "670d18f87ca0004a2a022606": 13208,
+      "670d18e2e002387b88029112": 13435
     },
     "hands": {
       "5cc2e68f14c02e28b47de290": 1
     },
     "head": {
-      "670d176bb7a8f34fce07fd9d": 2186,
-      "670d17f9d2d5ce4514027e83": 2191,
-      "670d17df032591157e0c3538": 2234
+      "670d176bb7a8f34fce07fd9d": 13382,
+      "670d17f9d2d5ce4514027e83": 13211,
+      "670d17df032591157e0c3538": 13378
     },
     "voice": {
-      "Zombie_Fast": 2567,
-      "Zombie_Generic": 2770,
-      "Zombie_Medium": 1274
+      "Zombie_Fast": 15680,
+      "Zombie_Generic": 16411,
+      "Zombie_Medium": 7880
     }
   },
   "experience": {
@@ -29,11 +29,29 @@
       "max": 1
     },
     "reward": {
-      "min": 20,
-      "max": 20
+      "easy": {
+        "min": 20,
+        "max": 20
+      },
+      "normal": {
+        "min": 20,
+        "max": 20
+      },
+      "hard": {
+        "min": -1,
+        "max": -1
+      }
     },
-    "standingForKill": 0,
-    "aggressorBonus": 0,
+    "standingForKill": {
+      "easy": 0,
+      "normal": 0,
+      "hard": 0
+    },
+    "aggressorBonus": {
+      "easy": 0,
+      "normal": 0,
+      "hard": 0
+    },
     "useSimpleAnimator": true
   },
   "health": {
@@ -139,6 +157,36 @@
           "min": 65,
           "max": 65
         }
+      },
+      {
+        "Head": {
+          "min": 60,
+          "max": 60
+        },
+        "Chest": {
+          "min": 180,
+          "max": 180
+        },
+        "Stomach": {
+          "min": 170,
+          "max": 170
+        },
+        "LeftArm": {
+          "min": 70,
+          "max": 70
+        },
+        "RightArm": {
+          "min": 70,
+          "max": 70
+        },
+        "LeftLeg": {
+          "min": 70,
+          "max": 70
+        },
+        "RightLeg": {
+          "min": 70,
+          "max": 70
+        }
       }
     ]
   },
@@ -161,11 +209,11 @@
         "579204f224597773d619e051": 1
       },
       "Scabbard": {
-        "670ad7f1ad195290cd00da7a": 5307,
-        "601948682627df266209af05": 192,
-        "5c012ffc0db834001d23f03f": 470,
-        "5c07df7f0db834001b73588a": 481,
-        "5bead2e00db834001c062938": 161
+        "670ad7f1ad195290cd00da7a": 32331,
+        "601948682627df266209af05": 1054,
+        "5c012ffc0db834001d23f03f": 2805,
+        "5c07df7f0db834001b73588a": 2782,
+        "5bead2e00db834001c062938": 999
       },
       "Pockets": {
         "557ffd194bdc2d28148b457f": 1

@@ -2090,16 +2090,22 @@
     }
   },
   "experience": {
-    "aggressorBonus": 0.02,
+    "aggressorBonus": {
+      "normal": 0.02
+    },
     "level": {
       "max": 1,
       "min": 0
     },
     "reward": {
+      "normal": {
       "max": 350,
       "min": 350
+      }
     },
-    "standingForKill": -0.05,
+    "standingForKill": {
+      "normal": -0.05
+    },
     "useSimpleAnimator": false
   },
   "firstName": [

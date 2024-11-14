@@ -2036,16 +2036,35 @@
     }
   },
   "experience": {
-    "aggressorBonus": 0,
+    "aggressorBonus": {
+      "easy": 0.01,
+      "hard": 0.02,
+      "normal": 0.02
+    },
     "level": {
       "max": 1,
       "min": 0
     },
     "reward": {
-      "max": 350,
-      "min": 350
+      "easy": {
+        "max": 350,
+        "min": 350
+      },
+      "hard": {
+        "max": 350,
+        "min": 350
+      },
+      "normal": {
+        "max": 350,
+        "min": 350
+      }
     },
-    "standingForKill": 0
+    "standingForKill": {
+      "easy": 0,
+      "hard": 0,
+      "normal": 0
+    },
+    "useSimpleAnimator": false
   },
   "firstName": [
     "Картавый",
@@ -2898,6 +2917,10 @@
         "mod_charge": [
           "5648ac824bdc2ded0b8b457d"
         ],
+        "mod_handguard": [
+          "651178336cad06c37c049eb4",
+          "6565bb7eb4b12a56eb04b084"
+        ],
         "mod_magazine": [
           "5a9e81fba2750c00164f6b11"
         ],
@@ -2913,7 +2936,6 @@
         "mod_reciever": [
           "57c44f4f2459772d2c627113"
         ],
-		"mod_handguard": ["651178336cad06c37c049eb4", "6565bb7eb4b12a56eb04b084"],
         "patron_in_weapon": [
           "5c0d668f86f7747ccb7f13b2"
         ]
