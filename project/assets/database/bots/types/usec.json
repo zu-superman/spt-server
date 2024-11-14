@@ -2208,16 +2208,34 @@
     }
   },
   "experience": {
-    "aggressorBonus": 0.02,
+    "aggressorBonus": {
+      "hard": 0.03,
+      "normal": 0.02,
+      "easy": 0.02
+    },
     "level": {
       "max": 79,
       "min": 1
     },
     "reward": {
-      "max": 1000,
-      "min": 250
+		"hard": {
+		  "max": 1400,
+		  "min": 450
+		},
+		"normal": {
+		  "max": 1000,
+		  "min": 250
+		},
+		"easy": {
+		  "max": 800,
+		  "min": 150
+		}
+	},
+    "standingForKill": {
+      "hard": 0.03,
+      "normal": 0.02,
+      "easy": 0.02
     },
-    "standingForKill": 0.02,
 	"useSimpleAnimator": false
   },
   "firstName": [
