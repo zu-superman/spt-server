@@ -271,7 +271,7 @@ export class BotGenerator {
         role: string,
     ): number {
         const result = experience[botDifficulty.toLowerCase()];
-        if (!result) {
+        if (typeof result === "undefined") {
             this.logger.warning(
                 `Unable to find experience for kill value for: ${role} ${botDifficulty}, falling back to "normal"`,
             );
@@ -295,7 +295,7 @@ export class BotGenerator {
         role: string,
     ): number {
         const result = standingForKill[botDifficulty.toLowerCase()];
-        if (!result) {
+        if (typeof result === "undefined") {
             this.logger.warning(
                 `Unable to find standing for kill value for: ${role} ${botDifficulty}, falling back to "normal"`,
             );
@@ -319,7 +319,7 @@ export class BotGenerator {
         role: string,
     ): number {
         const result = aggressorBonus[botDifficulty.toLowerCase()];
-        if (!result) {
+        if (typeof result === "undefined") {
             this.logger.warning(
                 `Unable to find aggressor bonus for kill value for: ${role} ${botDifficulty}, falling back to "normal"`,
             );
