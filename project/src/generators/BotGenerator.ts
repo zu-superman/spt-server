@@ -4,6 +4,7 @@ import { BotGeneratorHelper } from "@spt/helpers/BotGeneratorHelper";
 import { BotHelper } from "@spt/helpers/BotHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
+import { MinMax } from "@spt/models/common/MinMax";
 import { IWildBody } from "@spt/models/eft/common/IGlobals";
 import {
     Common,
@@ -95,7 +96,7 @@ export class BotGenerator {
     }
 
     /**
-     * Create 1  bots of the type/side/difficulty defined in botGenerationDetails
+     * Create 1 bot of the type/side/difficulty defined in botGenerationDetails
      * @param sessionId Session id
      * @param botGenerationDetails details on how to generate bots
      * @returns constructed bot
@@ -196,11 +197,21 @@ export class BotGenerator {
 
         bot.Info.Experience = botLevel.exp;
         bot.Info.Level = botLevel.level;
-        bot.Info.Settings.Experience = this.randomUtil.getInt(
-            botJsonTemplate.experience.reward.min,
-            botJsonTemplate.experience.reward.max,
+        bot.Info.Settings.Experience = this.getExperienceRewardForKillByDifficulty(
+            botJsonTemplate.experience.reward,
+            botGenerationDetails.botDifficulty,
+            botGenerationDetails.role,
         );
-        bot.Info.Settings.StandingForKill = botJsonTemplate.experience.standingForKill;
+        bot.Info.Settings.StandingForKill = this.getStandingChangeForKillByDifficulty(
+            botJsonTemplate.experience.standingForKill,
+            botGenerationDetails.botDifficulty,
+            botGenerationDetails.role,
+        );
+        bot.Info.Settings.AggressorBonus = this.getAgressorBonusForDifficulty(
+            botJsonTemplate.experience.standingForKill,
+            botGenerationDetails.botDifficulty,
+            botGenerationDetails.role,
+        );
         bot.Info.Settings.UseSimpleAnimator = botJsonTemplate.experience.useSimpleAnimator ?? false;
         bot.Info.Voice = this.weightedRandomHelper.getWeightedValue<string>(botJsonTemplate.appearance.voice);
         bot.Health = this.generateHealth(botJsonTemplate.health, botGenerationDetails.isPlayerScav);
@@ -245,6 +256,78 @@ export class BotGenerator {
         }
 
         return bot;
+    }
+
+    /**
+     * Get exp for kill by bot difficulty
+     * @param experience Dict of difficulties and experience
+     * @param botDifficulty the killed bots difficulty
+     * @param role Role of bot (optional, used for error logging)
+     * @returns Experience for kill
+     */
+    protected getExperienceRewardForKillByDifficulty(
+        experience: Record<string, MinMax>,
+        botDifficulty: string,
+        role: string,
+    ): number {
+        const result = experience[botDifficulty.toLowerCase()];
+        if (!result) {
+            this.logger.warning(
+                `Unable to find experience for kill value for: ${role} ${botDifficulty}, falling back to "normal"`,
+            );
+
+            return this.randomUtil.getInt(experience.normal.min, experience.normal.max);
+        }
+
+        return this.randomUtil.getInt(result.min, result.max);
+    }
+
+    /**
+     * Get the standing value change when player kills a bot
+     * @param standingForKill Dictionary of standing values keyed by bot difficulty
+     * @param botDifficulty Difficulty of bot to look up
+     * @param role Role of bot (optional, used for error logging)
+     * @returns Standing change value
+     */
+    protected getStandingChangeForKillByDifficulty(
+        standingForKill: Record<string, number>,
+        botDifficulty: string,
+        role: string,
+    ): number {
+        const result = standingForKill[botDifficulty.toLowerCase()];
+        if (!result) {
+            this.logger.warning(
+                `Unable to find standing for kill value for: ${role} ${botDifficulty}, falling back to "normal"`,
+            );
+
+            return standingForKill.normal;
+        }
+
+        return result;
+    }
+
+    /**
+     * Get the agressor bonus value when player kills a bot
+     * @param standingForKill Dictionary of standing values keyed by bot difficulty
+     * @param botDifficulty Difficulty of bot to look up
+     * @param role Role of bot (optional, used for error logging)
+     * @returns Standing change value
+     */
+    protected getAgressorBonusForDifficulty(
+        aggressorBonus: Record<string, number>,
+        botDifficulty: string,
+        role: string,
+    ): number {
+        const result = aggressorBonus[botDifficulty.toLowerCase()];
+        if (!result) {
+            this.logger.warning(
+                `Unable to find aggressor bonus for kill value for: ${role} ${botDifficulty}, falling back to "normal"`,
+            );
+
+            return aggressorBonus.normal;
+        }
+
+        return result;
     }
 
     /**

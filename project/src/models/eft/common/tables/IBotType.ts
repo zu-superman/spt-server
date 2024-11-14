@@ -105,10 +105,13 @@ export interface IDifficultyCategories {
 }
 
 export interface IExperience {
-    aggressorBonus: number;
+    /** key = bot difficulty */
+    aggressorBonus: Record<string, number>;
     level: MinMax;
-    reward: MinMax;
-    standingForKill: number;
+    /** key = bot difficulty */
+    reward: Record<string, MinMax>;
+    /** key = bot difficulty */
+    standingForKill: Record<string, number>;
     useSimpleAnimator: boolean;
 }
 
