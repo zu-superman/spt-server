@@ -580,13 +580,14 @@ export class QuestHelper {
      * @returns True Quest should be visible to game version
      */
     protected questIsProfileWhitelisted(gameVersion: string, questId: string) {
-        const questWhitelist = this.questConfig.profileWhitelist[gameVersion];
-        if (!questWhitelist) {
-            // Not on whitelist for this profile
-            return false;
+        const gameVersionWhitelist = this.questConfig.profileWhitelist[questId];
+        if (!gameVersionWhitelist) {
+            // Quest not found in whitelist dict, assume quest is good
+            return true;
         }
 
-        return questWhitelist.includes(questId);
+        // Quest in dict, return if game version is on whitelist
+        return gameVersionWhitelist.includes(gameVersion);
     }
 
     /**

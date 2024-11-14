@@ -19,7 +19,7 @@
         "unheard_edition": ["666314a50aa5c7436c00908a"]
     },
     "profileWhitelist": {
-        "edge_of_darkness": ["666314b4d7f171c4c20226c3"]
+        "666314b4d7f171c4c20226c3": ["edge_of_darkness"]
     },
     "questTemplateIds": {
         "pmc": {

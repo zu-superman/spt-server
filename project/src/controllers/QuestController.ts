@@ -131,9 +131,13 @@ export class QuestController {
         );
 
         // Having accepted new quest, look for newly unlocked quests and inform client of them
-        acceptQuestResponse.profileChanges[sessionID].quests.push(
-            ...this.questHelper.getNewlyAccessibleQuestsWhenStartingQuest(acceptedQuest.qid, sessionID),
+        const newlyAccessibleQuests = this.questHelper.getNewlyAccessibleQuestsWhenStartingQuest(
+            acceptedQuest.qid,
+            sessionID,
         );
+        if (newlyAccessibleQuests.length > 0) {
+            acceptQuestResponse.profileChanges[sessionID].quests.push(...newlyAccessibleQuests);
+        }
 
         return acceptQuestResponse;
     }
