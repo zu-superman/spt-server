@@ -207,7 +207,7 @@ export class BotGenerator {
             botGenerationDetails.botDifficulty,
             botGenerationDetails.role,
         );
-        bot.Info.Settings.AggressorBonus = this.getAgressorBonusForDifficulty(
+        bot.Info.Settings.AggressorBonus = this.getAgressorBonusByDifficulty(
             botJsonTemplate.experience.standingForKill,
             botGenerationDetails.botDifficulty,
             botGenerationDetails.role,
@@ -313,7 +313,7 @@ export class BotGenerator {
      * @param role Role of bot (optional, used for error logging)
      * @returns Standing change value
      */
-    protected getAgressorBonusForDifficulty(
+    protected getAgressorBonusByDifficulty(
         aggressorBonus: Record<string, number>,
         botDifficulty: string,
         role: string,
