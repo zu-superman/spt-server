@@ -6,11 +6,13 @@ import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { GiftSentResult } from "@spt/models/enums/GiftSentResult";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
 import { Season } from "@spt/models/enums/Season";
+import { SeasonalEventType } from "@spt/models/enums/SeasonalEventType";
 import { ICoreConfig } from "@spt/models/spt/config/ICoreConfig";
 import { IWeatherConfig } from "@spt/models/spt/config/IWeatherConfig";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { GiftService } from "@spt/services/GiftService";
 import { MailSendService } from "@spt/services/MailSendService";
+import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 import { inject, injectable } from "tsyringe";
 
@@ -23,6 +25,7 @@ export class SptDialogueChatBot implements IDialogueChatBot {
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
         @inject("MailSendService") protected mailSendService: MailSendService,
+        @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("GiftService") protected giftService: GiftService,
         @inject("ConfigServer") protected configServer: ConfigServer,
     ) {
@@ -154,6 +157,19 @@ export class SptDialogueChatBot implements IDialogueChatBot {
                 sptFriendUser,
                 this.randomUtil.getArrayValue(["Snow will be enabled after your next raid"]),
             );
+        }
+
+        if (requestInput === "veryspooky") {
+            const enableEventResult = this.seasonalEventService.forceSeasonalEvent(SeasonalEventType.HALLOWEEN);
+            if (enableEventResult) {
+                this.mailSendService.sendUserMessageToPlayer(
+                    sessionId,
+                    sptFriendUser,
+                    this.randomUtil.getArrayValue([
+                        "Halloween event has been enabled, restart your game client before starting a raid",
+                    ]),
+                );
+            }
         }
 
         if (requestInput === "givemespace") {

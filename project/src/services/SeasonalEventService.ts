@@ -211,6 +211,17 @@ export class SeasonalEventService {
         }
     }
 
+    public forceSeasonalEvent(eventType: SeasonalEventType): boolean {
+        const globalConfig = this.databaseService.getGlobals().config;
+        const event = this.seasonalEventConfig.events.find((event) => SeasonalEventType[event.type] === eventType);
+        if (!event) {
+            return false;
+        }
+        this.updateGlobalEvents(globalConfig, event);
+
+        return true;
+    }
+
     /**
      * Store active events inside class array property `currentlyActiveEvents` + set class properties: christmasEventActive/halloweenEventActive
      */
