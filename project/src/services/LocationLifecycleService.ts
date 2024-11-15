@@ -97,6 +97,8 @@ export class LocationLifecycleService {
 
     /** Handle client/match/local/start */
     public startLocalRaid(sessionId: string, request: IStartLocalRaidRequestData): IStartLocalRaidResponseData {
+        this.logger.debug(`Starting: ${request.location}`);
+
         const playerProfile = this.profileHelper.getPmcProfile(sessionId);
 
         const result: IStartLocalRaidResponseData = {
