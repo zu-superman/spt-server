@@ -579,11 +579,16 @@ export class LocationLifecycleService {
         this.applyTraderStandingAdjustments(scavProfile.TradersInfo, request.results.profile.TradersInfo);
 
         // Clamp fence standing within -7 to 15 range
+        const fenceMax = 15;
+        const fenceMin = -7;
         const currentFenceStanding = request.results.profile.TradersInfo[Traders.FENCE].standing;
-        scavProfile.TradersInfo[Traders.FENCE].standing = Math.min(Math.max(currentFenceStanding, -7), 15);
+        scavProfile.TradersInfo[Traders.FENCE].standing = Math.min(Math.max(currentFenceStanding, fenceMin), fenceMax);
 
         // Successful extract as scav, give some rep
-        if (request.results.ExitStatus === ExitStatus.SURVIVED) {
+        if (
+            request.results.result.toLowerCase() === "survived" &&
+            scavProfile.TradersInfo[Traders.FENCE].standing < fenceMax
+        ) {
             scavProfile.TradersInfo[Traders.FENCE].standing += this.inRaidConfig.scavExtractStandingGain;
         }
 

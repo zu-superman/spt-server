@@ -15,14 +15,15 @@ export interface IEndLocalRaidRequestData {
 
 export interface IEndRaidResult {
     profile: IPmcData;
-    /** "Survived/Transit etc" */
+    /** "Survived/Transit" etc */
     result: string;
-    ExitStatus: ExitStatus;
     killerId: string;
     killerAid: string;
+    /** "Gate 3" etc */
     exitName: string;
     inSession: boolean;
     favorite: boolean;
+    /** Seconds in raid */
     playTime: number;
 }
 
