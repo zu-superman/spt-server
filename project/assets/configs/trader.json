@@ -448,7 +448,9 @@
             "allowBossItems": false,
 			"useRewarditemBlacklist": true
         },
-        "btrDeliveryExpireHours": 240
+        "btrDeliveryExpireHours": 240,
+		"playerRepMin": -7,
+		"playerRepMax": 15
     },
     "moddedTraders": {
         "clothingService": []

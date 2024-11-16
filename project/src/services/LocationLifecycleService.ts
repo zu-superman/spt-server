@@ -334,7 +334,7 @@ export class LocationLifecycleService {
         // Quest status?
         // stats/eft/aggressor - weird values (EFT.IProfileDataContainer.Nickname)
 
-        this.logger.debug(`Raid outcome: ${request.results.result}`);
+        this.logger.debug(`Raid: ${request.serverId} outcome: ${request.results.result}`);
 
         // Reset flea interval time to out-of-raid value
         this.ragfairConfig.runIntervalSeconds = this.ragfairConfig.runIntervalValues.outOfRaid;
@@ -579,16 +579,13 @@ export class LocationLifecycleService {
         this.applyTraderStandingAdjustments(scavProfile.TradersInfo, request.results.profile.TradersInfo);
 
         // Clamp fence standing within -7 to 15 range
-        const fenceMax = 15;
-        const fenceMin = -7;
+        const fenceMax = this.traderConfig.fence.playerRepMax; // 15
+        const fenceMin = this.traderConfig.fence.playerRepMin; //-7
         const currentFenceStanding = request.results.profile.TradersInfo[Traders.FENCE].standing;
         scavProfile.TradersInfo[Traders.FENCE].standing = Math.min(Math.max(currentFenceStanding, fenceMin), fenceMax);
 
         // Successful extract as scav, give some rep
-        if (
-            request.results.result.toLowerCase() === "survived" &&
-            scavProfile.TradersInfo[Traders.FENCE].standing < fenceMax
-        ) {
+        if (this.isPlayerSurvived(request.results) && scavProfile.TradersInfo[Traders.FENCE].standing < fenceMax) {
             scavProfile.TradersInfo[Traders.FENCE].standing += this.inRaidConfig.scavExtractStandingGain;
         }
 
@@ -952,7 +949,7 @@ export class LocationLifecycleService {
      * @returns true if Survived
      */
     protected isPlayerSurvived(results: IEndRaidResult): boolean {
-        return results.result.toLowerCase() === "survived";
+        return results.result === ExitStatus.SURVIVED;
     }
 
     /**
@@ -961,7 +958,7 @@ export class LocationLifecycleService {
      * @returns true if dead
      */
     protected isPlayerDead(results: IEndRaidResult): boolean {
-        return ["killed", "missinginaction", "left"].includes(results.result.toLowerCase());
+        return [ExitStatus.KILLED, ExitStatus.MISSINGINACTION, ExitStatus.LEFT].includes(results.result);
     }
 
     /**
@@ -970,7 +967,7 @@ export class LocationLifecycleService {
      * @returns True if players transfered
      */
     protected isMapToMapTransfer(results: IEndRaidResult) {
-        return results.result.toLowerCase() === "transit";
+        return results.result === ExitStatus.TRANSIT;
     }
 
     /**
