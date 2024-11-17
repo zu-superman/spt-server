@@ -37,7 +37,7 @@ export class SptDialogueChatBot implements IDialogueChatBot {
 
     public getChatBot(): IUserDialogInfo {
         return {
-            _id: "6723fd51c5924c57ce0ca01f",
+            _id: this.coreConfig.features.chatbotFeatures.ids.spt,
             aid: 1234566,
             Info: {
                 Level: 1,
