@@ -17,6 +17,7 @@ import { ESessionMode } from "@spt/models/eft/game/IGameModeResponse";
 import { IGetRaidTimeRequest } from "@spt/models/eft/game/IGetRaidTimeRequest";
 import { IGetRaidTimeResponse } from "@spt/models/eft/game/IGetRaidTimeResponse";
 import { IServerDetails } from "@spt/models/eft/game/IServerDetails";
+import { ISurveyResponseData } from "@spt/models/eft/game/ISurveyResponseData";
 import { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 import { BonusType } from "@spt/models/enums/BonusType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -548,5 +549,9 @@ export class GameController {
         );
         this.logger.debug(`Debug enabled: ${globalThis.G_DEBUG_CONFIGURATION}`);
         this.logger.debug(`Mods enabled: ${globalThis.G_MODS_ENABLED}`);
+    }
+
+    public getSurvey(sessionId: string): ISurveyResponseData {
+        return this.coreConfig.survey;
     }
 }
