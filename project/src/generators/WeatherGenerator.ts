@@ -133,7 +133,7 @@ export class WeatherGenerator {
     protected setCurrentDateTime(weather: IWeather, timestamp?: number): void {
         const inRaidTime = this.weatherHelper.getInRaidTime(timestamp);
         const normalTime = this.getBSGFormattedTime(inRaidTime);
-        const formattedDate = this.timeUtil.formatDate(inRaidTime);
+        const formattedDate = this.timeUtil.formatDate(timestamp ? new Date(timestamp) : new Date());
         const datetimeBsgFormat = `${formattedDate} ${normalTime}`;
 
         weather.timestamp = Math.floor(timestamp ? timestamp : inRaidTime.getTime() / 1000); // matches weather.date

@@ -19,7 +19,7 @@ export class WeatherHelper {
     }
 
     /**
-     * Get the current in-raid time
+     * Get the current in-raid time - does not include an accurate date, only time
      * @param currentDate (new Date())
      * @returns Date object of current in-raid time
      */
@@ -30,9 +30,8 @@ export class WeatherHelper {
         const currentTimestampMilliSeconds = timestamp ? timestamp : new Date().getTime();
 
         return new Date(
-            ((russiaOffsetMilliseconds + currentTimestampMilliSeconds * this.weatherConfig.acceleration) %
-                twentyFourHoursMilliseconds) +
-                this.timeUtil.getStartOfDayTimestamp(timestamp),
+            (russiaOffsetMilliseconds + currentTimestampMilliSeconds * this.weatherConfig.acceleration) %
+                twentyFourHoursMilliseconds,
         );
     }
 

@@ -35,14 +35,6 @@ export class WeatherController {
         return result;
     }
 
-    /**
-     * Get the current in-raid time (MUST HAVE PLAYER LOGGED INTO CLIENT TO WORK)
-     * @returns Date object
-     */
-    public getCurrentInRaidTime(): Date {
-        return this.weatherHelper.getInRaidTime();
-    }
-
     /** Handle client/localGame/weather */
     public generateLocal(sesssionId: string): IGetLocalWeatherResponseData {
         const result: IGetLocalWeatherResponseData = {
