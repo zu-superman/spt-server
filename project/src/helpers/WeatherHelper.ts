@@ -25,7 +25,7 @@ export class WeatherHelper {
      */
     public getInRaidTime(timestamp?: number): Date {
         // tarkov time = (real time * 7 % 24 hr) + 3 hour
-        const russiaOffsetMilliseconds = this.timeUtil.getHoursAsSeconds(2) * 1000;
+        const russiaOffsetMilliseconds = this.timeUtil.getHoursAsSeconds(3) * 1000;
         const twentyFourHoursMilliseconds = this.timeUtil.getHoursAsSeconds(24) * 1000;
         const currentTimestampMilliSeconds = timestamp ? timestamp : new Date().getTime();
 
