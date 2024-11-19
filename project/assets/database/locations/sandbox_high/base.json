@@ -389,6 +389,7 @@
       "CrowdCooldownPerPlayerSec": 300,
       "CrowdsLimit": 2,
       "InfectedLookCoeff": 2,
+      "InfectionPercentage": 0,
       "MaxCrowdAttackSpawnLimit": 20,
       "MinInfectionPercentage": 0,
       "MinSpawnDistToPlayer": 50,

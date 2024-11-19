@@ -7751,7 +7751,9 @@
 				"zombieSettings": {
 					"enabled": true,
 					"mapInfectionAmount": {
-						"laboratory": 100
+						"laboratory": 100,
+						"factory4": 0,
+						"Sandbox": 0
 					},
 					"disableBosses": [
 						"laboratory"

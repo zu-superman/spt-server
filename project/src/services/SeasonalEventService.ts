@@ -483,11 +483,18 @@ export class SeasonalEventService {
         infectionHalloween.DisplayUIEnabled = true;
         infectionHalloween.Enabled = true;
 
-        for (const locationKey in zombieSettings.mapInfectionAmount) {
-            this.databaseService.getLocation(locationKey.toLowerCase()).base.Events.Halloween2024.InfectionPercentage =
-                zombieSettings.mapInfectionAmount[locationKey];
-            this.databaseService.getGlobals().LocationInfection[locationKey] =
-                zombieSettings.mapInfectionAmount[locationKey];
+        for (const infectedLocationKey in zombieSettings.mapInfectionAmount) {
+            const mappedLocations = this.getLocationFromInfectedLocation(infectedLocationKey.toLowerCase());
+
+            for (const locationKey of mappedLocations) {
+                this.databaseService.getLocation(
+                    locationKey.toLowerCase(),
+                ).base.Events.Halloween2024.InfectionPercentage =
+                    zombieSettings.mapInfectionAmount[infectedLocationKey];
+            }
+
+            this.databaseService.getGlobals().LocationInfection[infectedLocationKey] =
+                zombieSettings.mapInfectionAmount[infectedLocationKey];
         }
 
         for (const locationId of zombieSettings.disableBosses) {
@@ -502,6 +509,23 @@ export class SeasonalEventService {
             (locationId) => zombieSettings.mapInfectionAmount[locationId] > 0,
         );
         this.addEventBossesToMaps("halloweenzombies", activeMaps);
+    }
+
+    /**
+     * BSG store the location ids differently inside `LocationInfection`, need to convert to matching location IDs
+     * @param infectedLocationKey Key to convert
+     * @returns Array of locations
+     */
+    protected getLocationFromInfectedLocation(infectedLocationKey: string): string[] {
+        if (infectedLocationKey === "factory4") {
+            return ["factory4_day", "factory4_night"];
+        }
+
+        if (infectedLocationKey === "sandbox") {
+            return ["sandbox", "sandbox_high"];
+        }
+
+        return [infectedLocationKey];
     }
 
     protected addEventWavesToMaps(eventType: string): void {
