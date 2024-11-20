@@ -499,7 +499,9 @@ export class ProfileFixerService {
             if (!this.traderHelper.traderEnumHasValue(traderId)) {
                 this.logger.error(this.localisationService.getText("fixer-trader_found", traderId));
                 if (this.coreConfig.fixes.removeModItemsFromProfile) {
-                    this.logger.warning(`Non-default trader: ${traderId} removed from traderPurchases list in profile`);
+                    this.logger.warning(
+                        `Non-default trader: ${traderId} purchase removed from traderPurchases list in profile`,
+                    );
                     delete fullProfile.traderPurchases[traderId];
                 }
             }
@@ -649,5 +651,31 @@ export class ProfileFixerService {
         }
 
         return profileBonuses.find((x) => x.type === bonus.type && x.value === bonus.value);
+    }
+
+    public checkForAndRemoveInvalidTraders(fullProfile: ISptProfile) {
+        for (const traderId in fullProfile.characters.pmc.TradersInfo) {
+            if (!this.traderHelper.traderEnumHasValue(traderId)) {
+                this.logger.error(this.localisationService.getText("fixer-trader_found", traderId));
+                if (this.coreConfig.fixes.removeInvalidTradersFromProfile) {
+                    this.logger.warning(
+                        `Non-default trader: ${traderId} removed from PMC TradersInfo in: ${fullProfile.info.id} profile`,
+                    );
+                    delete fullProfile.characters.pmc.TradersInfo[traderId];
+                }
+            }
+        }
+
+        for (const traderId in fullProfile.characters.scav.TradersInfo) {
+            if (!this.traderHelper.traderEnumHasValue(traderId)) {
+                this.logger.error(this.localisationService.getText("fixer-trader_found", traderId));
+                if (this.coreConfig.fixes.removeInvalidTradersFromProfile) {
+                    this.logger.warning(
+                        `Non-default trader: ${traderId} removed from Scav TradersInfo in: ${fullProfile.info.id} profile`,
+                    );
+                    delete fullProfile.characters.scav.TradersInfo[traderId];
+                }
+            }
+        }
     }
 }

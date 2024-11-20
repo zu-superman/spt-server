@@ -156,6 +156,8 @@ export class GameController {
                 this.profileFixerService.checkForOrphanedModdedItems(sessionID, fullProfile);
             }
 
+            this.profileFixerService.checkForAndRemoveInvalidTraders(fullProfile);
+
             this.profileFixerService.checkForAndFixPmcProfileIssues(pmcProfile);
 
             if (pmcProfile.Hideout) {
