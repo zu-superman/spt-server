@@ -509,10 +509,10 @@ export class CircleOfCultistService {
         const hasScavCaseAreaUnlocked = pmcData.Hideout.Areas[HideoutAreas.SCAV_CASE]?.level > 0;
         if (hasScavCaseAreaUnlocked) {
             // Gather up items used to start scav case crafts
-            const scavCaseCrafts = hideoutDbData.scavcase;
+            const scavCaseCrafts = hideoutDbData.production.scavRecipes;
             for (const craft of scavCaseCrafts) {
                 // Find the item requirements from each craft
-                const itemRequirements = this.getItemRequirements(craft.Requirements);
+                const itemRequirements = this.getItemRequirements(craft.requirements);
                 for (const requirement of itemRequirements) {
                     if (itemRewardBlacklist.includes(requirement.templateId)) {
                         continue;

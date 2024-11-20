@@ -2,7 +2,7 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
-import { IHideoutScavCase } from "@spt/models/eft/hideout/IHideoutScavCase";
+import { IScavRecipe } from "@spt/models/eft/hideout/IHideoutProduction";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { Money } from "@spt/models/enums/Money";
@@ -54,7 +54,9 @@ export class ScavCaseRewardGenerator {
         this.cacheDbItems();
 
         // Get scavcase details from hideout/scavcase.json
-        const scavCaseDetails = this.databaseService.getHideout().scavcase.find((r) => r._id === recipeId);
+        const scavCaseDetails = this.databaseService
+            .getHideout()
+            .production.scavRecipes.find((r) => r._id === recipeId);
         const rewardItemCounts = this.getScavCaseRewardCountsAndPrices(scavCaseDetails);
 
         // Get items that fit the price criteria as set by the scavCase config
@@ -347,18 +349,18 @@ export class ScavCaseRewardGenerator {
 
     /**
      * Gathers the reward min and max count params for each reward quality level from config and scavcase.json into a single object
-     * @param scavCaseDetails scavcase.json values
+     * @param scavCaseDetails production.json/scavRecipes object
      * @returns ScavCaseRewardCountsAndPrices object
      */
-    protected getScavCaseRewardCountsAndPrices(scavCaseDetails: IHideoutScavCase): IScavCaseRewardCountsAndPrices {
-        const rewardTypes = Object.keys(scavCaseDetails.EndProducts) as Array<keyof IScavCaseRewardCountsAndPrices>; // Default is ["Common", "Rare", "Superrare"];
+    protected getScavCaseRewardCountsAndPrices(scavCaseDetails: IScavRecipe): IScavCaseRewardCountsAndPrices {
+        const rewardTypes = Object.keys(scavCaseDetails.endProducts) as Array<keyof IScavCaseRewardCountsAndPrices>; // Default is ["Common", "Rare", "Superrare"];
         const result: Partial<IScavCaseRewardCountsAndPrices> = {}; // Make partial object as we're going to add all the data immediately after
 
         // Create reward min/max counts for each type
         for (const rewardType of rewardTypes) {
             result[rewardType] = {
-                minCount: scavCaseDetails.EndProducts[rewardType].min,
-                maxCount: scavCaseDetails.EndProducts[rewardType].max,
+                minCount: scavCaseDetails.endProducts[rewardType].min,
+                maxCount: scavCaseDetails.endProducts[rewardType].max,
                 minPriceRub: this.scavCaseConfig.rewardItemValueRangeRub[rewardType.toLowerCase()].min,
                 maxPriceRub: this.scavCaseConfig.rewardItemValueRangeRub[rewardType.toLowerCase()].max,
             };

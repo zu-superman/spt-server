@@ -1,4 +1,3 @@
-import { inherits } from "util";
 import { MinMax } from "@spt/models/common/MinMax";
 
 export interface IHideoutProductionData {

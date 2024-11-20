@@ -692,7 +692,7 @@ export class HideoutController {
             }
         }
 
-        const recipe = this.databaseService.getHideout().scavcase.find((r) => r._id === body.recipeId);
+        const recipe = this.databaseService.getHideout().production.scavRecipes.find((r) => r._id === body.recipeId);
         if (!recipe) {
             this.logger.error(
                 this.localisationService.getText("hideout-unable_to_find_scav_case_recipie_in_database", body.recipeId),
@@ -705,10 +705,10 @@ export class HideoutController {
         // - normal recipe: Production time value is stored in attribute "productionTime" with small "p"
         // - scav case recipe: Production time value is stored in attribute "ProductionTime" with capital "P"
         const adjustedCraftTime =
-            recipe.ProductionTime -
+            recipe.productionTime -
             this.hideoutHelper.getSkillProductionTimeReduction(
                 pmcData,
-                recipe.ProductionTime,
+                recipe.productionTime,
                 SkillTypes.CRAFTING,
                 this.databaseService.getGlobals().config.SkillsSettings.Crafting.CraftTimeReductionPerLevel,
             );
@@ -799,7 +799,7 @@ export class HideoutController {
             return output;
         }
 
-        const scavCase = hideoutDb.scavcase.find((r) => r._id === request.recipeId);
+        const scavCase = hideoutDb.production.scavRecipes.find((r) => r._id === request.recipeId);
         if (scavCase) {
             this.handleScavCase(sessionID, pmcData, request, output);
 
