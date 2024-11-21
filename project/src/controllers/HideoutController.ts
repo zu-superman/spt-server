@@ -56,7 +56,7 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export class HideoutController {
     /** Key used in TaskConditionCounters array */
-    protected static nameTaskConditionCountersCrafting = "CounterHoursCrafting";
+    protected static nameTaskConditionCountersCraftingId = "673f5d6fdd6ed700c703afdc";
     protected hideoutConfig: IHideoutConfig;
 
     constructor(
@@ -1051,16 +1051,16 @@ export class HideoutController {
         pmcData: IPmcData,
         recipe: IHideoutProduction,
     ): ITaskConditionCounter {
-        let counterHoursCrafting = pmcData.TaskConditionCounters[HideoutController.nameTaskConditionCountersCrafting];
+        let counterHoursCrafting = pmcData.TaskConditionCounters[HideoutController.nameTaskConditionCountersCraftingId];
         if (!counterHoursCrafting) {
             // Doesn't exist, create
-            pmcData.TaskConditionCounters[HideoutController.nameTaskConditionCountersCrafting] = {
+            pmcData.TaskConditionCounters[HideoutController.nameTaskConditionCountersCraftingId] = {
                 id: recipe._id,
-                type: HideoutController.nameTaskConditionCountersCrafting,
+                type: HideoutController.nameTaskConditionCountersCraftingId,
                 sourceId: "CounterCrafting",
                 value: 0,
             };
-            counterHoursCrafting = pmcData.TaskConditionCounters[HideoutController.nameTaskConditionCountersCrafting];
+            counterHoursCrafting = pmcData.TaskConditionCounters[HideoutController.nameTaskConditionCountersCraftingId];
         }
         return counterHoursCrafting;
     }
