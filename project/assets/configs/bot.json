@@ -1396,6 +1396,7 @@
                     },
                     "equipment": {
                         "SecondPrimaryWeapon": 10,
+						"Earpiece": 85,
                         "FaceCover": 75
                     },
                     "equipmentMods": {
