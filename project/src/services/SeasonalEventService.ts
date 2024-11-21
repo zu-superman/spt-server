@@ -484,7 +484,7 @@ export class SeasonalEventService {
         infectionHalloween.Enabled = true;
 
         for (const infectedLocationKey in zombieSettings.mapInfectionAmount) {
-            const mappedLocations = this.getLocationFromInfectedLocation(infectedLocationKey.toLowerCase());
+            const mappedLocations = this.getLocationFromInfectedLocation(infectedLocationKey);
 
             for (const locationKey of mappedLocations) {
                 this.databaseService.getLocation(
@@ -521,7 +521,7 @@ export class SeasonalEventService {
             return ["factory4_day", "factory4_night"];
         }
 
-        if (infectedLocationKey === "sandbox") {
+        if (infectedLocationKey === "Sandbox") {
             return ["sandbox", "sandbox_high"];
         }
 
