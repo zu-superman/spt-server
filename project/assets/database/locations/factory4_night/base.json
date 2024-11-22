@@ -71,7 +71,7 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 25,
+      "BossChance": 30,
       "BossDifficult": "normal",
       "BossEscortAmount": "0",
       "BossEscortDifficult": "normal",
@@ -310,7 +310,7 @@
     "VisibleDistance": 1
   },
   "BotMarksman": 0,
-  "BotMax": 22,
+  "BotMax": 16,
   "BotMaxPlayer": 0,
   "BotMaxPvE": 22,
   "BotMaxTimePlayer": 0,
@@ -401,7 +401,7 @@
       "CrowdsLimit": 2,
       "InfectedLookCoeff": 2,
       "InfectionPercentage": 0,
-      "MaxCrowdAttackSpawnLimit": 14,
+      "MaxCrowdAttackSpawnLimit": 13,
       "MinInfectionPercentage": 0,
       "MinSpawnDistToPlayer": 40,
       "TargetPointSearchRadiusLimit": 80,
@@ -4882,7 +4882,6 @@
     {
       "Chance": 100,
       "ChancePVE": 100,
-      "Count": 0,
       "CountPVE": 0,
       "EntryPoints": "Factory",
       "EventAvailable": false,
@@ -4900,7 +4899,6 @@
     {
       "Chance": 100,
       "ChancePVE": 100,
-      "Count": 0,
       "CountPVE": 0,
       "EntryPoints": "Factory",
       "EventAvailable": false,
@@ -4918,7 +4916,6 @@
     {
       "Chance": 100,
       "ChancePVE": 100,
-      "Count": 0,
       "CountPVE": 0,
       "EntryPoints": "Factory",
       "EventAvailable": false,
@@ -4936,7 +4933,6 @@
     {
       "Chance": 100,
       "ChancePVE": 100,
-      "Count": 0,
       "CountPVE": 0,
       "EntryPoints": "Factory",
       "EventAvailable": false,
@@ -4954,7 +4950,6 @@
     {
       "Chance": 100,
       "ChancePVE": 100,
-      "Count": 0,
       "CountPVE": 0,
       "EntryPoints": "Factory",
       "EventAvailable": false,

@@ -43,7 +43,7 @@
   ],
   "BossLocationSpawn": [
     {
-      "BossChance": 25,
+      "BossChance": 30,
       "BossDifficult": "normal",
       "BossEscortAmount": "2",
       "BossEscortDifficult": "normal",
@@ -87,7 +87,7 @@
       "TriggerName": ""
     },
     {
-      "BossChance": 25,
+      "BossChance": 30,
       "BossDifficult": "normal",
       "BossEscortAmount": "6",
       "BossEscortDifficult": "normal",
@@ -487,10 +487,10 @@
     "VisibleDistance": 1
   },
   "BotMarksman": 20,
-  "BotMax": 48,
-  "BotMaxPlayer": 0,
+  "BotMax": 23,
+  "BotMaxPlayer": 10,
   "BotMaxPvE": 48,
-  "BotMaxTimePlayer": 0,
+  "BotMaxTimePlayer": 1000,
   "BotNormal": 40,
   "BotSpawnCountStep": 3,
   "BotSpawnPeriodCheck": 14,
@@ -499,7 +499,7 @@
   "BotSpawnTimeOnMax": 360,
   "BotSpawnTimeOnMin": 290,
   "BotStart": 122,
-  "BotStartPlayer": 0,
+  "BotStartPlayer": 550,
   "BotStop": 2200,
   "Description": "The downtown Tarkov with banks, malls, hotels and all the other things a striving modern city could have needed.",
   "DisabledForScav": false,
@@ -578,7 +578,7 @@
       "CrowdsLimit": 2,
       "InfectedLookCoeff": 2,
       "InfectionPercentage": 0,
-      "MaxCrowdAttackSpawnLimit": 20,
+      "MaxCrowdAttackSpawnLimit": 18,
       "MinInfectionPercentage": 0,
       "MinSpawnDistToPlayer": 50,
       "TargetPointSearchRadiusLimit": 200,

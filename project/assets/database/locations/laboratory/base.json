@@ -583,10 +583,10 @@
     "VisibleDistance": 1
   },
   "BotMarksman": 0,
-  "BotMax": 25,
-  "BotMaxPlayer": 0,
+  "BotMax": 15,
+  "BotMaxPlayer": 14,
   "BotMaxPvE": 25,
-  "BotMaxTimePlayer": 0,
+  "BotMaxTimePlayer": 1000,
   "BotNormal": 30,
   "BotSpawnCountStep": 3,
   "BotSpawnPeriodCheck": 15,
@@ -595,7 +595,7 @@
   "BotSpawnTimeOnMax": 330,
   "BotSpawnTimeOnMin": 300,
   "BotStart": 10,
-  "BotStartPlayer": 0,
+  "BotStartPlayer": 15,
   "BotStop": 1400,
   "Description": "Laboratory description",
   "DisabledForScav": true,
@@ -637,7 +637,7 @@
         {
           "Difficulty": "hard",
           "Role": "infectedPmc",
-          "Weight": 90
+          "Weight": 60
         },
         {
           "Difficulty": "easy",
@@ -674,7 +674,7 @@
       "CrowdsLimit": 2,
       "InfectedLookCoeff": 2,
       "InfectionPercentage": 0,
-      "MaxCrowdAttackSpawnLimit": 14,
+      "MaxCrowdAttackSpawnLimit": 13,
       "MinInfectionPercentage": 0,
       "MinSpawnDistToPlayer": 40,
       "TargetPointSearchRadiusLimit": 80,
