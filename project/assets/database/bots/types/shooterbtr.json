@@ -623,8 +623,8 @@
         "PANIC_SIT_WEIGHT_PEACE": 0,
         "USE_ADD_TO_ENEMY_VALIDATION": true,
         "VALID_REASONS_TO_ADD_ENEMY": [
-          [],
-          []
+			"attackBTR",
+			"serviceBTR"
         ]
       },
       "Boss": {
@@ -1139,8 +1139,8 @@
         "PANIC_SIT_WEIGHT_PEACE": 0,
         "USE_ADD_TO_ENEMY_VALIDATION": true,
         "VALID_REASONS_TO_ADD_ENEMY": [
-          [],
-          []
+			"attackBTR",
+			"serviceBTR"
         ]
       },
       "Boss": {
@@ -1655,8 +1655,8 @@
         "PANIC_SIT_WEIGHT_PEACE": 0,
         "USE_ADD_TO_ENEMY_VALIDATION": true,
         "VALID_REASONS_TO_ADD_ENEMY": [
-          [],
-          []
+			"attackBTR",
+			"serviceBTR"
         ]
       },
       "Boss": {
@@ -2171,8 +2171,8 @@
         "PANIC_SIT_WEIGHT_PEACE": 0,
         "USE_ADD_TO_ENEMY_VALIDATION": true,
         "VALID_REASONS_TO_ADD_ENEMY": [
-          [],
-          []
+			"attackBTR",
+			"serviceBTR"
         ]
       },
       "Boss": {
