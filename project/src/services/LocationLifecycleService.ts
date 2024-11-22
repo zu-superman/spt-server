@@ -271,8 +271,7 @@ export class LocationLifecycleService {
         }
 
         // If new spawn system is enabled, clear the spawn waves
-        if (locationBaseClone.NewSpawn)
-        {
+        if (locationBaseClone.NewSpawn) {
             locationBaseClone.waves = [];
         }
 
@@ -360,7 +359,7 @@ export class LocationLifecycleService {
         this.handleItemTransferEvent(sessionId, request);
 
         // Player is moving between maps
-        if (isTransfer) {
+        if (isTransfer && request.locationTransit) {
             // Manually store the map player just left
             request.locationTransit.sptLastVisitedLocation = locationName;
             // TODO - Persist each players last visited location history over multiple transits, e.g using InMemoryCacheService, need to take care to not let data get stored forever
