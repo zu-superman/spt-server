@@ -125,6 +125,7 @@ export class LocationLifecycleService {
             .getLatestValue(ContextVariableType.TRANSIT_INFO)
             ?.getValue<ILocationTransit>();
         if (transitionData) {
+            this.logger.success(`Player: ${sessionId} is in transit to ${request.location}`);
             result.transition.isLocationTransition = true;
             result.transition.transitionRaidId = transitionData.transitionRaidId;
             result.transition.transitionCount += 1;
