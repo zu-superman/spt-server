@@ -221,6 +221,13 @@
             "startTimestamp": 1341615600000,
             "endTimestamp": "",
             "yearly": true
+		},
+		"67190f6c1b3f4964d90d71e9": {
+			"name": "Global Threat",
+            "season": "halloween",
+            "startTimestamp": 1341615600000,
+            "endTimestamp": "",
+            "yearly": true
 		}
     },
     "repeatableQuests": [
