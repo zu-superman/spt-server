@@ -57,6 +57,15 @@ export class PostDbLoadService {
         // add items gets left out,causing warnings
         this.itemBaseClassService.hydrateItemBaseClassCache();
 
+        // Validate that only mongoIds exist in items, quests, and traders
+        // Kill the startup if not.
+        // TODO: We can probably remove this in a couple versions
+        this.databaseService.validateDatabase();
+        if (!this.databaseService.isDatabaseValid())
+        {
+            return;
+        }
+
         this.addCustomLooseLootPositions();
 
         this.adjustMinReserveRaiderSpawnChance();
