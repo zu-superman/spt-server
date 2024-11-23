@@ -61,9 +61,8 @@ export class PostDbLoadService {
         // Kill the startup if not.
         // TODO: We can probably remove this in a couple versions
         this.databaseService.validateDatabase();
-        if (!this.databaseService.isDatabaseValid())
-        {
-            return;
+        if (!this.databaseService.isDatabaseValid()) {
+            throw new Error("Server start failure");
         }
 
         this.addCustomLooseLootPositions();
