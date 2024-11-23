@@ -6,11 +6,11 @@ import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IHttpConfig } from "@spt/models/spt/config/IHttpConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
-import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { WebSocketServer } from "@spt/servers/WebSocketServer";
 import { IHttpListener } from "@spt/servers/http/IHttpListener";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { inject, injectAll, injectable } from "tsyringe";
+import { DatabaseService } from "@spt/services/DatabaseService";
 
 @injectable()
 export class HttpServer {
@@ -19,7 +19,7 @@ export class HttpServer {
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
-        @inject("DatabaseServer") protected databaseServer: DatabaseServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("HttpServerHelper") protected httpServerHelper: HttpServerHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @injectAll("HttpListener") protected httpListeners: IHttpListener[],
@@ -35,6 +35,12 @@ export class HttpServer {
      */
     public load(): void {
         this.started = false;
+
+        // If the database couldn't be validated, don't start the server
+        if (!this.databaseService.isDatabaseValid())
+        {
+            return;
+        }
 
         /* create server */
         const httpServer: Server = http.createServer();

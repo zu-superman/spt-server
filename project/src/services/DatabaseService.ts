@@ -21,16 +21,19 @@ import { ITemplates } from "@spt/models/spt/templates/ITemplates";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { LocalisationService } from "@spt/services/LocalisationService";
+import { HashUtil } from "@spt/utils/HashUtil";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class DatabaseService {
     protected locationConfig: ILocationConfig;
+    protected isDataValid: boolean;
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("LocalisationService") protected localisationService: LocalisationService,
+        @inject("HashUtil") protected hashUtil: HashUtil,
     ) {}
 
     /**
@@ -321,5 +324,54 @@ export class DatabaseService {
         }
 
         return this.databaseServer.getTables().templates.locationServices;
+    }
+
+    /**
+     * Validates that the database doesn't contain invalid ID data
+     */
+    public validateDatabase(): void {
+        const start = performance.now();
+        
+        this.isDataValid = 
+            this.validateTable(this.getQuests(), 'quest') &&
+            this.validateTable(this.getTraders(), 'trader') &&
+            this.validateTable(this.getItems(), 'item') &&
+            this.validateTable(this.getCustomization(), 'customization');
+
+        if (!this.isDataValid)
+        {
+            this.logger.error(this.localisationService.getText("database-invalid_data"));
+        }
+
+        const validateTime = performance.now() - start
+        this.logger.debug(`ID validation took: ${validateTime.toFixed(2)}ms`);
+    }
+
+    /**
+     * Validate that the given table only contains valid MongoIDs
+     * @param table Table to validate for MongoIDs
+     * @param tableType The type of table, used in output message
+     * @returns True if the table only contains valid data
+     */
+    private validateTable(table: Record<string, any>, tableType: string): boolean
+    {
+        for (const tableId in table)
+        {
+            if (!this.hashUtil.isValidMongoId(tableId))
+            {
+                this.logger.error(`Invalid ${tableType} ID: '${tableId}'`);
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Check if the database is valid
+     * @returns True if the database contains valid data, false otherwise
+     */
+    public isDatabaseValid(): boolean {
+        return this.isDataValid;
     }
 }
