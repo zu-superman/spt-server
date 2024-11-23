@@ -130,12 +130,12 @@
             "name": "AUTUMN_LATE",
             "startDay": "1",
             "startMonth": "11",
-            "endDay": "20",
+            "endDay": "21",
             "endMonth": "12"
         }, {
             "seasonType": 2,
             "name": "WINTER_START",
-            "startDay": "20",
+            "startDay": "21",
             "startMonth": "12",
             "endDay": "31",
             "endMonth": "12"
@@ -144,12 +144,12 @@
             "name": "WINTER_END",
             "startDay": "1",
             "startMonth": "1",
-            "endDay": "12",
+            "endDay": "9",
             "endMonth": "1"
         }, {
             "seasonType": 5,
             "name": "SPRING_EARLY",
-            "startDay": "12",
+            "startDay": "9",
             "startMonth": "1",
             "endDay": "25",
             "endMonth": "3"
