@@ -204,7 +204,7 @@ export class InventoryHelper {
     }
 
     /**
-     * Can all probided items be added into player inventory
+     * Can all provided items be added into player inventory
      * @param sessionId Player id
      * @param itemsWithChildren array of items with children to try and fit
      * @returns True all items fit
