@@ -733,41 +733,53 @@ export class LocationLifecycleService {
     ) {
         // Exclude completed quests
         const activeQuestIdsInProfile = profileQuests
-            .filter((quest) => quest.status !== QuestStatus.Success)
+            .filter((quest) => ![QuestStatus.Success, QuestStatus.AvailableForStart].includes(quest.status))
             .map((status) => status.qid);
 
         // Get db details of quests we found above
-        const questDb = Object.values(this.databaseService.getQuests()).filter((x) =>
-            activeQuestIdsInProfile.includes(x._id),
+        const questDb = Object.values(this.databaseService.getQuests()).filter((quest) =>
+            activeQuestIdsInProfile.includes(quest._id),
         );
 
         for (const lostItem of lostQuestItems) {
-            for (const quest of questDb) {
-                // Find a quest in the db that has the lost item in one of its conditions that is also a 'find' type of condition
+            let matchingConditionId: string;
+            // Find a quest that has a FindItem condition that has the list items tpl as a target
+            const matchingQuests = questDb.filter((quest) => {
                 const matchingCondition = quest.conditions.AvailableForFinish.find(
                     (questCondition) =>
                         questCondition.conditionType === "FindItem" && questCondition.target.includes(lostItem._tpl),
                 );
                 if (!matchingCondition) {
                     // Quest doesnt have a matching condition
-                    continue;
+                    return false;
                 }
 
-                // We have a match, remove the condition id from profile to reset progress and let player pick item up again
-                const profileQuestToUpdate = profileQuests.find((questStatus) => questStatus.qid === quest._id);
-                if (!profileQuestToUpdate) {
-                    // Profile doesnt have a matching quest
-                    continue;
-                }
+                // We found a condition, save id for later
+                matchingConditionId = matchingCondition.id;
+                return true;
+            });
 
-                // Filter out the matching condition we found
-                profileQuestToUpdate.completedConditions = profileQuestToUpdate.completedConditions.filter(
-                    (conditionId) => conditionId !== matchingCondition.id,
+            // Fail if multiple were found
+            if (matchingQuests.length !== 1) {
+                this.logger.error(
+                    `Unable to fix quest item: ${lostItem}, ${matchingQuests.length} matching quests found, expected 1`,
                 );
 
-                // We found and updated the relevant quest, no more work to do with this lost item
-                break;
+                continue;
             }
+
+            const matchingQuest = matchingQuests[0];
+            // We have a match, remove the condition id from profile to reset progress and let player pick item up again
+            const profileQuestToUpdate = profileQuests.find((questStatus) => questStatus.qid === matchingQuest._id);
+            if (!profileQuestToUpdate) {
+                // Profile doesnt have a matching quest
+                continue;
+            }
+
+            // Filter out the matching condition we found
+            profileQuestToUpdate.completedConditions = profileQuestToUpdate.completedConditions.filter(
+                (conditionId) => conditionId !== matchingConditionId,
+            );
         }
     }
 
