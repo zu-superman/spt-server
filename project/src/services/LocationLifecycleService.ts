@@ -639,8 +639,8 @@ export class LocationLifecycleService {
         const postRaidProfile = request.results.profile;
         const preRaidProfileQuestDataClone = this.cloner.clone(pmcProfile.Quests);
 
-        // MUST occur BEFORE inventory actions occur
-        // Player died, quest items presist in the post raid profile
+        // MUST occur BEFORE inventory actions (setInventory()) occur
+        // Player died, get quest items they lost for use later
         const lostQuestItems = this.profileHelper.getQuestItemsInProfile(postRaidProfile);
 
         // Update inventory
@@ -654,12 +654,6 @@ export class LocationLifecycleService {
         pmcProfile.SurvivorClass = postRaidProfile.SurvivorClass;
         pmcProfile.Achievements = postRaidProfile.Achievements;
         pmcProfile.Quests = this.processPostRaidQuests(postRaidProfile.Quests);
-
-        if (isDead && lostQuestItems.length > 0) {
-            // MUST occur AFTER quests have post raid quest data has been merged
-            // Player is dead + had quest items, check and fix any broken find item quests
-            this.checkForAndFixPickupQuestsAfterDeath(sessionId, lostQuestItems, pmcProfile.Quests);
-        }
 
         // Handle edge case - must occur AFTER processPostRaidQuests()
         this.lightkeeperQuestWorkaround(sessionId, postRaidProfile.Quests, preRaidProfileQuestDataClone, pmcProfile);
@@ -692,6 +686,12 @@ export class LocationLifecycleService {
         this.healthHelper.updateProfileHealthPostRaid(pmcProfile, postRaidProfile.Health, sessionId, isDead);
 
         if (isDead) {
+            if (lostQuestItems.length > 0) {
+                // MUST occur AFTER quests have post raid quest data has been merged "processPostRaidQuests()"
+                // Player is dead + had quest items, check and fix any broken find item quests
+                this.checkForAndFixPickupQuestsAfterDeath(sessionId, lostQuestItems, pmcProfile.Quests);
+            }
+
             this.pmcChatResponseService.sendKillerResponse(sessionId, pmcProfile, postRaidProfile.Stats.Eft.Aggressor);
 
             this.inRaidHelper.deleteInventory(pmcProfile, sessionId);
