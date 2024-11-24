@@ -655,7 +655,7 @@ export class LocationLifecycleService {
         pmcProfile.Achievements = postRaidProfile.Achievements;
         pmcProfile.Quests = this.processPostRaidQuests(postRaidProfile.Quests);
 
-        if (lostQuestItems.length > 0) {
+        if (isDead && lostQuestItems.length > 0) {
             // MUST occur AFTER quests have post raid quest data has been merged
             // Player is dead + had quest items, check and fix any broken find item quests
             this.checkForAndFixPickupQuestsAfterDeath(sessionId, lostQuestItems, pmcProfile.Quests);
@@ -692,12 +692,6 @@ export class LocationLifecycleService {
         this.healthHelper.updateProfileHealthPostRaid(pmcProfile, postRaidProfile.Health, sessionId, isDead);
 
         if (isDead) {
-            this.inRaidHelper.removePickupQuestConditions(
-                postRaidProfile.Stats.Eft.CarriedQuestItems,
-                sessionId,
-                pmcProfile,
-            );
-
             this.pmcChatResponseService.sendKillerResponse(sessionId, pmcProfile, postRaidProfile.Stats.Eft.Aggressor);
 
             this.inRaidHelper.deleteInventory(pmcProfile, sessionId);

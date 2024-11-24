@@ -191,23 +191,6 @@ export class InRaidHelper {
     }
 
     /**
-     * Deletes quest conditions from pickup tasks given a list of quest items being carried by a PMC.
-     * @param carriedQuestItems Items carried by PMC at death, usually gotten from "CarriedQuestItems"
-     * @param sessionId Current sessionId
-     * @param pmcProfile Pre-raid profile that is being handled with raid information
-     */
-    public removePickupQuestConditions(carriedQuestItems: string[], sessionId: string, pmcProfile: IPmcData) {
-        if (carriedQuestItems && this.lostOnDeathConfig.questItems) {
-            const pmcQuests = this.questController.getClientQuests(sessionId);
-            const pmcQuestIds = pmcQuests.map((a) => a._id);
-            for (const item of carriedQuestItems) {
-                const failedQuestId = this.questHelper.getFindItemConditionByQuestItem(item, pmcQuestIds, pmcQuests);
-                this.profileHelper.removeQuestConditionFromProfile(pmcProfile, failedQuestId);
-            }
-        }
-    }
-
-    /**
      * Get an array of items from a profile that will be lost on death
      * @param pmcProfile Profile to get items from
      * @returns Array of items lost on death
