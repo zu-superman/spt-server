@@ -83,7 +83,7 @@ export class LocaleService {
      * Get the full locale of the computer running the server lowercased e.g. en-gb / pt-pt
      * @returns string
      */
-    protected getPlatformForServerLocale(): string {
+    public getPlatformForServerLocale(): string {
         const platformLocale = this.getPlatformLocale();
         if (!platformLocale) {
             this.logger.warning("System language could not be found, falling back to english");
