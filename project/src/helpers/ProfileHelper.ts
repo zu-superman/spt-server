@@ -1,6 +1,7 @@
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { BanType, Common, ICounterKeyValue, IStats } from "@spt/models/eft/common/tables/IBotBase";
+import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 import { IValidateNicknameRequestData } from "@spt/models/eft/profile/IValidateNicknameRequestData";
 import { AccountTypes } from "@spt/models/enums/AccountTypes";
@@ -522,5 +523,14 @@ export class ProfileHelper {
         for (const pocket of pockets) {
             pocket._tpl = newPocketTpl;
         }
+    }
+
+    /**
+     * Return all quest items current in the supplied profile
+     * @param profile Profile to get quest items from
+     * @returns Array of item objects
+     */
+    public getQuestItemsInProfile(profile: IPmcData): IItem[] {
+        return profile.Inventory.items.filter((item) => item.parentId === profile.Inventory.questRaidItems);
     }
 }

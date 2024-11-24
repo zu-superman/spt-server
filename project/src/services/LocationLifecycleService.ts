@@ -639,6 +639,10 @@ export class LocationLifecycleService {
         const postRaidProfile = request.results.profile;
         const preRaidProfileQuestDataClone = this.cloner.clone(pmcProfile.Quests);
 
+        // MUST occur BEFORE inventory actions occur
+        // Player died, quest items presist in the post raid profile
+        const lostQuestItems = this.profileHelper.getQuestItemsInProfile(postRaidProfile);
+
         // Update inventory
         this.inRaidHelper.setInventory(sessionId, pmcProfile, postRaidProfile, isSurvived, isTransfer);
 
@@ -650,6 +654,12 @@ export class LocationLifecycleService {
         pmcProfile.SurvivorClass = postRaidProfile.SurvivorClass;
         pmcProfile.Achievements = postRaidProfile.Achievements;
         pmcProfile.Quests = this.processPostRaidQuests(postRaidProfile.Quests);
+
+        if (lostQuestItems.length > 0) {
+            // MUST occur AFTER quests have post raid quest data has been merged
+            // Player is dead + had quest items, check and fix any broken find item quests
+            this.checkForAndFixPickupQuestsAfterDeath(sessionId, lostQuestItems, pmcProfile.Quests);
+        }
 
         // Handle edge case - must occur AFTER processPostRaidQuests()
         this.lightkeeperQuestWorkaround(sessionId, postRaidProfile.Quests, preRaidProfileQuestDataClone, pmcProfile);
@@ -672,7 +682,7 @@ export class LocationLifecycleService {
         // Copy fence values to Scav
         scavProfile.TradersInfo[fenceId] = pmcProfile.TradersInfo[fenceId];
 
-        // Must occur after encyclopedia updated
+        // MUST occur AFTER encyclopedia updated
         this.mergePmcAndScavEncyclopedias(pmcProfile, scavProfile);
 
         // Remove skill fatigue values
@@ -707,6 +717,58 @@ export class LocationLifecycleService {
         }
 
         this.handleInsuredItemLostEvent(sessionId, pmcProfile, request, locationName);
+    }
+
+    /**
+     * On death Quest items are lost, the client does not clean up completed conditions for picking up those quest items,
+     * If the completed conditions remain in the profile the player is unable to pick the item up again
+     * @param sessionId Session id
+     * @param lostQuestItems Quest items lost on player death
+     * @param profileQuests Quest status data from player profile
+     */
+    protected checkForAndFixPickupQuestsAfterDeath(
+        sessionId: string,
+        lostQuestItems: IItem[],
+        profileQuests: IQuestStatus[],
+    ) {
+        // Exclude completed quests
+        const activeQuestIdsInProfile = profileQuests
+            .filter((quest) => quest.status !== QuestStatus.Success)
+            .map((status) => status.qid);
+
+        // Get db details of quests we found above
+        const questDb = Object.values(this.databaseService.getQuests()).filter((x) =>
+            activeQuestIdsInProfile.includes(x._id),
+        );
+
+        for (const lostItem of lostQuestItems) {
+            for (const quest of questDb) {
+                // Find a quest in the db that has the lost item in one of its conditions that is also a 'find' type of condition
+                const matchingCondition = quest.conditions.AvailableForFinish.find(
+                    (questCondition) =>
+                        questCondition.conditionType === "FindItem" && questCondition.target.includes(lostItem._tpl),
+                );
+                if (!matchingCondition) {
+                    // Quest doesnt have a matching condition
+                    continue;
+                }
+
+                // We have a match, remove the condition id from profile to reset progress and let player pick item up again
+                const profileQuestToUpdate = profileQuests.find((questStatus) => questStatus.qid === quest._id);
+                if (!profileQuestToUpdate) {
+                    // Profile doesnt have a matching quest
+                    continue;
+                }
+
+                // Filter out the matching condition we found
+                profileQuestToUpdate.completedConditions = profileQuestToUpdate.completedConditions.filter(
+                    (conditionId) => conditionId !== matchingCondition.id,
+                );
+
+                // We found and updated the relevant quest, no more work to do with this lost item
+                break;
+            }
+        }
     }
 
     /**
