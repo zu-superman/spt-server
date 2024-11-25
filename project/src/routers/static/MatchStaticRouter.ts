@@ -96,7 +96,7 @@ export class MatchStaticRouter extends StaticRouter {
             new RouteAction(
                 "/client/match/group/exit_from_menu",
                 async (url: string, info: any, sessionID: string, output: string): Promise<INullResponseData> => {
-                    return this.matchCallbacks.exitToMenu(url, info, sessionID);
+                    return this.matchCallbacks.exitFromMenu(url, info, sessionID);
                 },
             ),
             new RouteAction(
