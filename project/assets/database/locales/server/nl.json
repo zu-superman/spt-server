@@ -66,6 +66,7 @@
     "customisation-unable_to_find_suit_with_id": "Niet in staat om suit met aanbod id: %s te vinden",
     "customisation-unable_to_get_trader_suits": "Niet in staat om suits te krijgen van trader: %s",
     "database-data_at_path_missing": "De database kon geen gegevens ophalen van: [%s] Zorg ervoor dat uw configuraties geldig zijn en dat de gegevens op de locatie bestaan",
+    "database-invalid_data": "Ongeldige data gedetecteerd in database, verwijder alle verouderde mods. Zie vorige fout voor ongeldige data. Server gestopt.",
     "database-no_location_found_with_id": "Geen locatie gevonden met een Id van: %s in database",
     "database-no_trader_found_with_id": "Niet in staat om trader: %s te vinden in de database",
     "dialog-chatbot_id_already_exists": "Chat bot: %s die geregistreerd wordt bestaat al, kan de bot niet registreren",
@@ -722,5 +723,9 @@
     "websocket-player_connected": "[WS] Speler: %s is verbonden",
     "websocket-received_message": "[WS] Bericht ontvangen van gebruiker %s ",
     "websocket-socket_lost_deleting_handle": "[WS] Socket verloren, handle verwijderen",
-    "websocket-started": "Websocket gestart op %s"
+    "websocket-started": "Websocket gestart op %s",
+    "chatbot-cannot_accept_any_more_of_gift": "Je kunt niet meer van dit geschenk accepteren",
+    "chatbot-halloween_event_enabled": "Het halloween evenement is ingeschakeld, herstart uw game client voordat u begint met een raid",
+    "chatbot-added_stash_rows_please_restart": "2 Rijen toegevoegd aan de stash, herstart uw spel om ze te zien",
+    "chatbot-snow_enabled": "Sneeuw is ingeschakeld voor alle volgende raids totdat de server opnieuw wordt opgestart"
 }

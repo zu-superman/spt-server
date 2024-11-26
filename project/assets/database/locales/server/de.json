@@ -66,6 +66,7 @@
     "customisation-unable_to_find_suit_with_id": "Anzug mit Angebots-Id nicht gefunden: %s",
     "customisation-unable_to_get_trader_suits": "Kann Anzüge vom Händler nicht abrufen: %s",
     "database-data_at_path_missing": "Die Datenbank konnte keine Daten abrufen von: [%s] Bitte stellen Sie sicher, dass Ihre Konfigurationen gültig sind und die Daten am Standort vorhanden sind",
+    "database-invalid_data": "Ungültige Daten in der Datenbank gefunden, bitte veraltete Mods entfernen. Siehe vorherigen Fehler für die ungültigen Daten. Server gestoppt.",
     "database-no_location_found_with_id": "Kein Standort mit Id von: %s in der Datenbank gefunden",
     "database-no_trader_found_with_id": "Händler %s konnte nicht in der Datenbank gefunden werden",
     "dialog-chatbot_id_already_exists": "Chat-Bot: %s ist bereits registriert, der Bot kann nicht registriert werden",
@@ -722,5 +723,9 @@
     "websocket-player_connected": "[WS] Spieler: %s hat eine Verbindung hergestellt",
     "websocket-received_message": "[WS] Nachricht von Benutzer %s erhalten ",
     "websocket-socket_lost_deleting_handle": "[WS] Socket verloren, Handle wird gelöscht",
-    "websocket-started": "Websocket auf %s gestartet"
+    "websocket-started": "Websocket auf %s gestartet",
+    "chatbot-cannot_accept_any_more_of_gift": "Du kannst dieses Geschenk nicht mehr annehmen",
+    "chatbot-halloween_event_enabled": "Das Halloween-Event wurde aktiviert. Starte das Spiel neu, bevor du einen Raid beginnst",
+    "chatbot-added_stash_rows_please_restart": "2 Zeilen wurden dem Lager hinzugefügt. Bitte starte das Spiel neu, um diese zu sehen",
+    "chatbot-snow_enabled": "Schnee ist für alle folgenden Raids aktiviert, bis der Server neu gestartet wird"
 }

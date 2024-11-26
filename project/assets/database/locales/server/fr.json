@@ -66,6 +66,7 @@
     "customisation-unable_to_find_suit_with_id": "Impossible de trouver tenue avec id d'offre : %s",
     "customisation-unable_to_get_trader_suits": "Impossible de récupérére les tenues du marchand : %s",
     "database-data_at_path_missing": "La base de données n'a pas pu récupérer les données de : [%s] Vérifiez que vos configurations sont valides et que les données existent à cet endroit",
+    "database-invalid_data": "Données invalides détectées dans la base de donnés. Veuillez supprimer les mods qui ne sont pas à jour. Référez-vous à l'erreur précédente pour les données invalides. Le serveur s'est arrêté.",
     "database-no_location_found_with_id": "Aucun lieu trouvé avec un id de : %s dans la base de données",
     "database-no_trader_found_with_id": "Impossible de trouver le marchand : %s dans la base de données",
     "dialog-chatbot_id_already_exists": "Chat bot : %s en cours d'inscription est déjà inscrit, impossible d'inscrire le bot",
@@ -722,5 +723,9 @@
     "websocket-player_connected": "[WS] joueur: %s est connecté",
     "websocket-received_message": "[WS]  message reçu du l'utilisateur %s ",
     "websocket-socket_lost_deleting_handle": "[WS] Socket perdu, suppression du handle",
-    "websocket-started": "Démarrage du websocket sur %s"
+    "websocket-started": "Démarrage du websocket sur %s",
+    "chatbot-cannot_accept_any_more_of_gift": "Vous ne pouvez plus accepter plus de cadeaux de ce type",
+    "chatbot-halloween_event_enabled": "L'événement Halloween a été activé, redémarrez votre client avant de commencer un raid",
+    "chatbot-added_stash_rows_please_restart": "2 rangées ont été ajoutées à votre réserve, redémarrez le jeu pour les voir",
+    "chatbot-snow_enabled": "La neige a été activée pour tous les raids suivants jusqu'à ce que le serveur soit redémarré"
 }

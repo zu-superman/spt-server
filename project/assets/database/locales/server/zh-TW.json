@@ -54,6 +54,7 @@
     "bot-weapon_generated_incorrect_using_default": "武器 %s 產生不正確, 將會朔到武器預設, 請查看上方錯誤訊息.",
     "bot-weapon_missing_magazine_or_chamber": "武器 tpl: {{weaponId}} 缺少彈夾或是槍膛 - {{botRole}}",
     "bot-weapon_missing_mod_slot": "{{botRole}} 身上的武器: {{weaponId}} {{weaponName}} 上並沒有配件槽: {{modSlot}}'",
+    "bot-weapons_required_slot_missing_item": "所需欄位 '{{modSlot}}' 於 {{modName}} {{slotId}} 是空白在 {{botRole}}",
     "client_request": "[客戶端請求] %s",
     "client_request_ip": "[客戶端請求] {{ip}} {{url}}",
     "customisation-item_already_purchased": "服裝物品{{itemId}} {{itemName}}已被購買",

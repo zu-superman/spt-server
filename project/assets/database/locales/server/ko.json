@@ -66,6 +66,7 @@
     "customisation-unable_to_find_suit_with_id": "매물 Id: %s 인 의복을 찾지 못하였습니다.",
     "customisation-unable_to_get_trader_suits": "상인 %s 에게서 의복을 반환받지 못하였습니다.",
     "database-data_at_path_missing": "데이터베이스에서 [%s] 에서 데이터를 받아오지 못하였습니다. 설정값이 올바른지, 데이터가 위치에 실제로 있는지 확인해주시기 바랍니다.",
+    "database-invalid_data": "데이터베이스에서 잘못된 데이터가 감지되었습니다. 이전 오류를 확인하고 오래된 모드를 제거하세요. 서버가 중지되었습니다.",
     "database-no_location_found_with_id": "id: %s 의 장소가 데이터베이스에 없습니다.",
     "database-no_trader_found_with_id": "데이터베이스에서 %s 라는 상인을 찾을 수 없습니다.",
     "dialog-chatbot_id_already_exists": "%s 챗봇이 이미 존재하여 다시 등록하지 못하였습니다.",
@@ -722,5 +723,9 @@
     "websocket-player_connected": "[WS] 플레이어: %s 이(가) 접속 됨",
     "websocket-received_message": "[WS] %s 사용자로부터 메시지를 받음",
     "websocket-socket_lost_deleting_handle": "[ws] 소켓 로스트, 핸들 삭제중",
-    "websocket-started": "시작된 웹소켓 서버 %s"
+    "websocket-started": "시작된 웹소켓 서버 %s",
+    "chatbot-cannot_accept_any_more_of_gift": "이 선물을 더 이상 수령할 수 없습니다.",
+    "chatbot-halloween_event_enabled": "할로윈 이벤트가 끝났습니다. 다음 레이드를 시작하기 전에 클라이언트를 재시작 해주세요.",
+    "chatbot-added_stash_rows_please_restart": "스태쉬에 2줄을 추가하였습니다. 사용하기 위해서 게임을 재시작 해주세요.",
+    "chatbot-snow_enabled": "서버가 재시작 될때까지 모든 레이드에 눈이 적용됩니다."
 }

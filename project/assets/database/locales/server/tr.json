@@ -66,6 +66,7 @@
     "customisation-unable_to_find_suit_with_id": "Teklif kimliği: %s olan takım bulunamıyor",
     "customisation-unable_to_get_trader_suits": "Tüccardan takım elbise alınamıyor: %s",
     "database-data_at_path_missing": "Veritabanı şu konumdan veri alamadı: [%s] Lütfen yapılandırmalarınızın geçerli olduğundan ve konumdaki verilerin var olduğundan emin olun",
+    "database-invalid_data": "Veritabanında geçersiz veri tespit edildi, lütfen güncel olmayan modları kaldırın. Geçersiz veriler için önceki hataya bakın. Sunucu durduruldu.",
     "database-no_location_found_with_id": "Veritabanında id: %s olan bir konum bulunamadı",
     "database-no_trader_found_with_id": "Veritabanında tüccar: %s bulunamıyor",
     "dialog-chatbot_id_already_exists": "Sohbet botu: Kaydedilmekte olan %s zaten var, bot kaydedilemiyor",
@@ -722,5 +723,9 @@
     "websocket-player_connected": "[WS] Oyuncu: %s bağlandı",
     "websocket-received_message": "[WS] Kullanıcıdan mesaj alındı %s ",
     "websocket-socket_lost_deleting_handle": "[WS] Soket kayboldu, tanıtıcı siliniyor, durum",
-    "websocket-started": "Websocket %s'de başlatıldı"
+    "websocket-started": "Websocket %s'de başlatıldı",
+    "chatbot-cannot_accept_any_more_of_gift": "Bu hediyeden daha fazla kabul edemezsin",
+    "chatbot-halloween_event_enabled": "Cadılar Bayramı etkinliği etkinleştirildi, bir baskına başlamadan önce oyunu yeniden başlatın",
+    "chatbot-added_stash_rows_please_restart": "Zulaya 2 sıra eklendi, görmek için lütfen oyununuzu yeniden başlatın",
+    "chatbot-snow_enabled": "Kar, sunucu yeniden başlatılana kadar sonraki tüm baskınlar için etkinleştirilir"
 }
