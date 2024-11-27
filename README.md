@@ -88,7 +88,7 @@ We're really excited that you're interested in contributing! Before submitting y
 ### Branches
 
 - **master**  
-  The default branch used for the latest stable release. This branch is protected and typically is only merges with release branches.
+  The default branch used for the latest stable release. This branch is protected and typically is only merged with release branches.
 - **3.10.X-DEV**
   Development for the next hotfix release. Hotfix releases include bug fixes and minor features that do not affect the coding structure of the project. Special care is taken to not break server mod stability. These always target the same version of EFT as the last minor release.
 - **3.11.0-DEV**
