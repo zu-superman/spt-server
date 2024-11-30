@@ -280,26 +280,30 @@ export class ProfileFixerService {
         const quests = this.databaseService.getQuests();
         const profileQuests = pmcProfile.Quests;
 
-        for (const profileQuest of profileQuests)
-        {
+        for (const profileQuest of profileQuests) {
             const quest = quests[profileQuest.qid];
+            if (!quest) {
+                continue;
+            }
 
             // For started or successful quests, check for unlocks in the `Started` rewards
-            if (profileQuest.status == QuestStatus.Started || profileQuest.status == QuestStatus.Success)
-            {
-                const productionRewards = quest.rewards.Started?.filter(reward => reward.type == QuestRewardType.PRODUCTIONS_SCHEME);
-                productionRewards?.forEach(reward => this.verifyQuestProductionUnlock(pmcProfile, reward, quest));
+            if (profileQuest.status == QuestStatus.Started || profileQuest.status == QuestStatus.Success) {
+                const productionRewards = quest.rewards.Started?.filter(
+                    (reward) => reward.type == QuestRewardType.PRODUCTIONS_SCHEME,
+                );
+                productionRewards?.forEach((reward) => this.verifyQuestProductionUnlock(pmcProfile, reward, quest));
             }
 
             // For successful quests, check for unlocks in the `Success` rewards
-            if (profileQuest.status == QuestStatus.Success)
-            {
-                const productionRewards = quest.rewards.Success?.filter(reward => reward.type == QuestRewardType.PRODUCTIONS_SCHEME);
-                productionRewards?.forEach(reward => this.verifyQuestProductionUnlock(pmcProfile, reward, quest));
+            if (profileQuest.status == QuestStatus.Success) {
+                const productionRewards = quest.rewards.Success?.filter(
+                    (reward) => reward.type == QuestRewardType.PRODUCTIONS_SCHEME,
+                );
+                productionRewards?.forEach((reward) => this.verifyQuestProductionUnlock(pmcProfile, reward, quest));
             }
         }
 
-        const validateTime = performance.now() - start
+        const validateTime = performance.now() - start;
         this.logger.debug(`Quest Production Unlock validation took: ${validateTime.toFixed(2)}ms`);
     }
 
@@ -308,12 +312,12 @@ export class ProfileFixerService {
      * @param pmcProfile Profile to check
      * @param productionUnlockReward The quest reward to validate
      * @param questDetails The quest the reward belongs to
-     * @returns 
+     * @returns
      */
     protected verifyQuestProductionUnlock(
         pmcProfile: IPmcData,
         productionUnlockReward: IQuestReward,
-        questDetails: IQuest
+        questDetails: IQuest,
     ): void {
         const matchingProductions = this.questHelper.getRewardProductionMatch(productionUnlockReward, questDetails);
         if (matchingProductions.length !== 1) {
@@ -329,10 +333,11 @@ export class ProfileFixerService {
 
         // Add above match to pmc profile
         const matchingProductionId = matchingProductions[0]._id;
-        if (!pmcProfile.UnlockedInfo.unlockedProductionRecipe.includes(matchingProductionId))
-        {
+        if (!pmcProfile.UnlockedInfo.unlockedProductionRecipe.includes(matchingProductionId)) {
             pmcProfile.UnlockedInfo.unlockedProductionRecipe.push(matchingProductionId);
-            this.logger.debug(`Added production ${matchingProductionId} to unlocked production recipes for ${questDetails.QuestName}`);
+            this.logger.debug(
+                `Added production ${matchingProductionId} to unlocked production recipes for ${questDetails.QuestName}`,
+            );
         }
     }
 
