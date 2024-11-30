@@ -64,6 +64,9 @@ export class SeasonalEventService {
             ItemTpl.HEADWEAR_DED_MOROZ_HAT,
             ItemTpl.HEADWEAR_SANTA_HAT,
             ItemTpl.BACKPACK_SANTAS_BAG,
+            ItemTpl.RANDOMLOOTCONTAINER_NEW_YEAR_GIFT_BIG,
+            ItemTpl.RANDOMLOOTCONTAINER_NEW_YEAR_GIFT_MEDIUM,
+            ItemTpl.RANDOMLOOTCONTAINER_NEW_YEAR_GIFT_SMALL,
         ];
     }
 
