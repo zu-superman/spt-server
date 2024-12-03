@@ -59,11 +59,6 @@ export class TraderAssortHelper {
      * @returns a traders' assorts
      */
     public getAssort(sessionId: string, traderId: string, flea = false): ITraderAssort {
-        // Special case for getting ragfair items as they're dynamically generated
-        if (traderId === "ragfair") {
-            return this.getRagfairDataAsTraderAssort();
-        }
-
         const traderClone = this.cloner.clone(this.databaseService.getTrader(traderId));
         const fullProfile = this.profileHelper.getFullProfile(sessionId);
         const pmcProfile = fullProfile.characters.pmc;
@@ -248,18 +243,5 @@ export class TraderAssortHelper {
      */
     protected getPristineTraderAssorts(traderId: string): IItem[] {
         return this.cloner.clone(this.traderAssortService.getPristineTraderAssort(traderId).items);
-    }
-
-    /**
-     * Returns generated ragfair offers in a trader assort format
-     * @returns Trader assort object
-     */
-    protected getRagfairDataAsTraderAssort(): ITraderAssort {
-        return {
-            items: this.ragfairAssortGenerator.getAssortItems().flat(),
-            barter_scheme: {},
-            loyal_level_items: {},
-            nextResupply: undefined,
-        };
     }
 }

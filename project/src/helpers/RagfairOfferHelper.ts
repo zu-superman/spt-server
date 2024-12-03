@@ -711,7 +711,7 @@ export class RagfairOfferHelper {
      * Should a ragfair offer be visible to the player
      * @param searchRequest Search request
      * @param itemsToAdd ?
-     * @param traderAssorts Trader assort items
+     * @param traderAssorts Trader assort items - used for filtering out locked trader items
      * @param offer The flea offer
      * @param pmcProfile Player profile
      * @returns True = should be shown to player
