@@ -173,7 +173,7 @@ export class RagfairOfferGenerator {
      * @param isTrader Is the user creating the offer a trader
      * @returns IRagfairOfferUser
      */
-    createUserDataForFleaOffer(userID: string, isTrader: boolean): IRagfairOfferUser {
+    protected createUserDataForFleaOffer(userID: string, isTrader: boolean): IRagfairOfferUser {
         // Trader offer
         if (isTrader) {
             return {
