@@ -122,11 +122,6 @@ export class TraderAssortHelper {
             this.removeItemsFromAssort(traderClone.assort, fullProfile.spt.blacklistedItemTpls);
         }
 
-        // Multiply price if multiplier is other than 1
-        if (this.traderConfig.traderPriceMultipler !== 1) {
-            this.multiplyItemPricesByConfigMultiplier(traderClone.assort);
-        }
-
         return traderClone.assort;
     }
 
@@ -216,24 +211,6 @@ export class TraderAssortHelper {
         const trader = this.databaseService.getTables().traders[traderID];
 
         return trader.base.nextResupply <= time;
-    }
-
-    /**
-     * Iterate over all assorts barter_scheme values, find barters selling for money and multiply by multipler in config
-     * @param traderAssort Assorts to multiple price of
-     */
-    protected multiplyItemPricesByConfigMultiplier(traderAssort: ITraderAssort): void {
-        if (!this.traderConfig.traderPriceMultipler || this.traderConfig.traderPriceMultipler <= 0) {
-            this.traderConfig.traderPriceMultipler = 0.01;
-            this.logger.warning(this.localisationService.getText("trader-price_multipler_is_zero_use_default"));
-        }
-
-        for (const assortId in traderAssort.barter_scheme) {
-            const schemeDetails = traderAssort.barter_scheme[assortId][0];
-            if (schemeDetails.length === 1 && this.paymentHelper.isMoneyTpl(schemeDetails[0]._tpl)) {
-                schemeDetails[0].count = Math.ceil(schemeDetails[0].count * this.traderConfig.traderPriceMultipler);
-            }
-        }
     }
 
     /**
