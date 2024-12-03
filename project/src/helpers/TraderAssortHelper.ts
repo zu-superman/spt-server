@@ -55,10 +55,10 @@ export class TraderAssortHelper {
      * Filter out assorts not unlocked due to level OR quest completion
      * @param sessionId session id
      * @param traderId traders id
-     * @param flea Should assorts player hasn't unlocked be returned - default false
+     * @param showLockedAssorts Should assorts player hasn't unlocked be returned - default false
      * @returns a traders' assorts
      */
-    public getAssort(sessionId: string, traderId: string, flea = false): ITraderAssort {
+    public getAssort(sessionId: string, traderId: string, showLockedAssorts = false): ITraderAssort {
         const traderClone = this.cloner.clone(this.databaseService.getTrader(traderId));
         const fullProfile = this.profileHelper.getFullProfile(sessionId);
         const pmcProfile = fullProfile.characters.pmc;
@@ -68,7 +68,7 @@ export class TraderAssortHelper {
         }
 
         // Strip assorts player should not see yet
-        if (!flea) {
+        if (!showLockedAssorts) {
             traderClone.assort = this.assortHelper.stripLockedLoyaltyAssort(pmcProfile, traderId, traderClone.assort);
         }
 
@@ -114,7 +114,7 @@ export class TraderAssortHelper {
             traderId,
             traderClone.assort,
             this.mergedQuestAssorts,
-            flea,
+            showLockedAssorts,
         );
 
         // Filter out root assorts that are blacklisted for this profile
