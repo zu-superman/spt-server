@@ -358,9 +358,16 @@ export class QuestHelper {
      * @returns array of items with the correct maxStack
      */
     public getQuestRewardItems(quest: IQuest, status: QuestStatus, gameVersion: string): IItem[] {
+        if (!quest.rewards[QuestStatus[status]]) {
+            this.logger.warning(`Unable to find: ${status} reward for quest: ${quest.QuestName}`);
+            return [];
+        }
+
         // Iterate over all rewards with the desired status, flatten out items that have a type of Item
         const questRewards = quest.rewards[QuestStatus[status]].flatMap((reward: IQuestReward) =>
-            reward.type === "Item" && this.questRewardIsForGameEdition(reward, gameVersion) ? this.processReward(reward) : [],
+            reward.type === "Item" && this.questRewardIsForGameEdition(reward, gameVersion)
+                ? this.processReward(reward)
+                : [],
         );
 
         return questRewards;
