@@ -1061,15 +1061,12 @@ export class QuestHelper {
     }
 
     /**
-     * Find hideout craft id for the specified quest reward
-     * @param craftUnlockReward 
-     * @param questDetails 
-     * @returns 
+     * Find hideout craft for the specified quest reward
+     * @param craftUnlockReward Reward item from quest with craft unlock details
+     * @param questDetails Quest with craft unlock reward
+     * @returns Hideout craft
      */
-    public getRewardProductionMatch(
-        craftUnlockReward: IQuestReward,
-        questDetails: IQuest,
-    ): IHideoutProduction[] {
+    public getRewardProductionMatch(craftUnlockReward: IQuestReward, questDetails: IQuest): IHideoutProduction[] {
         // Get hideout crafts and find those that match by areatype/required level/end product tpl - hope for just one match
         const craftingRecipes = this.databaseService.getHideout().production.recipes;
 
@@ -1425,20 +1422,18 @@ export class QuestHelper {
     /**
      * Create a clone of the given quest array with the rewards updated to reflect the
      * given game version
-     * 
-     * @param quests The list of quests to check
-     * @param gameVersion The game version of the profile
-     * @returns array of IQuest objects with the rewards filtered correctly for the game version
+     * @param quests List of quests to check
+     * @param gameVersion Game version of the profile
+     * @returns Array of IQuest objects with the rewards filtered correctly for the game version
      */
-    protected updateQuestsForGameEdition(quests: IQuest[], gameVersion: string)
-    {
+    protected updateQuestsForGameEdition(quests: IQuest[], gameVersion: string): IQuest[] {
         const modifiedQuests = this.cloner.clone(quests);
-        for (const quest of modifiedQuests)
-        {
+        for (const quest of modifiedQuests) {
             // Remove any reward that doesn't pass the game edition check
-            for (const rewardType of Object.keys(quest.rewards))
-            {
-                quest.rewards[rewardType] = quest.rewards[rewardType].filter(reward => this.questRewardIsForGameEdition(reward, gameVersion));
+            for (const rewardType of Object.keys(quest.rewards)) {
+                quest.rewards[rewardType] = quest.rewards[rewardType].filter((reward) =>
+                    this.questRewardIsForGameEdition(reward, gameVersion),
+                );
             }
         }
 
@@ -1447,8 +1442,8 @@ export class QuestHelper {
 
     /**
      * Return a list of quests that would fail when supplied quest is completed
-     * @param completedQuestId quest completed id
-     * @returns array of IQuest objects
+     * @param completedQuestId Quest completed id
+     * @returns Array of IQuest objects
      */
     protected getQuestsFromProfileFailedByCompletingQuest(completedQuestId: string, pmcProfile: IPmcData): IQuest[] {
         const questsInDb = this.getQuestsFromDb();
