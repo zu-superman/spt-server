@@ -49,7 +49,7 @@ describe("BotGenerator", () => {
     //     });
     // });
 
-    describe("generateBotNickname", () => {
+    describe("generateUniqueBotNickname", () => {
         it("should choose random firstname for non player scav assault bot", () => {
             const botJsonTemplate = { firstName: ["one", "two"], lastName: [] };
             const botGenerationDetails = { isPlayerScav: false, isPmc: true, allPmcsHaveSameNameAsPlayer: false };
@@ -60,7 +60,7 @@ describe("BotGenerator", () => {
             const mockPlayerProfile = { Info: { Nickname: "Player Nickname", Level: 1 } };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
 
-            const result = botGenerator.generateBotNickname(botJsonTemplate, botGenerationDetails, botRole);
+            const result = botGenerator.generateUniqueBotNickname(botJsonTemplate, botGenerationDetails, botRole);
 
             expect(result).toMatch(/(one|two)/);
         });
@@ -75,7 +75,7 @@ describe("BotGenerator", () => {
             const mockPlayerProfile = { Info: { Nickname: "Player Nickname", Level: 1 } };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
 
-            const result = botGenerator.generateBotNickname(botJsonTemplate, botGenerationDetails, botRole);
+            const result = botGenerator.generateUniqueBotNickname(botJsonTemplate, botGenerationDetails, botRole);
 
             expect(result).toMatch(/(one|two)/);
         });
@@ -90,7 +90,7 @@ describe("BotGenerator", () => {
             const mockPlayerProfile = { Info: { Nickname: "Player Nickname", Level: 1 } };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
 
-            const result = botGenerator.generateBotNickname(botJsonTemplate, botGenerationDetails, botRole);
+            const result = botGenerator.generateUniqueBotNickname(botJsonTemplate, botGenerationDetails, botRole);
 
             expect(result).toMatch(/first-(one|two) last-(one|two)/);
         });
@@ -105,7 +105,7 @@ describe("BotGenerator", () => {
             const mockPlayerProfile = { Info: { Nickname: "Player Nickname", Level: 1 } };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
 
-            const result = botGenerator.generateBotNickname(botJsonTemplate, botGenerationDetails, botRole);
+            const result = botGenerator.generateUniqueBotNickname(botJsonTemplate, botGenerationDetails, botRole);
 
             expect(result).toMatch(/(one|two)/);
         });
@@ -120,7 +120,7 @@ describe("BotGenerator", () => {
             const mockPlayerProfile = { Info: { Nickname: "Player Nickname", Level: 1 } };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
 
-            const result = botGenerator.generateBotNickname(botJsonTemplate, botGenerationDetails, botRole);
+            const result = botGenerator.generateUniqueBotNickname(botJsonTemplate, botGenerationDetails, botRole);
 
             expect(result).toMatch(/(one|two)/);
         });
@@ -135,7 +135,7 @@ describe("BotGenerator", () => {
             const mockPlayerProfile = { Info: { Nickname: "Player Nickname", Level: 1 } };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
 
-            const result = botGenerator.generateBotNickname(botJsonTemplate, botGenerationDetails, botRole);
+            const result = botGenerator.generateUniqueBotNickname(botJsonTemplate, botGenerationDetails, botRole);
 
             expect(result).toMatch(/first-(one|two) last-(one|two)/);
         });
@@ -151,7 +151,7 @@ describe("BotGenerator", () => {
             const mockPlayerProfile = { Info: { Nickname: "Player Nickname", Level: 1 } };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
 
-            const result = botGenerator.generateBotNickname(botJsonTemplate, botGenerationDetails, botRole);
+            const result = botGenerator.generateUniqueBotNickname(botJsonTemplate, botGenerationDetails, botRole);
 
             expect(result).toBe("firstname lastname assault");
         });
@@ -171,7 +171,7 @@ describe("BotGenerator", () => {
                 .spyOn((botGenerator as any).localisationService, "getRandomTextThatMatchesPartialKey")
                 .mockReturnValue("test");
 
-            const result = botGenerator.generateBotNickname(botJsonTemplate, botGenerationDetails, botRole);
+            const result = botGenerator.generateUniqueBotNickname(botJsonTemplate, botGenerationDetails, botRole);
 
             expect(getRandomTextThatMatchesPartialKeySpy).toHaveBeenCalled();
             expect(result).toBe("test player");
@@ -189,7 +189,7 @@ describe("BotGenerator", () => {
             const mockPlayerProfile = { Info: { Nickname: "Player", Level: 1 } };
             vi.spyOn(botGenerator.profileHelper, "getPmcProfile").mockReturnValue(<IPmcData>mockPlayerProfile);
 
-            const result = botGenerator.generateBotNickname(botJsonTemplate, botGenerationDetails, botRole);
+            const result = botGenerator.generateUniqueBotNickname(botJsonTemplate, botGenerationDetails, botRole);
             expect(result).toBe("scav (player)");
         });
     });
