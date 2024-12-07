@@ -664,11 +664,17 @@ export class CircleOfCultistService {
         return Array.from(rewardPool);
     }
 
+    /**
+     * Check players profile for quests with hand-in requirements and add those required items to the pool
+     * @param pmcData Player profile
+     * @param itemRewardBlacklist Items not to add to pool
+     * @param rewardPool Pool to add items to
+     */
     protected addTaskItemRequirementsToRewardPool(
         pmcData: IPmcData,
         itemRewardBlacklist: string[],
         rewardPool: Set<string>,
-    ) {
+    ): void {
         const activeTasks = pmcData.Quests.filter((quest) => quest.status === QuestStatus.Started);
         for (const task of activeTasks) {
             const questData = this.questHelper.getQuestFromDb(task.qid, pmcData);
@@ -687,12 +693,19 @@ export class CircleOfCultistService {
         }
     }
 
+    /**
+     * Adds items the player needs to complete hideout crafts/upgrades to the reward pool
+     * @param hideoutDbData Hideout area data
+     * @param pmcData Player profile
+     * @param itemRewardBlacklist Items not to add to pool
+     * @param rewardPool Pool to add items to
+     */
     protected addHideoutUpgradeRequirementsToRewardPool(
         hideoutDbData: IHideout,
         pmcData: IPmcData,
         itemRewardBlacklist: string[],
         rewardPool: Set<string>,
-    ) {
+    ): void {
         const dbAreas = hideoutDbData.areas;
         for (const profileArea of this.getPlayerAccessibleHideoutAreas(pmcData.Hideout.Areas)) {
             const currentStageLevel = profileArea.level;
