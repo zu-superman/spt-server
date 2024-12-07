@@ -157,7 +157,7 @@ export class CircleOfCultistService {
             }
         } else {
             this.logger.error(
-                `Unable to fit all: ${rewards.length} reward items into sacrifice grid, nothing will be returned`,
+                `Unable to fit all: ${rewards.length} reward items into sacrifice grid, nothing will be returned (rewards so valuable cultists stole it)`,
             );
         }
 
