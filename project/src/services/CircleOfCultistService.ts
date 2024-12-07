@@ -24,6 +24,7 @@ import {
     IDirectRewardSettings,
     IHideoutConfig,
 } from "@spt/models/spt/config/IHideoutConfig";
+import { IHideout } from "@spt/models/spt/hideout/IHideout";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -636,50 +637,10 @@ export class CircleOfCultistService {
             case CircleRewardType.HIDEOUT_TASK: {
                 // Hideout/Task loot
                 // Add hideout upgrade requirements
-                const dbAreas = hideoutDbData.areas;
-                for (const profileArea of this.getPlayerAccessibleHideoutAreas(pmcData.Hideout.Areas)) {
-                    const currentStageLevel = profileArea.level;
-                    const areaType = profileArea.type;
-
-                    // Get next stage of area
-                    const dbArea = dbAreas.find((area) => area.type === areaType);
-                    const nextStageDbData = dbArea?.stages[currentStageLevel + 1];
-                    if (nextStageDbData) {
-                        // Next stage exists, gather up requirements and add to pool
-                        const itemRequirements = this.getItemRequirements(nextStageDbData.requirements);
-                        for (const rewardToAdd of itemRequirements) {
-                            if (
-                                itemRewardBlacklist.includes(rewardToAdd.templateId) ||
-                                !this.itemHelper.isValidItem(rewardToAdd.templateId)
-                            ) {
-                                // Dont reward items sacrificed
-                                continue;
-                            }
-                            this.logger.debug(
-                                `Added Hideout Loot: ${this.itemHelper.getItemName(rewardToAdd.templateId)}`,
-                            );
-                            rewardPool.add(rewardToAdd.templateId);
-                        }
-                    }
-                }
+                this.addHideoutUpgradeRequirementsToRewardPool(hideoutDbData, pmcData, itemRewardBlacklist, rewardPool);
 
                 // Add task/quest items
-                const activeTasks = pmcData.Quests.filter((quest) => quest.status === QuestStatus.Started);
-                for (const task of activeTasks) {
-                    const questData = this.questHelper.getQuestFromDb(task.qid, pmcData);
-                    const handoverConditions = questData.conditions.AvailableForFinish.filter(
-                        (c) => c.conditionType === "HandoverItem",
-                    );
-                    for (const condition of handoverConditions) {
-                        for (const neededItem of condition.target) {
-                            if (itemRewardBlacklist.includes(neededItem) || !this.itemHelper.isValidItem(neededItem)) {
-                                continue;
-                            }
-                            this.logger.debug(`Added Task Loot: ${this.itemHelper.getItemName(neededItem)}`);
-                            rewardPool.add(neededItem);
-                        }
-                    }
-                }
+                this.addTaskItemRequirementsToRewardPool(pmcData, itemRewardBlacklist, rewardPool);
 
                 // If we have no tasks or hideout stuff left or need more loot to fill it out, default to high value
                 if (rewardPool.size < cultistCircleConfig.maxRewardItemCount + 2) {
@@ -702,6 +663,61 @@ export class CircleOfCultistService {
         }
 
         return Array.from(rewardPool);
+    }
+
+    protected addTaskItemRequirementsToRewardPool(
+        pmcData: IPmcData,
+        itemRewardBlacklist: string[],
+        rewardPool: Set<string>,
+    ) {
+        const activeTasks = pmcData.Quests.filter((quest) => quest.status === QuestStatus.Started);
+        for (const task of activeTasks) {
+            const questData = this.questHelper.getQuestFromDb(task.qid, pmcData);
+            const handoverConditions = questData.conditions.AvailableForFinish.filter(
+                (condition) => condition.conditionType === "HandoverItem",
+            );
+            for (const condition of handoverConditions) {
+                for (const neededItem of condition.target) {
+                    if (itemRewardBlacklist.includes(neededItem) || !this.itemHelper.isValidItem(neededItem)) {
+                        continue;
+                    }
+                    this.logger.debug(`Added Task Loot: ${this.itemHelper.getItemName(neededItem)}`);
+                    rewardPool.add(neededItem);
+                }
+            }
+        }
+    }
+
+    protected addHideoutUpgradeRequirementsToRewardPool(
+        hideoutDbData: IHideout,
+        pmcData: IPmcData,
+        itemRewardBlacklist: string[],
+        rewardPool: Set<string>,
+    ) {
+        const dbAreas = hideoutDbData.areas;
+        for (const profileArea of this.getPlayerAccessibleHideoutAreas(pmcData.Hideout.Areas)) {
+            const currentStageLevel = profileArea.level;
+            const areaType = profileArea.type;
+
+            // Get next stage of area
+            const dbArea = dbAreas.find((area) => area.type === areaType);
+            const nextStageDbData = dbArea?.stages[currentStageLevel + 1];
+            if (nextStageDbData) {
+                // Next stage exists, gather up requirements and add to pool
+                const itemRequirements = this.getItemRequirements(nextStageDbData.requirements);
+                for (const rewardToAdd of itemRequirements) {
+                    if (
+                        itemRewardBlacklist.includes(rewardToAdd.templateId) ||
+                        !this.itemHelper.isValidItem(rewardToAdd.templateId)
+                    ) {
+                        // Dont reward items sacrificed
+                        continue;
+                    }
+                    this.logger.debug(`Added Hideout Loot: ${this.itemHelper.getItemName(rewardToAdd.templateId)}`);
+                    rewardPool.add(rewardToAdd.templateId);
+                }
+            }
+        }
     }
 
     /**
