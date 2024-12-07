@@ -49,7 +49,7 @@
             {"reward": ["5fc64ea372b0dd78d51159dc"], "requiredItems": ["635267ab3c89e2112001f826", "635267ab3c89e2112001f826",
                 "635267ab3c89e2112001f826", "635267ab3c89e2112001f826", "635267ab3c89e2112001f826"], "craftTimeSeconds": 3960,
                 "repeatable": false },
-            {"reward": ["5c0e874186f7745dc7616606", "5c0e842486f77443a74d2976"], "requiredItems": ["66572c82ad599021091c6118"],
+            {"reward": ["5c0e874186f7745dc7616606"], "requiredItems": ["66572c82ad599021091c6118"],
                 "craftTimeSeconds": 3960, "repeatable": false },
             {"reward": ["60a7ad3a0c5cb24b0134664a", "60a7ad2a2198820d95707a2e"], "requiredItems": ["66572cbdad599021091c611a"],
                 "craftTimeSeconds": 3960, "repeatable": false },
