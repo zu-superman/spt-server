@@ -86,7 +86,9 @@
         "rewardItemBlacklist": [
 			"5696686a4bdc2da3298b456a",
 			"5449016a4bdc2d6f028b456f",
-			"569668774bdc2da2298b4568"
+			"569668774bdc2da2298b4568",
+			"5485a8684bdc2da71d8b4567",
+			"543be5dd4bdc2deb348b4569"
 		],
         "additionalRewardItemPool": [],
         "currencyRewards": {
