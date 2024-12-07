@@ -507,7 +507,7 @@ export class CircleOfCultistService {
 
         const fullProfile = this.profileHelper.getFullProfile(sessionId);
         const directRewardHash = this.getDirectRewardHashKey(matchingDirectReward);
-        if (fullProfile.spt.cultistRewards?.has(directRewardHash)) {
+        if (fullProfile.spt.cultistRewards?.[directRewardHash]) {
             // Player has already received this direct reward
             return null;
         }
@@ -562,7 +562,7 @@ export class CircleOfCultistService {
             rewardItems: directReward.reward,
         };
 
-        fullProfile.spt.cultistRewards.set(this.getDirectRewardHashKey(directReward), dataToStoreInProfile);
+        fullProfile.spt.cultistRewards[this.getDirectRewardHashKey(directReward)] = dataToStoreInProfile;
     }
 
     /**
