@@ -627,23 +627,23 @@ export class CircleOfCultistService {
         // Hideout and task rewards are ONLY if the bonus is active
         switch (craftingInfo.rewardType) {
             case CircleRewardType.RANDOM: {
-                // Just random items so we'll add maxRewardItemCount * 2 amount of random things
-
                 // Does reward pass the high value threshold
                 const isHighValueReward = craftingInfo.rewardAmountRoubles >= cultistCircleConfig.highValueThresholdRub;
                 this.getRandomLoot(rewardPool, itemRewardBlacklist, isHighValueReward);
+
                 break;
             }
             case CircleRewardType.HIDEOUT_TASK: {
                 // Hideout/Task loot
                 // Add hideout upgrade requirements
                 const dbAreas = hideoutDbData.areas;
-                for (const area of this.getPlayerAccessibleHideoutAreas(pmcData.Hideout.Areas)) {
-                    const currentStageLevel = area.level;
-                    const areaType = area.type;
+                for (const profileArea of this.getPlayerAccessibleHideoutAreas(pmcData.Hideout.Areas)) {
+                    const currentStageLevel = profileArea.level;
+                    const areaType = profileArea.type;
+
                     // Get next stage of area
                     const dbArea = dbAreas.find((area) => area.type === areaType);
-                    const nextStageDbData = dbArea.stages[currentStageLevel + 1];
+                    const nextStageDbData = dbArea?.stages[currentStageLevel + 1];
                     if (nextStageDbData) {
                         // Next stage exists, gather up requirements and add to pool
                         const itemRequirements = this.getItemRequirements(nextStageDbData.requirements);
@@ -652,6 +652,7 @@ export class CircleOfCultistService {
                                 itemRewardBlacklist.includes(rewardToAdd.templateId) ||
                                 !this.itemHelper.isValidItem(rewardToAdd.templateId)
                             ) {
+                                // Dont reward items sacrificed
                                 continue;
                             }
                             this.logger.debug(
