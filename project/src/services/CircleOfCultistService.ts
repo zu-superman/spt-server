@@ -437,11 +437,34 @@ export class CircleOfCultistService {
         }
 
         // Loop because these can include multiple rewards
-        for (const reward of directReward.reward) {
-            const stackSize = this.getDirectRewardBaseTypeStackSize(reward);
+        for (const rewardTpl of directReward.reward) {
+            // Is weapon/armor, handle differently
+            if (
+                this.itemHelper.armorItemHasRemovableOrSoftInsertSlots(rewardTpl) ||
+                this.itemHelper.isOfBaseclass(rewardTpl, BaseClasses.WEAPON)
+            ) {
+                const defaultPreset = this.presetHelper.getDefaultPreset(rewardTpl);
+                if (!defaultPreset) {
+                    this.logger.warning(`Reward tpl: ${rewardTpl} lacks a default preset, skipping reward`);
+
+                    continue;
+                }
+
+                // Ensure preset has unique ids and is cloned so we don't alter the preset data stored in memory
+                const presetAndMods: IItem[] = this.itemHelper.replaceIDs(defaultPreset._items);
+
+                this.itemHelper.remapRootItemId(presetAndMods);
+
+                rewards.push(presetAndMods);
+
+                continue;
+            }
+
+            // 'Normal' item, non-preset
+            const stackSize = this.getDirectRewardBaseTypeStackSize(rewardTpl);
             const rewardItem: IItem = {
                 _id: this.hashUtil.generate(),
-                _tpl: reward,
+                _tpl: rewardTpl,
                 parentId: cultistCircleStashId,
                 slotId: CircleOfCultistService.circleOfCultistSlotId,
                 upd: {
