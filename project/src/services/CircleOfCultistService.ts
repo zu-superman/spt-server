@@ -782,7 +782,6 @@ export class CircleOfCultistService {
             if (itemsShouldBeHighValue) {
                 const itemValue = this.itemHelper.getItemMaxPrice(randomItem._id);
                 if (itemValue < this.hideoutConfig.cultistCircle.highValueThresholdRub) {
-                    this.logger.debug(`Ignored due to value: ${this.itemHelper.getItemName(randomItem._id)}`);
                     continue;
                 }
             }
