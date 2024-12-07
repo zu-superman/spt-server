@@ -446,7 +446,6 @@ export class SeasonalEventService {
 
     public givePlayerSeasonalGifts(sessionId: string): void {
         if (this.currentlyActiveEvents) {
-            const globalConfig = this.databaseService.getGlobals().config;
             for (const event of this.currentlyActiveEvents) {
                 switch (event.type.toLowerCase()) {
                     case SeasonalEventType.CHRISTMAS.toLowerCase():
