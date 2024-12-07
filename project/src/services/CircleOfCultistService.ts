@@ -630,7 +630,7 @@ export class CircleOfCultistService {
             case CircleRewardType.RANDOM: {
                 // Does reward pass the high value threshold
                 const isHighValueReward = craftingInfo.rewardAmountRoubles >= cultistCircleConfig.highValueThresholdRub;
-                this.getRandomLoot(rewardPool, itemRewardBlacklist, isHighValueReward);
+                this.generateRandomisedItemsAndAddToRewardPool(rewardPool, itemRewardBlacklist, isHighValueReward);
 
                 break;
             }
@@ -641,7 +641,7 @@ export class CircleOfCultistService {
 
                 // If we have no tasks or hideout stuff left or need more loot to fill it out, default to high value
                 if (rewardPool.size < cultistCircleConfig.maxRewardItemCount + 2) {
-                    this.getRandomLoot(rewardPool, itemRewardBlacklist, true);
+                    this.generateRandomisedItemsAndAddToRewardPool(rewardPool, itemRewardBlacklist, true);
                 }
                 break;
             }
@@ -737,10 +737,14 @@ export class CircleOfCultistService {
      * Get array of random reward items
      * @param rewardPool Reward pool to add to
      * @param itemRewardBlacklist Reward Blacklist
-     * @param valuable Should these items meet the valuable threshold
+     * @param itemsShouldBeHighValue Should these items meet the valuable threshold
      * @returns rewardPool
      */
-    protected getRandomLoot(rewardPool: Set<string>, itemRewardBlacklist: string[], valuable: boolean): Set<string> {
+    protected generateRandomisedItemsAndAddToRewardPool(
+        rewardPool: Set<string>,
+        itemRewardBlacklist: string[],
+        itemsShouldBeHighValue: boolean,
+    ): Set<string> {
         const allItems = this.itemHelper.getItems();
         let currentItemCount = 0;
         let attempts = 0;
@@ -753,15 +757,14 @@ export class CircleOfCultistService {
             const randomItem = this.randomUtil.getArrayValue(allItems);
             if (
                 itemRewardBlacklist.includes(randomItem._id) ||
-                BaseClasses.AMMO === randomItem._parent ||
-                BaseClasses.MONEY === randomItem._parent ||
+                itemRewardBlacklist.includes(randomItem._parent) ||
                 !this.itemHelper.isValidItem(randomItem._id)
             ) {
                 continue;
             }
 
             // Valuable check
-            if (valuable) {
+            if (itemsShouldBeHighValue) {
                 const itemValue = this.itemHelper.getItemMaxPrice(randomItem._id);
                 if (itemValue < this.hideoutConfig.cultistCircle.highValueThresholdRub) {
                     this.logger.debug(`Ignored due to value: ${this.itemHelper.getItemName(randomItem._id)}`);
@@ -772,6 +775,7 @@ export class CircleOfCultistService {
             rewardPool.add(randomItem._id);
             currentItemCount++;
         }
+
         return rewardPool;
     }
 
