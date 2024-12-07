@@ -636,10 +636,7 @@ export class CircleOfCultistService {
             }
             case CircleRewardType.HIDEOUT_TASK: {
                 // Hideout/Task loot
-                // Add hideout upgrade requirements
                 this.addHideoutUpgradeRequirementsToRewardPool(hideoutDbData, pmcData, itemRewardBlacklist, rewardPool);
-
-                // Add task/quest items
                 this.addTaskItemRequirementsToRewardPool(pmcData, itemRewardBlacklist, rewardPool);
 
                 // If we have no tasks or hideout stuff left or need more loot to fill it out, default to high value
