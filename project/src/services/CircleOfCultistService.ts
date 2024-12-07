@@ -18,12 +18,14 @@ import { HideoutAreas } from "@spt/models/enums/HideoutAreas";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { QuestStatus } from "@spt/models/enums/QuestStatus";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
+import { CircleRewardType } from "@spt/models/enums/hideout/CircleRewardType";
 import {
     ICraftTimeThreshhold,
     ICultistCircleSettings,
     IDirectRewardSettings,
     IHideoutConfig,
 } from "@spt/models/spt/config/IHideoutConfig";
+import { ICircleCraftDetails } from "@spt/models/spt/hideout/ICircleCraftDetails";
 import { IHideout } from "@spt/models/spt/hideout/IHideout";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
@@ -239,7 +241,7 @@ export class CircleOfCultistService {
         rewardAmountRoubles: number,
         circleConfig: ICultistCircleSettings,
         directRewardSettings?: IDirectRewardSettings,
-    ): ICraftDetails {
+    ): ICircleCraftDetails {
         const result = {
             time: -1,
             rewardType: CircleRewardType.RANDOM,
@@ -612,7 +614,7 @@ export class CircleOfCultistService {
     protected getCultistCircleRewardPool(
         sessionId: string,
         pmcData: IPmcData,
-        craftingInfo: ICraftDetails,
+        craftingInfo: ICircleCraftDetails,
         cultistCircleConfig: ICultistCircleSettings,
     ): string[] {
         const rewardPool = new Set<string>();
@@ -787,16 +789,4 @@ export class CircleOfCultistService {
     protected getItemRequirements(requirements: IRequirementBase[]): (IStageRequirement | IRequirement)[] {
         return requirements.filter((requirement) => requirement.type === "Item");
     }
-}
-
-export enum CircleRewardType {
-    RANDOM = 0,
-    HIDEOUT_TASK = 1,
-}
-
-export interface ICraftDetails {
-    time: number;
-    rewardType: CircleRewardType;
-    rewardAmountRoubles: number;
-    rewardDetails?: ICraftTimeThreshhold;
 }
