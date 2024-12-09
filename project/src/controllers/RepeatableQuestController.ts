@@ -571,10 +571,6 @@ export class RepeatableQuestController {
 
         // Clone data before we send it to client
         const repeatableToChangeClone = this.cloner.clone(repeatablesInProfile);
-
-        // Purge inactive repeatables
-        repeatableToChangeClone.inactiveQuests = [];
-
         if (!repeatableToChangeClone) {
             // Unable to find quest being replaced
             const message = this.localisationService.getText("quest-unable_to_find_repeatable_to_replace");
@@ -582,6 +578,9 @@ export class RepeatableQuestController {
 
             return this.httpResponse.appendErrorToOutput(output, message);
         }
+
+        // Purge inactive repeatables
+        repeatableToChangeClone.inactiveQuests = [];
 
         // Nullguard
         output.profileChanges[sessionID].repeatableQuests ||= [];
