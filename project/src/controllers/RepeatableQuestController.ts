@@ -12,6 +12,7 @@ import { ELocationName } from "@spt/models/enums/ELocationName";
 import { HideoutAreas } from "@spt/models/enums/HideoutAreas";
 import { QuestStatus } from "@spt/models/enums/QuestStatus";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
+import { Traders } from "@spt/models/enums/Traders";
 import { IQuestConfig, IRepeatableQuestConfig } from "@spt/models/spt/config/IQuestConfig";
 import { IGetRepeatableByIdResult } from "@spt/models/spt/quests/IGetRepeatableByIdResult";
 import { IQuestTypePool } from "@spt/models/spt/repeatable/IQuestTypePool";
@@ -524,6 +525,14 @@ export class RepeatableQuestController {
         if (repeatableConfig?.keepDailyQuestTypeOnReplacement) {
             repeatableConfig.types = [questToReplace.type];
         }
+
+        // Prevent new repeatable using same trader (except Fence, his quests are fine) - workaround for client error
+        if (replacedQuestTraderId !== Traders.FENCE) {
+            repeatableConfig.traderWhitelist = repeatableConfig.traderWhitelist.filter(
+                (trader) => trader.traderId !== replacedQuestTraderId,
+            );
+        }
+
         // Generate meta-data for what type/levelrange of quests can be generated for player
         const allowedQuestTypes = this.generateQuestPool(repeatableConfig, pmcData.Info.Level);
         const newRepeatableQuest = this.attemptToGenerateRepeatableQuest(pmcData, allowedQuestTypes, repeatableConfig);
