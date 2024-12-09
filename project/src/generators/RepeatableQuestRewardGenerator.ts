@@ -134,14 +134,16 @@ export class RepeatableQuestRewardGenerator {
         let inBudgetRewardItemPool = this.chooseRewardItemsWithinBudget(repeatableConfig, itemRewardBudget, traderId);
         if (rewardTplBlacklist) {
             // Filter reward pool of items from blacklist, only use if there's at least 1 item remaining
-            const filteredRewardItemPool = inBudgetRewardItemPool.filter((x) => !rewardTplBlacklist.includes(x._id));
+            const filteredRewardItemPool = inBudgetRewardItemPool.filter(
+                (item) => !rewardTplBlacklist.includes(item._id),
+            );
             if (filteredRewardItemPool.length > 0) {
                 inBudgetRewardItemPool = filteredRewardItemPool;
             }
         }
 
         this.logger.debug(
-            `Generating daily quest for: ${traderId} with budget: ${itemRewardBudget} totalling: ${rewardParams.rewardNumItems} items`,
+            `Generating: ${repeatableConfig.name} quest for: ${traderId} with budget: ${itemRewardBudget} totalling: ${rewardParams.rewardNumItems} items`,
         );
         if (inBudgetRewardItemPool.length > 0) {
             const itemsToReward = this.getRewardableItemsFromPoolWithinBudget(
