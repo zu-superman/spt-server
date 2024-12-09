@@ -394,6 +394,11 @@ describe("RandomUtil", () => {
     });
 
     describe("randInt", () => {
+        it("should return the same value when low and high are equal", () => {
+            const result = randomUtil.randInt(5, 5);
+            expect(result).toBe(5);
+        });
+
         it("should return an integer between low and high - 1", () => {
             const low = 5;
             const high = 10;

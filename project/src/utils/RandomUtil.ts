@@ -389,14 +389,16 @@ export class RandomUtil {
      * @returns A random integer within the specified range.
      */
     public randInt(low: number, high?: number): number {
+        if (typeof high === "undefined") {
+            return crypto.randomInt(0, low);
+        }
+
+        // Return low directly when low and high are equal
         if (low === high) {
             return low;
         }
 
-        if (typeof high !== "undefined") {
-            return crypto.randomInt(low, high);
-        }
-        return crypto.randomInt(0, low);
+        return crypto.randomInt(low, high);
     }
 
     /**
