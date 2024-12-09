@@ -378,8 +378,7 @@ export class CircleOfCultistService {
                 }
 
                 // Ensure preset has unique ids and is cloned so we don't alter the preset data stored in memory
-                const presetAndMods: IItem[] = this.itemHelper.replaceIDs(defaultPreset._items);
-
+                const presetAndMods = this.itemHelper.replaceIDs(defaultPreset._items);
                 this.itemHelper.remapRootItemId(presetAndMods);
 
                 rewardItemCount++;
@@ -396,16 +395,24 @@ export class CircleOfCultistService {
             );
 
             // Not a weapon/armor, standard single item
-            const rewardItem: IItem = {
-                _id: this.hashUtil.generate(),
-                _tpl: randomItemTplFromPool,
-                parentId: cultistCircleStashId,
-                slotId: CircleOfCultistService.circleOfCultistSlotId,
-                upd: {
-                    StackObjectsCount: stackSize,
-                    SpawnedInSession: true,
+            const rewardItem: IItem[] = [
+                {
+                    _id: this.hashUtil.generate(),
+                    _tpl: randomItemTplFromPool,
+                    parentId: cultistCircleStashId,
+                    slotId: CircleOfCultistService.circleOfCultistSlotId,
+                    upd: {
+                        StackObjectsCount: stackSize,
+                        SpawnedInSession: true,
+                    },
                 },
-            };
+            ];
+
+            // Edge case - item is ammo container and needs cartridges added
+            if (this.itemHelper.isOfBaseclass(randomItemTplFromPool, BaseClasses.AMMO_BOX)) {
+                const itemDetails = this.itemHelper.getItem(randomItemTplFromPool)[1];
+                this.itemHelper.addCartridgesToAmmoBox(rewardItem, itemDetails);
+            }
 
             // Increment price of rewards to give to player + add to reward array
             rewardItemCount++;
@@ -413,7 +420,7 @@ export class CircleOfCultistService {
             const itemPrice = singleItemPrice * stackSize;
             totalRewardCost += itemPrice;
 
-            rewards.push([rewardItem]);
+            rewards.push(rewardItem);
         }
 
         return rewards;
@@ -454,8 +461,7 @@ export class CircleOfCultistService {
                 }
 
                 // Ensure preset has unique ids and is cloned so we don't alter the preset data stored in memory
-                const presetAndMods: IItem[] = this.itemHelper.replaceIDs(defaultPreset._items);
-
+                const presetAndMods = this.itemHelper.replaceIDs(defaultPreset._items);
                 this.itemHelper.remapRootItemId(presetAndMods);
 
                 rewards.push(presetAndMods);
@@ -465,17 +471,26 @@ export class CircleOfCultistService {
 
             // 'Normal' item, non-preset
             const stackSize = this.getDirectRewardBaseTypeStackSize(rewardTpl);
-            const rewardItem: IItem = {
-                _id: this.hashUtil.generate(),
-                _tpl: rewardTpl,
-                parentId: cultistCircleStashId,
-                slotId: CircleOfCultistService.circleOfCultistSlotId,
-                upd: {
-                    StackObjectsCount: stackSize,
-                    SpawnedInSession: true,
+            const rewardItem: IItem[] = [
+                {
+                    _id: this.hashUtil.generate(),
+                    _tpl: rewardTpl,
+                    parentId: cultistCircleStashId,
+                    slotId: CircleOfCultistService.circleOfCultistSlotId,
+                    upd: {
+                        StackObjectsCount: stackSize,
+                        SpawnedInSession: true,
+                    },
                 },
-            };
-            rewards.push([rewardItem]);
+            ];
+
+            // Edge case - item is ammo container and needs cartridges added
+            if (this.itemHelper.isOfBaseclass(rewardTpl, BaseClasses.AMMO_BOX)) {
+                const itemDetails = this.itemHelper.getItem(rewardTpl)[1];
+                this.itemHelper.addCartridgesToAmmoBox(rewardItem, itemDetails);
+            }
+
+            rewards.push(rewardItem);
         }
         // Direct reward is not repeatable, flag collected in profile
         if (!directReward.repeatable) {
@@ -627,12 +642,19 @@ export class CircleOfCultistService {
             ...cultistCircleConfig.rewardItemBlacklist,
         ];
 
+        const itemBaseTypeBlacklist = this.itemFilterService.getItemRewardBaseTypeBlacklist();
+
         // Hideout and task rewards are ONLY if the bonus is active
         switch (craftingInfo.rewardType) {
             case CircleRewardType.RANDOM: {
                 // Does reward pass the high value threshold
                 const isHighValueReward = craftingInfo.rewardAmountRoubles >= cultistCircleConfig.highValueThresholdRub;
-                this.generateRandomisedItemsAndAddToRewardPool(rewardPool, itemRewardBlacklist, isHighValueReward);
+                this.generateRandomisedItemsAndAddToRewardPool(
+                    rewardPool,
+                    itemRewardBlacklist,
+                    itemBaseTypeBlacklist,
+                    isHighValueReward,
+                );
 
                 break;
             }
@@ -643,7 +665,12 @@ export class CircleOfCultistService {
 
                 // If we have no tasks or hideout stuff left or need more loot to fill it out, default to high value
                 if (rewardPool.size < cultistCircleConfig.maxRewardItemCount + 2) {
-                    this.generateRandomisedItemsAndAddToRewardPool(rewardPool, itemRewardBlacklist, true);
+                    this.generateRandomisedItemsAndAddToRewardPool(
+                        rewardPool,
+                        itemRewardBlacklist,
+                        itemBaseTypeBlacklist,
+                        true,
+                    );
                 }
                 break;
             }
@@ -751,19 +778,21 @@ export class CircleOfCultistService {
     /**
      * Get array of random reward items
      * @param rewardPool Reward pool to add to
-     * @param itemRewardBlacklist Reward Blacklist
+     * @param itemRewardBlacklist Item tpls to ignore
+     * @param itemBaseTypeBlacklist Item base types to ignore
      * @param itemsShouldBeHighValue Should these items meet the valuable threshold
-     * @returns rewardPool
+     * @returns Set of item tpls
      */
     protected generateRandomisedItemsAndAddToRewardPool(
         rewardPool: Set<string>,
         itemRewardBlacklist: string[],
+        itemBaseTypeBlacklist: string[],
         itemsShouldBeHighValue: boolean,
     ): Set<string> {
         const allItems = this.itemHelper.getItems();
         let currentItemCount = 0;
         let attempts = 0;
-        // currentItemCount var will look for the correct number of items, attempts var will keep this from never stopping if the highValueThreshold is too high
+        // `currentItemCount` var will look for the correct number of items, `attempts` var will keep this from never stopping if the highValueThreshold is too high
         while (
             currentItemCount < this.hideoutConfig.cultistCircle.maxRewardItemCount + 2 &&
             attempts < allItems.length
@@ -775,6 +804,11 @@ export class CircleOfCultistService {
                 itemRewardBlacklist.includes(randomItem._parent) ||
                 !this.itemHelper.isValidItem(randomItem._id)
             ) {
+                continue;
+            }
+
+            // Item has a blacklisted type, skip
+            if (this.itemHelper.isOfBaseclasses(randomItem._parent, itemBaseTypeBlacklist)) {
                 continue;
             }
 
