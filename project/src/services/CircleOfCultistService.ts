@@ -124,7 +124,7 @@ export class CircleOfCultistService {
             }
         }
 
-        const rewards = hasDirectReward
+        let rewards = hasDirectReward
             ? this.getDirectRewards(sessionId, directRewardSettings, cultistCircleStashId)
             : this.getRewardsWithinBudget(
                   this.getCultistCircleRewardPool(sessionId, pmcData, craftingInfo, this.hideoutConfig.cultistCircle),
@@ -138,27 +138,28 @@ export class CircleOfCultistService {
 
         // Ensure rewards fit into container
         const containerGrid = this.inventoryHelper.getContainerSlotMap(cultistStashDbItem[1]._id);
-        const canAddToContainer = this.inventoryHelper.canPlaceItemsInContainer(
-            this.cloner.clone(containerGrid), // MUST clone grid before passing in as function modifies grid
-            rewards,
-        );
-
-        if (canAddToContainer) {
-            for (const itemToAdd of rewards) {
-                this.inventoryHelper.placeItemInContainer(
-                    containerGrid,
-                    itemToAdd,
-                    cultistCircleStashId,
-                    CircleOfCultistService.circleOfCultistSlotId,
-                );
-                // Add item + mods to output and profile inventory
-                output.profileChanges[sessionId].items.new.push(...itemToAdd);
-                pmcData.Inventory.items.push(...itemToAdd);
-            }
-        } else {
-            this.logger.error(
-                `Unable to fit all: ${rewards.length} reward items into sacrifice grid, nothing will be returned (rewards so valuable cultists stole it)`,
+        let canAddToContainer = false;
+        while (!canAddToContainer && rewards.length > 0) {
+            canAddToContainer = this.inventoryHelper.canPlaceItemsInContainer(
+                this.cloner.clone(containerGrid), // MUST clone grid before passing in as function modifies grid
+                rewards,
             );
+
+            if (canAddToContainer) {
+                for (const itemToAdd of rewards) {
+                    this.inventoryHelper.placeItemInContainer(
+                        containerGrid,
+                        itemToAdd,
+                        cultistCircleStashId,
+                        CircleOfCultistService.circleOfCultistSlotId,
+                    );
+                    // Add item + mods to output and profile inventory
+                    output.profileChanges[sessionId].items.new.push(...itemToAdd);
+                    pmcData.Inventory.items.push(...itemToAdd);
+                }
+            } else {
+                rewards.pop();
+            }
         }
 
         return output;
