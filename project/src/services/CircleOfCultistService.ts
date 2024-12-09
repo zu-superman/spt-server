@@ -634,27 +634,28 @@ export class CircleOfCultistService {
     ): string[] {
         const rewardPool = new Set<string>();
         const hideoutDbData = this.databaseService.getHideout();
+        const itemsDb = this.databaseService.getItems();
 
-        // Merge reward item blacklist and boss item blacklist with cultist circle blacklist from config
-        const itemRewardBlacklist = [
+        // Get all items that match the blacklisted types and fold into item blacklist below
+        const itemTypeBlacklist = this.itemFilterService.getItemRewardBaseTypeBlacklist();
+        const itemsMatchingTypeBlacklist = Object.values(itemsDb)
+            .filter((templateItem) => this.itemHelper.isOfBaseclasses(templateItem._parent, itemTypeBlacklist))
+            .map((templateItem) => templateItem._id);
+
+        // Create set of unique values to ignore
+        const itemRewardBlacklist = new Set([
             ...this.seasonalEventService.getInactiveSeasonalEventItems(),
             ...this.itemFilterService.getItemRewardBlacklist(),
             ...cultistCircleConfig.rewardItemBlacklist,
-        ];
-
-        const itemBaseTypeBlacklist = this.itemFilterService.getItemRewardBaseTypeBlacklist();
+            ...itemsMatchingTypeBlacklist,
+        ]);
 
         // Hideout and task rewards are ONLY if the bonus is active
         switch (craftingInfo.rewardType) {
             case CircleRewardType.RANDOM: {
                 // Does reward pass the high value threshold
                 const isHighValueReward = craftingInfo.rewardAmountRoubles >= cultistCircleConfig.highValueThresholdRub;
-                this.generateRandomisedItemsAndAddToRewardPool(
-                    rewardPool,
-                    itemRewardBlacklist,
-                    itemBaseTypeBlacklist,
-                    isHighValueReward,
-                );
+                this.generateRandomisedItemsAndAddToRewardPool(rewardPool, itemRewardBlacklist, isHighValueReward);
 
                 break;
             }
@@ -665,12 +666,7 @@ export class CircleOfCultistService {
 
                 // If we have no tasks or hideout stuff left or need more loot to fill it out, default to high value
                 if (rewardPool.size < cultistCircleConfig.maxRewardItemCount + 2) {
-                    this.generateRandomisedItemsAndAddToRewardPool(
-                        rewardPool,
-                        itemRewardBlacklist,
-                        itemBaseTypeBlacklist,
-                        true,
-                    );
+                    this.generateRandomisedItemsAndAddToRewardPool(rewardPool, itemRewardBlacklist, true);
                 }
                 break;
             }
@@ -679,7 +675,7 @@ export class CircleOfCultistService {
         // Add custom rewards from config
         if (cultistCircleConfig.additionalRewardItemPool.length > 0) {
             for (const additionalReward of cultistCircleConfig.additionalRewardItemPool) {
-                if (itemRewardBlacklist.includes(additionalReward)) {
+                if (itemRewardBlacklist.has(additionalReward)) {
                     continue;
                 }
 
@@ -699,7 +695,7 @@ export class CircleOfCultistService {
      */
     protected addTaskItemRequirementsToRewardPool(
         pmcData: IPmcData,
-        itemRewardBlacklist: string[],
+        itemRewardBlacklist: Set<string>,
         rewardPool: Set<string>,
     ): void {
         const activeTasks = pmcData.Quests.filter((quest) => quest.status === QuestStatus.Started);
@@ -710,7 +706,7 @@ export class CircleOfCultistService {
             );
             for (const condition of handoverConditions) {
                 for (const neededItem of condition.target) {
-                    if (itemRewardBlacklist.includes(neededItem) || !this.itemHelper.isValidItem(neededItem)) {
+                    if (itemRewardBlacklist.has(neededItem) || !this.itemHelper.isValidItem(neededItem)) {
                         continue;
                     }
                     this.logger.debug(`Added Task Loot: ${this.itemHelper.getItemName(neededItem)}`);
@@ -730,7 +726,7 @@ export class CircleOfCultistService {
     protected addHideoutUpgradeRequirementsToRewardPool(
         hideoutDbData: IHideout,
         pmcData: IPmcData,
-        itemRewardBlacklist: string[],
+        itemRewardBlacklist: Set<string>,
         rewardPool: Set<string>,
     ): void {
         const dbAreas = hideoutDbData.areas;
@@ -746,7 +742,7 @@ export class CircleOfCultistService {
                 const itemRequirements = this.getItemRequirements(nextStageDbData.requirements);
                 for (const rewardToAdd of itemRequirements) {
                     if (
-                        itemRewardBlacklist.includes(rewardToAdd.templateId) ||
+                        itemRewardBlacklist.has(rewardToAdd.templateId) ||
                         !this.itemHelper.isValidItem(rewardToAdd.templateId)
                     ) {
                         // Dont reward items sacrificed
@@ -779,14 +775,12 @@ export class CircleOfCultistService {
      * Get array of random reward items
      * @param rewardPool Reward pool to add to
      * @param itemRewardBlacklist Item tpls to ignore
-     * @param itemBaseTypeBlacklist Item base types to ignore
      * @param itemsShouldBeHighValue Should these items meet the valuable threshold
      * @returns Set of item tpls
      */
     protected generateRandomisedItemsAndAddToRewardPool(
         rewardPool: Set<string>,
-        itemRewardBlacklist: string[],
-        itemBaseTypeBlacklist: string[],
+        itemRewardBlacklist: Set<string>,
         itemsShouldBeHighValue: boolean,
     ): Set<string> {
         const allItems = this.itemHelper.getItems();
@@ -799,16 +793,7 @@ export class CircleOfCultistService {
         ) {
             attempts++;
             const randomItem = this.randomUtil.getArrayValue(allItems);
-            if (
-                itemRewardBlacklist.includes(randomItem._id) ||
-                itemRewardBlacklist.includes(randomItem._parent) ||
-                !this.itemHelper.isValidItem(randomItem._id)
-            ) {
-                continue;
-            }
-
-            // Item has a blacklisted type, skip
-            if (this.itemHelper.isOfBaseclasses(randomItem._parent, itemBaseTypeBlacklist)) {
+            if (itemRewardBlacklist.has(randomItem._id) || !this.itemHelper.isValidItem(randomItem._id)) {
                 continue;
             }
 
