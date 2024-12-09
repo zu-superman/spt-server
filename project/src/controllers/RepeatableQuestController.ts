@@ -532,6 +532,10 @@ export class RepeatableQuestController {
         newRepeatableQuest.side = repeatableConfig.side;
         repeatablesInProfile.activeQuests.push(newRepeatableQuest);
 
+        this.logger.debug(
+            `Removing: ${repeatableConfig.name} quest: ${questToReplace._id} from trader: ${questToReplace.traderId} as its been replaced`,
+        );
+
         // Find quest we're replacing in pmc profile quests array and remove it
         this.questHelper.findAndRemoveQuestFromArrayIfExists(questToReplace._id, pmcData.Quests);
 
