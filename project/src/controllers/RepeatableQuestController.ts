@@ -490,6 +490,13 @@ export class RepeatableQuestController {
             changeRequest.qid,
             pmcData,
         );
+        if (!repeatablesInProfile || !questToReplace) {
+            // Unable to find quest being replaced
+            const message = this.localisationService.getText("quest-unable_to_find_repeatable_to_replace");
+            this.logger.error(message);
+
+            return this.httpResponse.appendErrorToOutput(output, message);
+        }
 
         // Subtype name of quest - daily/weekly/scav
         const repeatableTypeLower = repeatablesInProfile.name.toLowerCase();
@@ -571,13 +578,6 @@ export class RepeatableQuestController {
 
         // Clone data before we send it to client
         const repeatableToChangeClone = this.cloner.clone(repeatablesInProfile);
-        if (!repeatableToChangeClone) {
-            // Unable to find quest being replaced
-            const message = this.localisationService.getText("quest-unable_to_find_repeatable_to_replace");
-            this.logger.error(message);
-
-            return this.httpResponse.appendErrorToOutput(output, message);
-        }
 
         // Purge inactive repeatables
         repeatableToChangeClone.inactiveQuests = [];
