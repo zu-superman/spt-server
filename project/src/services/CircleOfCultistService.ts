@@ -124,7 +124,7 @@ export class CircleOfCultistService {
             }
         }
 
-        let rewards = hasDirectReward
+        const rewards = hasDirectReward
             ? this.getDirectRewards(sessionId, directRewardSettings, cultistCircleStashId)
             : this.getRewardsWithinBudget(
                   this.getCultistCircleRewardPool(sessionId, pmcData, craftingInfo, this.hideoutConfig.cultistCircle),
@@ -138,6 +138,28 @@ export class CircleOfCultistService {
 
         // Ensure rewards fit into container
         const containerGrid = this.inventoryHelper.getContainerSlotMap(cultistStashDbItem[1]._id);
+        this.addRewardsToCircleContainer(sessionId, pmcData, rewards, containerGrid, cultistCircleStashId, output);
+
+        return output;
+    }
+
+    /**
+     * Attempt to add all rewards to cultist circle, if they dont fit remove one and try again until they fit
+     * @param sessionId Session id
+     * @param pmcData Player profile
+     * @param rewards Rewards to send to player
+     * @param containerGrid Cultist grid to add rewards to
+     * @param cultistCircleStashId Stash id
+     * @param output Client output
+     */
+    protected addRewardsToCircleContainer(
+        sessionId: string,
+        pmcData: IPmcData,
+        rewards: IItem[][],
+        containerGrid: number[][],
+        cultistCircleStashId: string,
+        output: IItemEventRouterResponse,
+    ): void {
         let canAddToContainer = false;
         while (!canAddToContainer && rewards.length > 0) {
             canAddToContainer = this.inventoryHelper.canPlaceItemsInContainer(
@@ -145,24 +167,23 @@ export class CircleOfCultistService {
                 rewards,
             );
 
-            if (canAddToContainer) {
-                for (const itemToAdd of rewards) {
-                    this.inventoryHelper.placeItemInContainer(
-                        containerGrid,
-                        itemToAdd,
-                        cultistCircleStashId,
-                        CircleOfCultistService.circleOfCultistSlotId,
-                    );
-                    // Add item + mods to output and profile inventory
-                    output.profileChanges[sessionId].items.new.push(...itemToAdd);
-                    pmcData.Inventory.items.push(...itemToAdd);
-                }
-            } else {
+            // Doesn't fit, remove one item
+            if (!canAddToContainer) {
                 rewards.pop();
             }
         }
 
-        return output;
+        for (const itemToAdd of rewards) {
+            this.inventoryHelper.placeItemInContainer(
+                containerGrid,
+                itemToAdd,
+                cultistCircleStashId,
+                CircleOfCultistService.circleOfCultistSlotId,
+            );
+            // Add item + mods to output and profile inventory
+            output.profileChanges[sessionId].items.new.push(...itemToAdd);
+            pmcData.Inventory.items.push(...itemToAdd);
+        }
     }
 
     /**
