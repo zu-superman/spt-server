@@ -298,7 +298,7 @@ export class RandomUtil {
     /**
      * Returns a random string from the provided array of strings.
      *
-     * This method is separate from getArrayValue so we can use a generic inferance with getArrayValue.
+     * This method is separate from getArrayValue so we can use a generic inference with getArrayValue.
      *
      * @param arr - The array of strings to select a random value from.
      * @returns A randomly selected string from the array.
@@ -383,22 +383,38 @@ export class RandomUtil {
 
     /**
      * Generates a random integer between the specified range.
+     * Low and high parameters are floored to integers.
+     *
+     * TODO: v3.11 - This method should not accept non-integer numbers.
      *
      * @param low - The lower bound of the range (inclusive).
      * @param high - The upper bound of the range (exclusive). If not provided, the range will be from 0 to `low`.
      * @returns A random integer within the specified range.
      */
     public randInt(low: number, high?: number): number {
+        let randomLow = low;
+        let randomHigh = high;
+
+        // Detect if either of the parameters is a float, and log a warning
+        if (low % 1 !== 0 || (typeof high !== "undefined" && high % 1 !== 0)) {
+            // Round the float values to the nearest integer. Eww!
+            randomLow = Math.floor(low);
+            if (typeof high !== "undefined") {
+                randomHigh = Math.floor(high);
+            }
+        }
+
+        // Return a random integer from 0 to low if high is not provided
         if (typeof high === "undefined") {
-            return crypto.randomInt(0, low);
+            return crypto.randomInt(0, randomLow);
         }
 
         // Return low directly when low and high are equal
         if (low === high) {
-            return low;
+            return randomLow;
         }
 
-        return crypto.randomInt(low, high);
+        return crypto.randomInt(randomLow, randomHigh);
     }
 
     /**

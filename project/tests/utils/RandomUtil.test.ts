@@ -399,6 +399,11 @@ describe("RandomUtil", () => {
             expect(result).toBe(5);
         });
 
+        it("should work with float number parameters", () => {
+            const result = randomUtil.randInt(5.5, 10.5);
+            expect(result).toBeGreaterThanOrEqual(5);
+            expect(result).toBeLessThan(11);
+        });
         it("should return an integer between low and high - 1", () => {
             const low = 5;
             const high = 10;
