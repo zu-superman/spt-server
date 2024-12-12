@@ -560,14 +560,7 @@ export class RepeatableQuestController {
             `Removing: ${repeatableConfig.name} quest: ${questToReplace._id} from trader: ${questToReplace.traderId} as its been replaced`,
         );
 
-        // Find quest we're replacing in pmc profile quests array and remove it
-        this.questHelper.findAndRemoveQuestFromArrayIfExists(questToReplace._id, pmcData.Quests);
-
-        // Find quest we're replacing in scav profile quests array and remove it
-        this.questHelper.findAndRemoveQuestFromArrayIfExists(
-            questToReplace._id,
-            fullProfile.characters.scav?.Quests ?? [],
-        );
+        this.removeQuestFromProfile(fullProfile, questToReplace._id);
 
         // Add new quests replacement cost to profile
         repeatablesOfTypeInProfile.changeRequirement[newRepeatableQuest._id] = {
@@ -610,6 +603,21 @@ export class RepeatableQuestController {
         output.profileChanges[sessionID].repeatableQuests.push(repeatableToChangeClone);
 
         return output;
+    }
+
+    /**
+     * Remove the provided quest from pmc and scav character profiles
+     * @param fullProfile Profile to remove quest from
+     * @param questToReplaceId Quest id to remove from profile
+     */
+    protected removeQuestFromProfile(fullProfile: ISptProfile, questToReplaceId: string): void {
+        // Find quest we're replacing in pmc profile quests array and remove it
+        this.questHelper.findAndRemoveQuestFromArrayIfExists(questToReplaceId, fullProfile.characters.pmc.Quests);
+
+        // Find quest we're replacing in scav profile quests array and remove it
+        if (fullProfile.characters.scav) {
+            this.questHelper.findAndRemoveQuestFromArrayIfExists(questToReplaceId, fullProfile.characters.scav.Quests);
+        }
     }
 
     /**
