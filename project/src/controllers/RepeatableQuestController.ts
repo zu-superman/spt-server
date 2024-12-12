@@ -562,7 +562,10 @@ export class RepeatableQuestController {
 
         this.removeQuestFromProfile(fullProfile, questToReplace._id);
 
-        // Add new quests replacement cost to profile
+        // Delete the replaced quest change requirement from profile
+        this.cleanUpRepeatableChangeRequirements(repeatablesOfTypeInProfile, questToReplace._id);
+
+        // Add replacement quests change requirement data to profile
         repeatablesOfTypeInProfile.changeRequirement[newRepeatableQuest._id] = {
             changeCost: newRepeatableQuest.changeCost,
             changeStandingCost: this.randomUtil.getArrayValue([0, 0.01]),
@@ -617,6 +620,25 @@ export class RepeatableQuestController {
         // Find quest we're replacing in scav profile quests array and remove it
         if (fullProfile.characters.scav) {
             this.questHelper.findAndRemoveQuestFromArrayIfExists(questToReplaceId, fullProfile.characters.scav.Quests);
+        }
+    }
+
+    /**
+     * Clean up the repeatables `changeRequirement` dictionary of expired data
+     * @param repeatablesOfTypeInProfile The repeatables that have the replaced and new quest
+     * @param replacedQuestId Id of the replaced quest
+     */
+    protected cleanUpRepeatableChangeRequirements(
+        repeatablesOfTypeInProfile: IPmcDataRepeatableQuest,
+        replacedQuestId: string,
+    ): void {
+        if (repeatablesOfTypeInProfile.activeQuests.length === 1) {
+            // Only one repeatable quest being replaced (e.g. scav_daily), remove everything ready for new quest requirement to be added
+            // Will assist in cleanup of existing profiles data
+            repeatablesOfTypeInProfile.changeRequirement = {};
+        } else {
+            // Multiple active quests of this type (e.g. daily or weekly) are active, just remove the single replaced quest
+            delete repeatablesOfTypeInProfile.changeRequirement[replacedQuestId];
         }
     }
 
