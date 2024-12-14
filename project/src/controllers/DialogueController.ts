@@ -479,8 +479,6 @@ export class DialogueController {
         // We need to delay this so that the friend request gets properly added to the clientside list before we accept it
         setTimeout(() => {
             const notification: IWsFriendsListAccept = {
-                // TODO: eventId isn't necessary, but the interface requires it, so we can use a dummy value. Interface should be updated
-                eventId: "0",
                 type: NotificationEventType.FRIEND_LIST_REQUEST_ACCEPTED,
                 profile: this.profileHelper.getChatRoomMemberFromPmcProfile(friendProfile.characters.pmc),
             };
