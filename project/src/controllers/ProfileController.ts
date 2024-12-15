@@ -368,9 +368,9 @@ export class ProfileController {
         const allProfiles = Object.values(this.saveServer.getProfiles());
 
         for (const profile of allProfiles) {
-            const pmcProfile = profile.characters.pmc;
+            const pmcProfile = profile?.characters?.pmc;
 
-            if (!pmcProfile.Info.LowerNickname.includes(info.nickname.toLocaleLowerCase())) {
+            if (!pmcProfile?.Info?.LowerNickname?.includes(info.nickname.toLocaleLowerCase())) {
                 continue;
             }
 
