@@ -12,9 +12,6 @@ export class ProgressWriter {
         if (total <= 0) {
             throw new Error("Total must be a positive number.");
         }
-        if ((barFillChar && barFillChar.length !== 1) || (barEmptyChar && barEmptyChar.length !== 1)) {
-            throw new Error("Bar character values must be a single character.");
-        }
 
         this.total = total;
         this.maxBarLength = maxBarLength;
