@@ -29,21 +29,23 @@ export class ProgressWriter {
 
         this.count++;
 
-        const progress = Math.floor((this.count / this.total) * 100);
-        const filledChars = Math.floor((progress / 100) * this.maxBarLength);
+        const progress = this.count / this.total;
+        const percent = Math.floor(progress * 100);
+
+        const filledChars = Math.floor(progress * this.maxBarLength);
         const emptyChars = this.maxBarLength - filledChars;
 
         const barFill = this.barFillChar.repeat(filledChars);
         const barEmptySpace = this.barEmptyChar.repeat(emptyChars);
 
-        const progressBar = `  -> ${this.count} / ${this.total} [${barFill}${barEmptySpace}] ${progress}%`;
+        const progressBar = `-> ${this.count} / ${this.total} [${barFill}${barEmptySpace}] ${percent}%`;
 
-        readline.clearLine(process.stdout, 0);
         readline.cursorTo(process.stdout, 0, null);
         process.stdout.write(progressBar);
 
-        if (progress === 100) {
-            process.stdout.write("\n");
+        if (percent >= 100) {
+            readline.clearLine(process.stdout, 0);
+            readline.cursorTo(process.stdout, 0, null);
             this.done = true;
         }
     }
