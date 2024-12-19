@@ -8,7 +8,7 @@ export class ProgressWriter {
     private barEmptyChar: string;
     private maxBarLength: number;
 
-    constructor(total: number, maxBarLength = 25, barFillChar = "\u25A0", barEmptyChar = " ") {
+    constructor(total: number, maxBarLength = 25, barFillChar = "\u2593", barEmptyChar = "\u2591") {
         if (total <= 0) {
             throw new Error("Total must be a positive number.");
         }
