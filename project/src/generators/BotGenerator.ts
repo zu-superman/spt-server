@@ -272,7 +272,7 @@ export class BotGenerator {
     ): number {
         const result = experience[botDifficulty.toLowerCase()];
         if (typeof result === "undefined") {
-            this.logger.warning(
+            this.logger.debug(
                 `Unable to find experience for kill value for: ${role} ${botDifficulty}, falling back to "normal"`,
             );
 
