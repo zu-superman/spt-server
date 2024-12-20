@@ -116,6 +116,14 @@ export class PostDbLoadService {
         if (!this.ragfairConfig.dynamic.blacklist.enableBsgList) {
             this.setAllDbItemsAsSellableOnFlea();
         }
+
+        this.addMissingTraderBuyRestrictionMaxValue();
+    }
+
+    protected addMissingTraderBuyRestrictionMaxValue(): void {
+        this.databaseService.getGlobals().config.TradingSettings.BuyRestrictionMaxBonus.unheard_edition = {
+            multiplier: 1.2,
+        };
     }
 
     protected adjustMinReserveRaiderSpawnChance(): void {
