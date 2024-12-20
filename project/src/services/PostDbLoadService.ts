@@ -122,7 +122,9 @@ export class PostDbLoadService {
 
     protected addMissingTraderBuyRestrictionMaxValue(): void {
         this.databaseService.getGlobals().config.TradingSettings.BuyRestrictionMaxBonus.unheard_edition = {
-            multiplier: 1.2,
+            multiplier:
+                this.databaseService.getGlobals().config.TradingSettings.BuyRestrictionMaxBonus.edge_of_darkness
+                    .multiplier,
         };
     }
 
