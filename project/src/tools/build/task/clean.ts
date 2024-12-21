@@ -32,7 +32,7 @@ export const cleanPost = async () => {
         console.log("Removed `./dist/src` directory");
 
         await fs.rm(path.normalize("./dist/package.json"), { recursive: true, force: true });
-        console.log("Removed `./dist/package.json` directory");
+        console.log("Removed `./dist/package.json`");
     } catch (error) {
         if (error instanceof Error && error.message.includes("does not exist")) {
             return;
