@@ -113,6 +113,9 @@ export class BotGenerator {
             ? preparedBotBase.Info.Side // Use side to get usec.json or bear.json when bot will be PMC
             : botGenerationDetails.role;
         const botJsonTemplateClone = this.cloner.clone(this.botHelper.getBotTemplate(botRole));
+        if (!botJsonTemplateClone) {
+            this.logger.error(`Unable to retrieve: ${botRole} bot template, cannot generate bot of this type`);
+        }
 
         return this.generateBot(sessionId, preparedBotBase, botJsonTemplateClone, botGenerationDetails);
     }
