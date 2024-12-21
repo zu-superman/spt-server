@@ -119,7 +119,7 @@ export class GiveSptCommand implements ISptCommand {
 
             if (isItemName) {
                 try {
-                    locale = result[4] ? result[4] : this.localeService.getDesiredGameLocale() ?? "en";
+                    locale = result[4] ?? this.localeService.getDesiredGameLocale() ?? "en";
                 } catch (e) {
                     this.mailSendService.sendUserMessageToPlayer(
                         sessionId,
