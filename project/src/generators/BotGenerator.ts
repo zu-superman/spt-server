@@ -193,6 +193,12 @@ export class BotGenerator {
             this.botConfig.botRolesThatMustHaveUniqueName,
         );
 
+        // Only run when generating a 'fake' playerscav, not actual player scav
+        if (!botGenerationDetails.isPlayerScav || this.shouldSimulatePlayerScav(botRoleLowercase)) {
+            this.botNameService.addRandomPmcNameToBotMainProfileNicknameProperty(bot);
+            this.setRandomisedGameVersionAndCategory(bot.Info);
+        }
+
         if (!this.seasonalEventService.christmasEventEnabled()) {
             // Process all bots EXCEPT gifter, he needs christmas items
             if (botGenerationDetails.role !== "gifter") {
@@ -271,6 +277,15 @@ export class BotGenerator {
         }
 
         return bot;
+    }
+
+    /**
+     * Should this bot have a name like "name (Pmc Name)" and be alterd by client patch to be hostile to player
+     * @param botRole Role bot has
+     * @returns True if name should be simulated pscav
+     */
+    protected shouldSimulatePlayerScav(botRole: string): boolean {
+        return botRole === "assault" && this.randomUtil.getChance100(this.botConfig.chanceAssaultScavHasPlayerScavName);
     }
 
     /**
