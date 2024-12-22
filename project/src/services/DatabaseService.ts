@@ -97,7 +97,7 @@ export class DatabaseService {
      * @returns assets/database/locations
      */
     public getLocations(): ILocations {
-        if (!this.databaseServer.getTables().locales) {
+        if (!this.databaseServer.getTables().locations) {
             throw new Error(
                 this.localisationService.getText("database-data_at_path_missing", "assets/database/locales"),
             );
@@ -125,7 +125,7 @@ export class DatabaseService {
      * @returns assets/database/match/
      */
     public getMatch(): IMatch {
-        if (!this.databaseServer.getTables().locales) {
+        if (!this.databaseServer.getTables().match) {
             throw new Error(
                 this.localisationService.getText("database-data_at_path_missing", "assets/database/locales"),
             );
@@ -138,7 +138,7 @@ export class DatabaseService {
      * @returns assets/database/server.json
      */
     public getServer(): IServerBase {
-        if (!this.databaseServer.getTables().locales) {
+        if (!this.databaseServer.getTables().server) {
             throw new Error(
                 this.localisationService.getText("database-data_at_path_missing", "assets/database/server"),
             );
@@ -151,7 +151,7 @@ export class DatabaseService {
      * @returns assets/database/settings.json
      */
     public getSettings(): ISettingsBase {
-        if (!this.databaseServer.getTables().locales) {
+        if (!this.databaseServer.getTables().settings) {
             throw new Error(
                 this.localisationService.getText("database-data_at_path_missing", "assets/database/settings"),
             );
@@ -206,7 +206,7 @@ export class DatabaseService {
     }
 
     /**
-     * @returns assets/database/templates/items.json
+     * @returns assets/database/templates/handbook.json
      */
     public getHandbook(): IHandbookBase {
         if (!this.databaseServer.getTables().templates.handbook) {
@@ -270,7 +270,7 @@ export class DatabaseService {
     }
 
     /**
-     * @returns assets/database/templates/items.json
+     * @returns assets/database/templates/quests.json
      */
     public getQuests(): Record<string, IQuest> {
         if (!this.databaseServer.getTables().templates.quests) {
