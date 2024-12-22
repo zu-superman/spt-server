@@ -110,7 +110,7 @@ export class RagfairOfferHelper {
             }
 
             // Not trader offer + tiered flea enabled
-            if (tieredFlea.enabled && offer.user.memberType !== MemberCategory.TRADER) {
+            if (tieredFlea.enabled && !this.offerIsFromTrader(offer)) {
                 this.checkAndLockOfferFromPlayerTieredFlea(tieredFlea, offer, tieredFleaLimitTypes, pmcData.Info.Level);
             }
 
@@ -185,7 +185,7 @@ export class RagfairOfferHelper {
                 return false;
             }
 
-            if (tieredFlea.enabled && offer.user.memberType !== MemberCategory.TRADER) {
+            if (tieredFlea.enabled && !this.offerIsFromTrader(offer)) {
                 this.checkAndLockOfferFromPlayerTieredFlea(tieredFlea, offer, tieredFleaLimitTypes, pmcData.Info.Level);
             }
 
@@ -238,8 +238,7 @@ export class RagfairOfferHelper {
                     continue;
                 }
 
-                const isTraderOffer = offer.user.memberType === MemberCategory.TRADER;
-                if (isTraderOffer) {
+                if (this.offerIsFromTrader(offer)) {
                     if (this.traderBuyRestrictionReached(offer)) {
                         continue;
                     }
@@ -258,7 +257,7 @@ export class RagfairOfferHelper {
                 }
 
                 // Tiered flea and not trader offer
-                if (tieredFlea.enabled && offer.user.memberType !== MemberCategory.TRADER) {
+                if (tieredFlea.enabled && !this.offerIsFromTrader(offer)) {
                     this.checkAndLockOfferFromPlayerTieredFlea(
                         tieredFlea,
                         offer,
@@ -408,12 +407,10 @@ export class RagfairOfferHelper {
      */
     protected getLoyaltyLockedOffers(offers: IRagfairOffer[], pmcProfile: IPmcData): string[] {
         const loyaltyLockedOffers: string[] = [];
-        for (const offer of offers) {
-            if (offer.user.memberType === MemberCategory.TRADER) {
-                const traderDetails = pmcProfile.TradersInfo[offer.user.id];
-                if (traderDetails.loyaltyLevel < offer.loyaltyLevel) {
-                    loyaltyLockedOffers.push(offer._id);
-                }
+        for (const offer of offers.filter((offer) => this.offerIsFromTrader(offer))) {
+            const traderDetails = pmcProfile.TradersInfo[offer.user.id];
+            if (traderDetails.loyaltyLevel < offer.loyaltyLevel) {
+                loyaltyLockedOffers.push(offer._id);
             }
         }
 
@@ -639,7 +636,7 @@ export class RagfairOfferHelper {
         const isDefaultUserOffer = offer.user.memberType === MemberCategory.DEFAULT;
         const offerRootItem = offer.items[0];
         const moneyTypeTpl = offer.requirements[0]._tpl;
-        const isTraderOffer = offer.user.memberType === MemberCategory.TRADER;
+        const isTraderOffer = this.offerIsFromTrader(offer);
 
         if (pmcData.Info.Level < this.databaseService.getGlobals().config.RagFair.minUserLevel && isDefaultUserOffer) {
             // Skip item if player is < global unlock level (default is 15) and item is from a dynamically generated source
