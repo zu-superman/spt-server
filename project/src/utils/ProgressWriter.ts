@@ -38,7 +38,7 @@ export class ProgressWriter {
         const barFill = this.barFillChar.repeat(filledChars);
         const barEmptySpace = this.barEmptyChar.repeat(emptyChars);
 
-        const progressBar = `-> ${this.count} / ${this.total} [${barFill}${barEmptySpace}] ${percent}% `;
+        const progressBar = `-> ${this.count} / ${this.total} ${barFill}${barEmptySpace} ${percent}% `;
 
         readline.cursorTo(process.stdout, 0, null);
         process.stdout.write(progressBar);
