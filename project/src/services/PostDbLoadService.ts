@@ -118,14 +118,8 @@ export class PostDbLoadService {
         }
 
         this.addMissingTraderBuyRestrictionMaxValue();
-    }
 
-    protected addMissingTraderBuyRestrictionMaxValue(): void {
-        this.databaseService.getGlobals().config.TradingSettings.BuyRestrictionMaxBonus.unheard_edition = {
-            multiplier:
-                this.databaseService.getGlobals().config.TradingSettings.BuyRestrictionMaxBonus.edge_of_darkness
-                    .multiplier,
-        };
+        this.applyFleaPriceOverrides();
     }
 
     protected adjustMinReserveRaiderSpawnChance(): void {
@@ -508,6 +502,21 @@ export class PostDbLoadService {
             ) {
                 item._props.CanSellOnRagfair = true;
             }
+        }
+    }
+
+    protected addMissingTraderBuyRestrictionMaxValue(): void {
+        this.databaseService.getGlobals().config.TradingSettings.BuyRestrictionMaxBonus.unheard_edition = {
+            multiplier:
+                this.databaseService.getGlobals().config.TradingSettings.BuyRestrictionMaxBonus.edge_of_darkness
+                    .multiplier,
+        };
+    }
+
+    protected applyFleaPriceOverrides() {
+        const fleaPrices = this.databaseService.getPrices();
+        for (const [key, value] of Object.entries(this.ragfairConfig.dynamic.itemPriceOverrideRouble)) {
+            fleaPrices[key] = value;
         }
     }
 }
