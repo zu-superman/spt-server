@@ -10,7 +10,10 @@ import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRo
 import { IProcessBuyTradeRequestData } from "@spt/models/eft/trade/IProcessBuyTradeRequestData";
 import { IProcessSellTradeRequestData } from "@spt/models/eft/trade/IProcessSellTradeRequestData";
 import { BackendErrorCodes } from "@spt/models/enums/BackendErrorCodes";
+import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { IInventoryConfig } from "@spt/models/spt/config/IInventoryConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
+import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { HashUtil } from "@spt/utils/HashUtil";
@@ -19,6 +22,8 @@ import { inject, injectable } from "tsyringe";
 
 @injectable()
 export class PaymentService {
+    protected inventoryConfig: IInventoryConfig;
+
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("HashUtil") protected hashUtil: HashUtil,
@@ -30,7 +35,10 @@ export class PaymentService {
         @inject("InventoryHelper") protected inventoryHelper: InventoryHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("PaymentHelper") protected paymentHelper: PaymentHelper,
-    ) {}
+        @inject("ConfigServer") protected configServer: ConfigServer,
+    ) {
+        this.inventoryConfig = this.configServer.getConfig(ConfigTypes.INVENTORY);
+    }
 
     /**
      * Take money and insert items into return to server request
@@ -369,7 +377,7 @@ export class PaymentService {
             // Both in stash in containers
             if (aInStash && bInStash) {
                 // Containers where taking money from would inconvinence player
-                const deprioritisedContainers = ["590c60fc86f77412b13fddcf", "5d235bb686f77443f4331278"];
+                const deprioritisedContainers = this.inventoryConfig.deprioritisedMoneyContainers;
                 const aImmediateParent = inventoryItems.find((item) => item._id === a.parentId);
                 const bImmediateParent = inventoryItems.find((item) => item._id === b.parentId);
 
