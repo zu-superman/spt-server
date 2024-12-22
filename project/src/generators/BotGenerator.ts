@@ -6,6 +6,7 @@ import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import { MinMax } from "@spt/models/common/MinMax";
 import { IWildBody } from "@spt/models/eft/common/IGlobals";
+import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import {
     Common,
     IBaseJsonSkills,
@@ -71,9 +72,16 @@ export class BotGenerator {
      * @param role e.g. assault / pmcbot
      * @param difficulty easy/normal/hard/impossible
      * @param botTemplate base bot template to use  (e.g. assault/pmcbot)
-     * @returns
+     * profile PMC profile of player generating pscav
+     * @returns IBotBase
      */
-    public generatePlayerScav(sessionId: string, role: string, difficulty: string, botTemplate: IBotType): IBotBase {
+    public generatePlayerScav(
+        sessionId: string,
+        role: string,
+        difficulty: string,
+        botTemplate: IBotType,
+        profile: IPmcData,
+    ): IBotBase {
         let bot = this.getCloneOfBotBase();
         bot.Info.Settings.BotDifficulty = difficulty;
         bot.Info.Settings.Role = role;
@@ -91,6 +99,9 @@ export class BotGenerator {
         };
 
         bot = this.generateBot(sessionId, bot, botTemplate, botGenDetails);
+
+        // Sets the name after scav name shown in parenthesis
+        bot.Info.MainProfileNickname = profile.Info.Nickname;
 
         return bot;
     }
@@ -165,6 +176,7 @@ export class BotGenerator {
             bot,
         );
 
+        // Only filter bot equipment, never players
         if (!botGenerationDetails.isPlayerScav) {
             this.botEquipmentFilterService.filterBotEquipment(
                 sessionId,
