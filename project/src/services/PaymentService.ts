@@ -340,30 +340,54 @@ export class PaymentService {
      * @returns sort order
      */
     protected prioritiseStashSort(a: IItem, b: IItem, inventoryItems: IItem[], playerStashId: string): number {
-        // a in stash, prioritise
-        if (a.slotId === "hideout" && b.slotId !== "hideout") {
+        // a in root of stash, prioritise
+        if (a.parentId === playerStashId && b.parentId !== playerStashId) {
             return -1;
         }
 
-        // b in stash, prioritise
-        if (a.slotId !== "hideout" && b.slotId === "hideout") {
+        // b in root stash, prioritise
+        if (a.parentId !== playerStashId && b.parentId === playerStashId) {
             return 1;
         }
 
         // both in containers
         if (a.slotId === "main" && b.slotId === "main") {
-            // Item is in inventory, not stash, deprioritise
+            // Both items are in containers
             const aInStash = this.isInStash(a.parentId, inventoryItems, playerStashId);
             const bInStash = this.isInStash(b.parentId, inventoryItems, playerStashId);
 
-            // a in stash, prioritise
+            // a in stash in container, prioritise
             if (aInStash && !bInStash) {
                 return -1;
             }
 
-            // b in stash, prioritise
+            // b in stash in container, prioritise
             if (!aInStash && bInStash) {
                 return 1;
+            }
+
+            // Both in stash in containers
+            if (aInStash && bInStash) {
+                // Containers where taking money from would inconvinence player
+                const deprioritisedContainers = ["590c60fc86f77412b13fddcf", "5d235bb686f77443f4331278"];
+                const aImmediateParent = inventoryItems.find((item) => item._id === a.parentId);
+                const bImmediateParent = inventoryItems.find((item) => item._id === b.parentId);
+
+                // A is not a deprioritised container, B is
+                if (
+                    !deprioritisedContainers.includes(aImmediateParent._tpl) &&
+                    deprioritisedContainers.includes(bImmediateParent._tpl)
+                ) {
+                    return -1;
+                }
+
+                // B is not a deprioritised container, A is
+                if (
+                    deprioritisedContainers.includes(aImmediateParent._tpl) &&
+                    !deprioritisedContainers.includes(bImmediateParent._tpl)
+                ) {
+                    return 1;
+                }
             }
         }
 
@@ -379,7 +403,7 @@ export class PaymentService {
      * @returns true if its in inventory
      */
     protected isInStash(itemId: string | undefined, inventoryItems: IItem[], playerStashId: string): boolean {
-        const itemParent = inventoryItems.find((x) => x._id === itemId);
+        const itemParent = inventoryItems.find((item) => item._id === itemId);
 
         if (itemParent) {
             if (itemParent.slotId === "hideout") {
