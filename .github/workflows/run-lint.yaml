@@ -9,24 +9,31 @@ on:
 jobs:
   biome:
     runs-on: ubuntu-latest
+    container:
+      image: oven/bun:latest
     steps:
+      - name: Install Git and LFS
+        run: |
+          apt-get update
+          apt-get install -y git git-lfs
+          git --version
+          git lfs --version
+
       - uses: actions/checkout@v4
         with:
           lfs: false
 
+      - name: Mark Workspace as Safe
+        run: git config --system --add safe.directory "$PWD"
+
       - name: Checkout LFS
         run: git lfs pull
+        working-directory: ${{ github.workspace }}
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: "project/.nvmrc"
-          cache: "npm"
-          cache-dependency-path: "project/package.json"
-
-      - name: Install NPM Dependencies
-        run: npm install
-        working-directory: ./project
+      - name: Install Dependencies
+        run: bun install
+        working-directory: ${{ github.workspace }}/project
 
       - name: Run Linter
-        run: npm run lint
-        working-directory: ./project
+        run: bun run lint
+        working-directory: ${{ github.workspace }}/project
