@@ -140,7 +140,7 @@ export class DatabaseService {
     public getServer(): IServerBase {
         if (!this.databaseServer.getTables().server) {
             throw new Error(
-                this.localisationService.getText("database-data_at_path_missing", "assets/database/server"),
+                this.localisationService.getText("database-data_at_path_missing", "assets/database/server.json"),
             );
         }
 
@@ -153,7 +153,7 @@ export class DatabaseService {
     public getSettings(): ISettingsBase {
         if (!this.databaseServer.getTables().settings) {
             throw new Error(
-                this.localisationService.getText("database-data_at_path_missing", "assets/database/settings"),
+                this.localisationService.getText("database-data_at_path_missing", "assets/database/settings.json"),
             );
         }
 
@@ -319,7 +319,10 @@ export class DatabaseService {
     public getLocationServices(): ILocationServices {
         if (!this.databaseServer.getTables().templates.locationServices) {
             throw new Error(
-                this.localisationService.getText("database-data_at_path_missing", "assets/database/locationServices"),
+                this.localisationService.getText(
+                    "database-data_at_path_missing",
+                    "assets/database/locationServices.json",
+                ),
             );
         }
 
