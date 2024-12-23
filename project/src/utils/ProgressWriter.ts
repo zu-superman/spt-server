@@ -48,5 +48,7 @@ export class ProgressWriter {
             readline.cursorTo(process.stdout, 0, null);
             this.done = true;
         }
+
+        readline.cursorTo(process.stdout, 0, null);
     }
 }
