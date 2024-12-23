@@ -120,7 +120,7 @@ export class ImporterUtil {
             directoriesToRead.enqueueAll(this.vfs.getDirs(directory).map((d) => `${directory}/${d}`));
         }
 
-        const progressWriter = new ProgressWriter(filesToProcess.length);
+        const progressWriter = new ProgressWriter(filesToProcess.length - 1);
 
         while (filesToProcess.length !== 0) {
             const fileNode = filesToProcess.dequeue();
