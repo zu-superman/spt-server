@@ -20,7 +20,7 @@
         },
         "rain": {
             "values": [1, 2, 3, 4, 5],
-            "weights": [25, 1, 1, 1, 1]
+            "weights": [20, 1, 1, 1, 1]
         },
         "rainIntensity": {
             "min": 0,
