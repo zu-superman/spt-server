@@ -194,7 +194,7 @@ export class BotGenerator {
         );
 
         // Only run when generating a 'fake' playerscav, not actual player scav
-        if (!botGenerationDetails.isPlayerScav || this.shouldSimulatePlayerScav(botRoleLowercase)) {
+        if (!botGenerationDetails.isPlayerScav && this.shouldSimulatePlayerScav(botRoleLowercase)) {
             this.botNameService.addRandomPmcNameToBotMainProfileNicknameProperty(bot);
             this.setRandomisedGameVersionAndCategory(bot.Info);
         }
