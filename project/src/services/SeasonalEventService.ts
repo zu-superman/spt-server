@@ -236,7 +236,7 @@ export class SeasonalEventService {
     /**
      * Store active events inside class array property `currentlyActiveEvents` + set class properties: christmasEventActive/halloweenEventActive
      */
-    protected cacheActiveEvents(): void {
+    public cacheActiveEvents(): void {
         const currentDate = new Date();
         const seasonalEvents = this.getEventDetails();
 
