@@ -240,6 +240,12 @@ export class SeasonalEventService {
         const currentDate = new Date();
         const seasonalEvents = this.getEventDetails();
 
+        // reset existing data
+        this.currentlyActiveEvents = [];
+        this.christmasEventActive = false;
+        this.halloweenEventActive = false;
+
+        // Add active events to array
         for (const event of seasonalEvents) {
             const eventStartDate = new Date(currentDate.getFullYear(), event.startMonth - 1, event.startDay);
             const eventEndDate = new Date(currentDate.getFullYear(), event.endMonth - 1, event.endDay);
