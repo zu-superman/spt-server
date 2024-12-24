@@ -33,7 +33,7 @@ export class SeasonalEventService {
     protected christmasEventActive?: boolean = undefined;
 
     /** All events active at this point in time */
-    protected currentlyActiveEvents: ISeasonalEvent[] = [];
+    protected currentlyActiveEvents: ISeasonalEvent[] = null;
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
@@ -50,8 +50,6 @@ export class SeasonalEventService {
         this.httpConfig = this.configServer.getConfig(ConfigTypes.HTTP);
         this.weatherConfig = this.configServer.getConfig(ConfigTypes.WEATHER);
         this.locationConfig = this.configServer.getConfig(ConfigTypes.LOCATION);
-
-        this.cacheActiveEvents();
     }
 
     protected get christmasEventItems(): string[] {
@@ -83,6 +81,30 @@ export class SeasonalEventService {
             ItemTpl.FACECOVER_HOCKEY_PLAYER_MASK_BRAWLER,
             ItemTpl.FACECOVER_HOCKEY_PLAYER_MASK_QUIET,
         ];
+    }
+
+    protected getActiveEvents(): ISeasonalEvent[] {
+        if (this.currentlyActiveEvents === null) {
+            this.cacheActiveEvents();
+        }
+
+        return this.currentlyActiveEvents;
+    }
+
+    /**
+     * Sets the currently active events
+     * @param activeEvents Array of active events
+     * @param halloweenEventActive Halloween event
+     * @param christmasEventActive Christmas event
+     */
+    public setActiveEvents(
+        activeEvents: ISeasonalEvent[],
+        halloweenEventActive: boolean,
+        christmasEventActive: boolean,
+    ) {
+        this.currentlyActiveEvents = activeEvents;
+        this.halloweenEventActive = halloweenEventActive;
+        this.christmasEventActive = christmasEventActive;
     }
 
     /**
@@ -214,11 +236,9 @@ export class SeasonalEventService {
      * Handle activating seasonal events
      */
     public enableSeasonalEvents(): void {
-        if (this.currentlyActiveEvents) {
-            const globalConfig = this.databaseService.getGlobals().config;
-            for (const event of this.currentlyActiveEvents) {
-                this.updateGlobalEvents(globalConfig, event);
-            }
+        const globalConfig = this.databaseService.getGlobals().config;
+        for (const event of this.getActiveEvents()) {
+            this.updateGlobalEvents(globalConfig, event);
         }
     }
 
@@ -236,10 +256,11 @@ export class SeasonalEventService {
     /**
      * Store active events inside class array property `currentlyActiveEvents` + set class properties: christmasEventActive/halloweenEventActive
      */
-    public cacheActiveEvents(): void {
+    protected cacheActiveEvents(): void {
         const currentDate = new Date();
         const seasonalEvents = this.getEventDetails();
 
+        this.currentlyActiveEvents = [];
         for (const event of seasonalEvents) {
             const eventStartDate = new Date(currentDate.getFullYear(), event.startMonth - 1, event.startDay);
             const eventEndDate = new Date(currentDate.getFullYear(), event.endMonth - 1, event.endDay);
@@ -455,16 +476,14 @@ export class SeasonalEventService {
     }
 
     public givePlayerSeasonalGifts(sessionId: string): void {
-        if (this.currentlyActiveEvents) {
-            for (const event of this.currentlyActiveEvents) {
-                switch (event.type.toLowerCase()) {
-                    case SeasonalEventType.CHRISTMAS.toLowerCase():
-                        this.giveGift(sessionId, "Christmas2022");
-                        break;
-                    case SeasonalEventType.NEW_YEARS.toLowerCase():
-                        this.giveGift(sessionId, "NewYear2023");
-                        break;
-                }
+        for (const event of this.getActiveEvents()) {
+            switch (event.type.toLowerCase()) {
+                case SeasonalEventType.CHRISTMAS.toLowerCase():
+                    this.giveGift(sessionId, "Christmas2022");
+                    break;
+                case SeasonalEventType.NEW_YEARS.toLowerCase():
+                    this.giveGift(sessionId, "NewYear2023");
+                    break;
             }
         }
     }
