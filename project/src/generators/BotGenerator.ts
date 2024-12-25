@@ -6,6 +6,7 @@ import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { WeightedRandomHelper } from "@spt/helpers/WeightedRandomHelper";
 import type { MinMax } from "@spt/models/common/MinMax";
 import type { IWildBody } from "@spt/models/eft/common/IGlobals";
+import type { IPmcData } from "@spt/models/eft/common/IPmcData";
 import type {
     Common,
     IBaseJsonSkills,
@@ -16,7 +17,7 @@ import type {
     ISkills as botSkills,
 } from "@spt/models/eft/common/tables/IBotBase";
 import type { IAppearance, IBodyPart, IBotType, IHealth, IInventory } from "@spt/models/eft/common/tables/IBotType";
-import type { IItem, IUpd } from "@spt/models/eft/common/tables/IItem";
+import { IItem, IUpd } from "@spt/models/eft/common/tables/IItem";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { GameEditions } from "@spt/models/enums/GameEditions";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
@@ -30,7 +31,7 @@ import { ConfigServer } from "@spt/servers/ConfigServer";
 import { BotEquipmentFilterService } from "@spt/services/BotEquipmentFilterService";
 import { BotNameService } from "@spt/services/BotNameService";
 import { DatabaseService } from "@spt/services/DatabaseService";
-import type { ItemFilterService } from "@spt/services/ItemFilterService";
+import { ItemFilterService } from "@spt/services/ItemFilterService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { RandomUtil } from "@spt/utils/RandomUtil";
@@ -71,9 +72,16 @@ export class BotGenerator {
      * @param role e.g. assault / pmcbot
      * @param difficulty easy/normal/hard/impossible
      * @param botTemplate base bot template to use  (e.g. assault/pmcbot)
-     * @returns
+     * profile PMC profile of player generating pscav
+     * @returns IBotBase
      */
-    public generatePlayerScav(sessionId: string, role: string, difficulty: string, botTemplate: IBotType): IBotBase {
+    public generatePlayerScav(
+        sessionId: string,
+        role: string,
+        difficulty: string,
+        botTemplate: IBotType,
+        profile: IPmcData,
+    ): IBotBase {
         let bot = this.getCloneOfBotBase();
         bot.Info.Settings.BotDifficulty = difficulty;
         bot.Info.Settings.Role = role;
@@ -91,6 +99,9 @@ export class BotGenerator {
         };
 
         bot = this.generateBot(sessionId, bot, botTemplate, botGenDetails);
+
+        // Sets the name after scav name shown in parenthesis
+        bot.Info.MainProfileNickname = profile.Info.Nickname;
 
         return bot;
     }
@@ -113,6 +124,9 @@ export class BotGenerator {
             ? preparedBotBase.Info.Side // Use side to get usec.json or bear.json when bot will be PMC
             : botGenerationDetails.role;
         const botJsonTemplateClone = this.cloner.clone(this.botHelper.getBotTemplate(botRole));
+        if (!botJsonTemplateClone) {
+            this.logger.error(`Unable to retrieve: ${botRole} bot template, cannot generate bot of this type`);
+        }
 
         return this.generateBot(sessionId, preparedBotBase, botJsonTemplateClone, botGenerationDetails);
     }
@@ -162,6 +176,7 @@ export class BotGenerator {
             bot,
         );
 
+        // Only filter bot equipment, never players
         if (!botGenerationDetails.isPlayerScav) {
             this.botEquipmentFilterService.filterBotEquipment(
                 sessionId,
@@ -177,6 +192,12 @@ export class BotGenerator {
             botRoleLowercase,
             this.botConfig.botRolesThatMustHaveUniqueName,
         );
+
+        // Only run when generating a 'fake' playerscav, not actual player scav
+        if (!botGenerationDetails.isPlayerScav && this.shouldSimulatePlayerScav(botRoleLowercase)) {
+            this.botNameService.addRandomPmcNameToBotMainProfileNicknameProperty(bot);
+            this.setRandomisedGameVersionAndCategory(bot.Info);
+        }
 
         if (!this.seasonalEventService.christmasEventEnabled()) {
             // Process all bots EXCEPT gifter, he needs christmas items
@@ -259,6 +280,15 @@ export class BotGenerator {
     }
 
     /**
+     * Should this bot have a name like "name (Pmc Name)" and be alterd by client patch to be hostile to player
+     * @param botRole Role bot has
+     * @returns True if name should be simulated pscav
+     */
+    protected shouldSimulatePlayerScav(botRole: string): boolean {
+        return botRole === "assault" && this.randomUtil.getChance100(this.botConfig.chanceAssaultScavHasPlayerScavName);
+    }
+
+    /**
      * Get exp for kill by bot difficulty
      * @param experience Dict of difficulties and experience
      * @param botDifficulty the killed bots difficulty
@@ -272,7 +302,7 @@ export class BotGenerator {
     ): number {
         const result = experience[botDifficulty.toLowerCase()];
         if (typeof result === "undefined") {
-            this.logger.warning(
+            this.logger.debug(
                 `Unable to find experience for kill value for: ${role} ${botDifficulty}, falling back to "normal"`,
             );
 

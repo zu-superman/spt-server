@@ -6,7 +6,7 @@ import type { IDatabaseTables } from "@spt/models/spt/server/IDatabaseTables";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import type { ImporterUtil } from "@spt/utils/ImporterUtil";
 import { DependencyContainer, Lifecycle, container } from "tsyringe";
-import type { Environment } from "vitest";
+import type { Environment } from "vitest/environments";
 
 // Manually mock the logger.
 import { WinstonLogger } from "@tests/__mocks__/WinstonLogger.mock";
@@ -26,7 +26,7 @@ export default (<Environment>{
         await importDatabase(container);
 
         return {
-            async teardown() {},
+            async teardown() { },
         };
     },
 });
