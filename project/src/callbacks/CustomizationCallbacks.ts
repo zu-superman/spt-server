@@ -10,6 +10,7 @@ import type { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEv
 import { SaveServer } from "@spt/servers/SaveServer";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 import { inject, injectable } from "tsyringe";
+import type { ICustomisationStorage } from "../models/eft/common/tables/ICustomisationStorage";
 
 @injectable()
 export class CustomizationCallbacks {
@@ -58,6 +59,10 @@ export class CustomizationCallbacks {
     }
 
     public getHideoutCustomisation(url: string, info: any, sessionID: string): IGetBodyResponseData<any> {
-        return this.customizationController.getHideoutCustomisation(sessionID, info);
+        return this.httpResponse.getBody(this.customizationController.getHideoutCustomisation(sessionID, info));
+    }
+
+    getStorage(url: string, info: any, sessionID: string): IGetBodyResponseData<ICustomisationStorage> {
+        return this.httpResponse.getBody(this.customizationController.getCustomisationStoage(sessionID, info));
     }
 }
