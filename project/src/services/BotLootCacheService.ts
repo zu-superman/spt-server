@@ -1,9 +1,10 @@
 import { PMCLootGenerator } from "@spt/generators/PMCLootGenerator";
-import type { ItemHelper } from "@spt/helpers/ItemHelper";
+import { ItemHelper } from "@spt/helpers/ItemHelper";
 import type { IBotType } from "@spt/models/eft/common/tables/IBotType";
 import type { IProps, ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
-import type { IBotLootCache, LootCacheType } from "@spt/models/spt/bots/IBotLootCache";
+import { LootCacheType } from "@spt/models/spt/bots/IBotLootCache";
+import type { IBotLootCache } from "@spt/models/spt/bots/IBotLootCache";
 import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { LocalisationService } from "@spt/services/LocalisationService";

@@ -12,7 +12,7 @@ import type { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem"
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { EquipmentSlots } from "@spt/models/enums/EquipmentSlots";
-import type { ItemAddedResult } from "@spt/models/enums/ItemAddedResult";
+import { ItemAddedResult } from "@spt/models/enums/ItemAddedResult";
 import { LootCacheType } from "@spt/models/spt/bots/IBotLootCache";
 import type { IItemSpawnLimitSettings } from "@spt/models/spt/bots/IItemSpawnLimitSettings";
 import type { IBotConfig } from "@spt/models/spt/config/IBotConfig";

@@ -7,7 +7,7 @@ import type { IItem } from "@spt/models/eft/common/tables/IItem";
 import type { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { EquipmentSlots } from "@spt/models/enums/EquipmentSlots";
-import type { ItemAddedResult } from "@spt/models/enums/ItemAddedResult";
+import { ItemAddedResult } from "@spt/models/enums/ItemAddedResult";
 import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { LocalisationService } from "@spt/services/LocalisationService";
