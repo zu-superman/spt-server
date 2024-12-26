@@ -87,12 +87,14 @@ export interface IInfo {
     NicknameChangeDate: number;
     NeedWipeOptions: any[];
     lastCompletedWipe: ILastCompleted;
+    lastWipeTimestamp: number;
     Bans: IBan[];
     BannedState: boolean;
     BannedUntil: number;
     IsStreamerModeAvailable: boolean;
     lastCompletedEvent?: ILastCompleted;
     isMigratedSkills: boolean;
+    PrestigeLevel: number;
 }
 
 export interface IBotInfoSettings {
@@ -171,6 +173,7 @@ export interface IInventory {
     hideoutAreaStashes: Record<string, string>;
     fastPanel: Record<string, string>;
     favoriteItems: string[];
+    hideoutCustomizationStashId: string;
 }
 
 export interface IBaseJsonSkills {

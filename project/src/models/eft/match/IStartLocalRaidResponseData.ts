@@ -7,6 +7,7 @@ export interface IStartLocalRaidResponseData {
     serverSettings: ILocationServices;
     profile: IProfileInsuredItems;
     locationLoot: ILocationBase;
+    transitionType: string;
     transition: ITransition;
 }
 

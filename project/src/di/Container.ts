@@ -22,6 +22,7 @@ import { ModCallbacks } from "@spt/callbacks/ModCallbacks";
 import { NoteCallbacks } from "@spt/callbacks/NoteCallbacks";
 import { NotifierCallbacks } from "@spt/callbacks/NotifierCallbacks";
 import { PresetCallbacks } from "@spt/callbacks/PresetCallbacks";
+import { PrestigeCallbacks } from "@spt/callbacks/PrestigeCallbacks";
 import { ProfileCallbacks } from "@spt/callbacks/ProfileCallbacks";
 import { QuestCallbacks } from "@spt/callbacks/QuestCallbacks";
 import { RagfairCallbacks } from "@spt/callbacks/RagfairCallbacks";
@@ -51,6 +52,7 @@ import { MatchController } from "@spt/controllers/MatchController";
 import { NoteController } from "@spt/controllers/NoteController";
 import { NotifierController } from "@spt/controllers/NotifierController";
 import { PresetController } from "@spt/controllers/PresetController";
+import { PrestigeController } from "@spt/controllers/PrestigeController";
 import { ProfileController } from "@spt/controllers/ProfileController";
 import { QuestController } from "@spt/controllers/QuestController";
 import { RagfairController } from "@spt/controllers/RagfairController";
@@ -181,6 +183,7 @@ import { LauncherStaticRouter } from "@spt/routers/static/LauncherStaticRouter";
 import { LocationStaticRouter } from "@spt/routers/static/LocationStaticRouter";
 import { MatchStaticRouter } from "@spt/routers/static/MatchStaticRouter";
 import { NotifierStaticRouter } from "@spt/routers/static/NotifierStaticRouter";
+import { PrestigeStaticRouter } from "@spt/routers/static/PrestigeStaticRouter";
 import { ProfileStaticRouter } from "@spt/routers/static/ProfileStaticRouter";
 import { QuestStaticRouter } from "@spt/routers/static/QuestStaticRouter";
 import { RagfairStaticRouter } from "@spt/routers/static/RagfairStaticRouter";
@@ -368,6 +371,7 @@ export class Container {
         depContainer.registerType("StaticRoutes", "NotifierStaticRouter");
         depContainer.registerType("StaticRoutes", "ProfileStaticRouter");
         depContainer.registerType("StaticRoutes", "TraderStaticRouter");
+        depContainer.registerType("StaticRoutes", "PrestigeStaticRouter");
         depContainer.registerType("DynamicRoutes", "BotDynamicRouter");
         depContainer.registerType("DynamicRoutes", "BundleDynamicRouter");
         depContainer.registerType("DynamicRoutes", "CustomizationDynamicRouter");
@@ -525,6 +529,7 @@ export class Container {
         depContainer.register<LocationStaticRouter>("LocationStaticRouter", { useClass: LocationStaticRouter });
         depContainer.register<MatchStaticRouter>("MatchStaticRouter", { useClass: MatchStaticRouter });
         depContainer.register<NotifierStaticRouter>("NotifierStaticRouter", { useClass: NotifierStaticRouter });
+        depContainer.register<PrestigeStaticRouter>("PrestigeStaticRouter", { useClass: PrestigeStaticRouter });
         depContainer.register<ProfileStaticRouter>("ProfileStaticRouter", { useClass: ProfileStaticRouter });
         depContainer.register<QuestStaticRouter>("QuestStaticRouter", { useClass: QuestStaticRouter });
         depContainer.register<RagfairStaticRouter>("RagfairStaticRouter", { useClass: RagfairStaticRouter });
@@ -692,6 +697,7 @@ export class Container {
         depContainer.register<WishlistCallbacks>("WishlistCallbacks", { useClass: WishlistCallbacks });
         depContainer.register<AchievementCallbacks>("AchievementCallbacks", { useClass: AchievementCallbacks });
         depContainer.register<BuildsCallbacks>("BuildsCallbacks", { useClass: BuildsCallbacks });
+        depContainer.register<PrestigeCallbacks>("PrestigeCallbacks", { useClass: PrestigeCallbacks });
     }
 
     private static registerServices(depContainer: DependencyContainer): void {
@@ -875,5 +881,6 @@ export class Container {
         depContainer.register<WeatherController>("WeatherController", { useClass: WeatherController });
         depContainer.register<WishlistController>("WishlistController", WishlistController);
         depContainer.register<AchievementController>("AchievementController", AchievementController);
+        depContainer.register<PrestigeController>("PrestigeController", PrestigeController);
     }
 }

@@ -313,6 +313,11 @@ export class GameController {
             useProtobuf: false,
             utc_time: new Date().getTime() / 1000,
             totalInGame: gameTime,
+            sessionMode: "pve",
+            purchasedGames: {
+                eft: true,
+                arena: false,
+            },
         };
 
         return config;

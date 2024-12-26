@@ -56,4 +56,8 @@ export class CustomizationCallbacks {
     public buyClothing(pmcData: IPmcData, body: IBuyClothingRequestData, sessionID: string): IItemEventRouterResponse {
         return this.customizationController.buyClothing(pmcData, body, sessionID);
     }
+
+    public getHideoutCustomisation(url: string, info: any, sessionID: string): IGetBodyResponseData<any> {
+        return this.customizationController.getHideoutCustomisation(sessionID, info);
+    }
 }
