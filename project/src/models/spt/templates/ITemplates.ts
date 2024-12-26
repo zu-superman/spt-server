@@ -1,4 +1,5 @@
 import type { IAchievement } from "@spt/models/eft/common/tables/IAchievement";
+import type { ICustomisationStorage } from "@spt/models/eft/common/tables/ICustomisationStorage";
 import type { ICustomizationItem } from "@spt/models/eft/common/tables/ICustomizationItem";
 import type { IHandbookBase } from "@spt/models/eft/common/tables/IHandbookBase";
 import type { ILocationServices } from "@spt/models/eft/common/tables/ILocationServices";
@@ -11,6 +12,7 @@ import type { IDefaultEquipmentPreset } from "@spt/models/eft/profile/ISptProfil
 
 export interface ITemplates {
     character: string[];
+    customisationStoage: ICustomisationStorage[];
     items: Record<string, ITemplateItem>;
     prestige: IPrestige;
     quests: Record<string, IQuest>;

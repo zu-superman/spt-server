@@ -13,6 +13,8 @@ import { SaveServer } from "@spt/servers/SaveServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { inject, injectable } from "tsyringe";
+import type { ICustomisationStorage } from "../models/eft/common/tables/ICustomisationStorage";
+import type { IHideoutCustomisation } from "../models/eft/hideout/IHideoutCustomisation";
 
 @injectable()
 export class CustomizationController {
@@ -239,7 +241,11 @@ export class CustomizationController {
         return result;
     }
 
-    public getHideoutCustomisation(sessionID: string, info: any) {
+    public getHideoutCustomisation(sessionID: string, info: any): IHideoutCustomisation {
         return this.databaseService.getHideout().customisation;
+    }
+
+    public getCustomisationStoage(sessionID: string, info: any): ICustomisationStorage[] {
+        return this.databaseService.getTemplates().customisationStoage;
     }
 }
