@@ -5,7 +5,7 @@ import { BotWeaponGeneratorHelper } from "@spt/helpers/BotWeaponGeneratorHelper"
 import type { ItemHelper } from "@spt/helpers/ItemHelper";
 import type { ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { EquipmentSlots } from "@spt/models/enums/EquipmentSlots";
-import type { ItemAddedResult } from "@spt/models/enums/ItemAddedResult";
+import { ItemAddedResult } from "@spt/models/enums/ItemAddedResult";
 import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
