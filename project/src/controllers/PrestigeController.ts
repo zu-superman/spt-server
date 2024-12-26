@@ -44,7 +44,7 @@ export class PrestigeController {
      * Handle /client/prestige/list
      */
     public getPrestige(sessionID: string, info: any): any {
-        return this.databaseService.getTemplates().prestige;
+        return { elements: this.databaseService.getTemplates().prestige };
     }
 
     /**
