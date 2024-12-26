@@ -10,7 +10,7 @@ import type { IGrid, ITemplateItem } from "@spt/models/eft/common/tables/ITempla
 import type { IGetRaidConfigurationRequestData } from "@spt/models/eft/match/IGetRaidConfigurationRequestData";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
-import type { ItemAddedResult } from "@spt/models/enums/ItemAddedResult";
+import { ItemAddedResult } from "@spt/models/enums/ItemAddedResult";
 import type { IChooseRandomCompatibleModResult } from "@spt/models/spt/bots/IChooseRandomCompatibleModResult";
 import type { EquipmentFilters, IBotConfig, IRandomisedResourceValues } from "@spt/models/spt/config/IBotConfig";
 import type { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";

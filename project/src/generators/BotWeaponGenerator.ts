@@ -1,6 +1,6 @@
 import { BotEquipmentModGenerator } from "@spt/generators/BotEquipmentModGenerator";
 import type { IInventoryMagGen } from "@spt/generators/weapongen/IInventoryMagGen";
-import type { InventoryMagGen } from "@spt/generators/weapongen/InventoryMagGen";
+import { InventoryMagGen } from "@spt/generators/weapongen/InventoryMagGen";
 import { BotGeneratorHelper } from "@spt/helpers/BotGeneratorHelper";
 import { BotWeaponGeneratorHelper } from "@spt/helpers/BotWeaponGeneratorHelper";
 import type { ItemHelper } from "@spt/helpers/ItemHelper";
@@ -417,6 +417,7 @@ export class BotWeaponGenerator {
             ammoTemplate,
             inventory,
         );
+
         this.inventoryMagGenComponents
             .find((v) => v.canHandleInventoryMagGen(inventoryMagGenModel))
             .process(inventoryMagGenModel);
