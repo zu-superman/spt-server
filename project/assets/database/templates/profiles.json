@@ -3,6 +3,8 @@
         "descriptionLocaleKey": "launcher-profile_standard",
         "bear": {
             "character": {
+				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -448,6 +450,9 @@
                             "_id": "63db64cbf9963741dc0d741f",
                             "_tpl": "6401c7b213d9b818bf0e7dd7"
                         }, {
+							"_id": "676db384777490e23c45b657",
+							"_tpl": "673c7b00cbf4b984b5099181"
+						}, {
                             "_id": "5fe4977574f15b4ad31b661a",
                             "_tpl": "5ac4cd105acfc40016339859",
                             "parentId": "5fe4977574f15b4ad31b6631",
@@ -2297,7 +2302,8 @@
                     "questRaidItems": "5fe4977574f15b4ad31b66b7",
                     "questStashItems": "5fe4977574f15b4ad31b66b8",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe4977574f15b4ad31b66b6"
+                    "stash": "5fe4977574f15b4ad31b66b6",
+					"hideoutCustomizationStashId": "676db384777490e23c45b657"
                 },
                 "Notes": {
                     "Notes": []
@@ -2683,6 +2689,8 @@
         },
         "usec": {
             "character": {
+				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -3148,6 +3156,9 @@
                             "_id": "63db64cbf9963741dc0d741f",
                             "_tpl": "6401c7b213d9b818bf0e7dd7"
                         }, {
+							"_id": "676db384777490e23c45b657",
+							"_tpl": "673c7b00cbf4b984b5099181"
+						}, {
                             "_id": "5fe49cdfa19cac3fa9054068",
                             "_tpl": "5447a9cd4bdc2dbd208b4567",
                             "parentId": "5fe49cdfa19cac3fa905407f",
@@ -5172,7 +5183,8 @@
                     "questRaidItems": "5fe49cdfa19cac3fa9054116",
                     "questStashItems": "5fe49cdfa19cac3fa9054117",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe49cdfa19cac3fa9054115"
+                    "stash": "5fe49cdfa19cac3fa9054115",
+					"hideoutCustomizationStashId": "676db384777490e23c45b657"
                 },
                 "Notes": {
                     "Notes": []
@@ -5559,6 +5571,8 @@
         "descriptionLocaleKey": "launcher-profile_leftbehind",
         "bear": {
             "character": {
+				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -6029,6 +6043,9 @@
                             "_id": "63db64cbf9963741dc0d741f",
                             "_tpl": "6401c7b213d9b818bf0e7dd7"
                         }, {
+							"_id": "676db384777490e23c45b657",
+							"_tpl": "673c7b00cbf4b984b5099181"
+						}, {
                             "_id": "5fe4a9285a72d07b6630291c",
                             "_tpl": "5ac4cd105acfc40016339859",
                             "parentId": "5fe4a9285a72d07b66302933",
@@ -8414,7 +8431,8 @@
                     "questRaidItems": "5fe4a9285a72d07b663029e3",
                     "questStashItems": "5fe4a9285a72d07b663029e4",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe4a9285a72d07b663029e2"
+                    "stash": "5fe4a9285a72d07b663029e2",
+					"hideoutCustomizationStashId": "676db384777490e23c45b657"
                 },
                 "Notes": {
                     "Notes": []
@@ -8798,6 +8816,8 @@
         },
         "usec": {
             "character": {
+				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -9288,6 +9308,9 @@
                             "_id": "63db64cbf9963741dc0d741f",
                             "_tpl": "6401c7b213d9b818bf0e7dd7"
                         }, {
+							"_id": "676db384777490e23c45b657",
+							"_tpl": "673c7b00cbf4b984b5099181"
+						}, {
                             "_id": "5fe4a9fcf5aec236ec383625",
                             "_tpl": "5447a9cd4bdc2dbd208b4567",
                             "parentId": "5fe4a9fcf5aec236ec38363c",
@@ -11755,7 +11778,8 @@
                     "questRaidItems": "5fe4a9fcf5aec236ec3836f8",
                     "questStashItems": "5fe4a9fcf5aec236ec3836f9",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe4a9fcf5aec236ec3836f7"
+                    "stash": "5fe4a9fcf5aec236ec3836f7",
+					"hideoutCustomizationStashId": "676db384777490e23c45b657"
                 },
                 "Notes": {
                     "Notes": []
@@ -12142,6 +12166,8 @@
         "descriptionLocaleKey": "launcher-profile_preparetoescape",
         "bear": {
             "character": {
+				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -12637,6 +12663,9 @@
                             "_id": "63db64cbf9963741dc0d741f",
                             "_tpl": "6401c7b213d9b818bf0e7dd7"
                         }, {
+							"_id": "676db384777490e23c45b657",
+							"_tpl": "673c7b00cbf4b984b5099181"
+						}, {
                             "_id": "5fe4a66e40ca750fd72b586f",
                             "_tpl": "5ac4cd105acfc40016339859",
                             "parentId": "5fe4a66e40ca750fd72b5886",
@@ -15455,7 +15484,8 @@
                     "questRaidItems": "5fe4a66e40ca750fd72b595b",
                     "questStashItems": "5fe4a66e40ca750fd72b595c",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe4a66e40ca750fd72b595a"
+                    "stash": "5fe4a66e40ca750fd72b595a",
+					"hideoutCustomizationStashId": "676db384777490e23c45b657"
                 },
                 "Notes": {
                     "Notes": []
@@ -15839,6 +15869,8 @@
         },
         "usec": {
             "character": {
+				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -16366,6 +16398,9 @@
                             "_id": "63db64cbf9963741dc0d741f",
                             "_tpl": "6401c7b213d9b818bf0e7dd7"
                         }, {
+							"_id": "676db384777490e23c45b657",
+							"_tpl": "673c7b00cbf4b984b5099181"
+						}, {
                             "_id": "5fe4ab2240ca750fd72bbd23",
                             "_tpl": "5447a9cd4bdc2dbd208b4567",
                             "parentId": "5fe4ab2240ca750fd72bbd3a",
@@ -19352,7 +19387,8 @@
                     "questRaidItems": "5fe4ab2240ca750fd72bbe1d",
                     "questStashItems": "5fe4ab2240ca750fd72bbe1e",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe4ab2240ca750fd72bbe1c"
+                    "stash": "5fe4ab2240ca750fd72bbe1c",
+					"hideoutCustomizationStashId": "676db384777490e23c45b657"
                 },
                 "Notes": {
                     "Notes": []
@@ -19740,6 +19776,7 @@
         "bear": {
             "character": {
 				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -20327,6 +20364,9 @@
                             "_id": "6613bb72b5b0ba138a0fa9f4",
                             "_tpl": "55d7217a4bdc2d86028b456d"
                         }, {
+							"_id": "676db384777490e23c45b657",
+							"_tpl": "673c7b00cbf4b984b5099181"
+						}, {
                             "_id": "6613bb72b5b0ba138a0fa9d9",
                             "_tpl": "5ac4cd105acfc40016339859",
                             "parentId": "6613bb72b5b0ba138a0fa9f4",
@@ -23104,7 +23144,8 @@
                     "questRaidItems": "6613bb72b5b0ba138a0fab08",
                     "questStashItems": "6613bb72b5b0ba138a0fab09",
                     "sortingTable": "6613bb72b5b0ba138a0fab0a",
-                    "stash": "6613bb72b5b0ba138a0fab07"
+                    "stash": "6613bb72b5b0ba138a0fab07",
+					"hideoutCustomizationStashId": "676db384777490e23c45b657"
                 },
                 "Notes": {
                     "Notes": []
@@ -23490,6 +23531,8 @@
         },
         "usec": {
             "character": {
+				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -24043,6 +24086,9 @@
                             "_id": "6613e1cf291a2e76b00269a8",
                             "_tpl": "55d7217a4bdc2d86028b456d"
                         }, {
+							"_id": "676db384777490e23c45b657",
+							"_tpl": "673c7b00cbf4b984b5099181"
+						}, {
                             "_id": "6613e1cf291a2e76b002698d",
                             "_tpl": "5447a9cd4bdc2dbd208b4567",
                             "parentId": "6613e1cf291a2e76b00269a8",
@@ -26982,7 +27028,8 @@
                     "questRaidItems": "6613e1cf291a2e76b0026acd",
                     "questStashItems": "6613e1cf291a2e76b0026ace",
                     "sortingTable": "6613e1cf291a2e76b0026acf",
-                    "stash": "6613e1cf291a2e76b0026acc"
+                    "stash": "6613e1cf291a2e76b0026acc",
+					"hideoutCustomizationStashId": "676db384777490e23c45b657"
                 },
                 "Notes": {
                     "Notes": []
@@ -27372,6 +27419,7 @@
         "bear": {
             "character": {
 				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -28052,6 +28100,9 @@
                             "_id": "664113fa049fd2369707c37e",
                             "_tpl": "55d7217a4bdc2d86028b456d"
                         }, {
+							"_id": "676db384777490e23c45b657",
+							"_tpl": "673c7b00cbf4b984b5099181"
+						}, {
                             "_id": "664113fa049fd2369707c363",
                             "_tpl": "5ac4cd105acfc40016339859",
                             "parentId": "664113fa049fd2369707c37e",
@@ -31473,7 +31524,8 @@
                     "questRaidItems": "664113fa049fd2369707c4ec",
                     "questStashItems": "664113fa049fd2369707c4ed",
                     "sortingTable": "664113fa049fd2369707c4ee",
-                    "stash": "664113fa049fd2369707c4eb"
+                    "stash": "664113fa049fd2369707c4eb",
+					"hideoutCustomizationStashId": "676db384777490e23c45b657"
                 },
                 "Notes": {
                     "Notes": []
@@ -31862,6 +31914,7 @@
         "usec": {
             "character": {
 				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -32539,6 +32592,9 @@
                             "_id": "664115f68b8ae858750609b3",
                             "_tpl": "55d7217a4bdc2d86028b456d"
                         }, {
+							"_id": "676db384777490e23c45b657",
+							"_tpl": "673c7b00cbf4b984b5099181"
+						}, {
                             "_id": "664115f68b8ae85875060999",
                             "_tpl": "5447a9cd4bdc2dbd208b4567",
                             "parentId": "664115f68b8ae858750609b3",
@@ -36181,7 +36237,8 @@
                     "questRaidItems": "664115f68b8ae85875060b3a",
                     "questStashItems": "664115f68b8ae85875060b3b",
                     "sortingTable": "664115f68b8ae85875060b3c",
-                    "stash": "664115f68b8ae85875060b39"
+                    "stash": "664115f68b8ae85875060b39",
+					"hideoutCustomizationStashId": "676db384777490e23c45b657"
                 },
                 "Notes": {
                     "Notes": []
@@ -36572,6 +36629,8 @@
 		"descriptionLocaleKey": "launcher-profile-tournament",
 		"bear": {
             "character": {
+				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -37123,6 +37182,9 @@
                         "_id": "6651d79c3a25ddd0fc054a08",
                         "_tpl": "55d7217a4bdc2d86028b456d"
                     }, {
+						"_id": "676db384777490e23c45b657",
+						"_tpl": "673c7b00cbf4b984b5099181"
+					}, {
                         "_id": "6651d79c3a25ddd0fc054a05",
                         "_tpl": "54491bb74bdc2d09088b4567",
                         "parentId": "6651d79c3a25ddd0fc054a08",
@@ -37158,7 +37220,8 @@
                 "questStashItems": "6651d79c3a25ddd0fc054a0b",
                 "fastPanel": {},
                 "hideoutAreaStashes": {},
-                "favoriteItems": []
+                "favoriteItems": [],
+				"hideoutCustomizationStashId": "676db384777490e23c45b657"
             },
                 "Notes": {
                     "Notes": []
@@ -37545,6 +37608,8 @@
         },
         "usec": {
             "character": {
+				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -38094,6 +38159,9 @@
                         "_id": "6651d79c3a25ddd0fc054a08",
                         "_tpl": "55d7217a4bdc2d86028b456d"
                     }, {
+						"_id": "676db384777490e23c45b657",
+						"_tpl": "673c7b00cbf4b984b5099181"
+					}, {
                         "_id": "6651d79c3a25ddd0fc054a05",
                         "_tpl": "54491bb74bdc2d09088b4567",
                         "parentId": "6651d79c3a25ddd0fc054a08",
@@ -38129,7 +38197,8 @@
                 "questStashItems": "6651d79c3a25ddd0fc054a0b",
                 "fastPanel": {},
                 "hideoutAreaStashes": {},
-                "favoriteItems": []
+                "favoriteItems": [],
+				"hideoutCustomizationStashId": "676db384777490e23c45b657"
             },
                 "Notes": {
                     "Notes": []
@@ -38519,6 +38588,8 @@
         "descriptionLocaleKey": "launcher-profile_sptdeveloper",
         "bear": {
             "character": {
+				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -41102,6 +41173,9 @@
                             "_id": "65e5bb1713227bb7690cea0a",
                             "_tpl": "65e5957613227bb7690ce9f6"
                         }, {
+							"_id": "676db384777490e23c45b657",
+							"_tpl": "673c7b00cbf4b984b5099181"
+						}, {
 							"_id": "66c8f2c0584b8fef8201d0e8",
 							"_tpl": "55d7217a4bdc2d86028b456d",
 							"parentId": "65e5bb1713227bb7690cea0a",
@@ -41265,7 +41339,8 @@
                     "questRaidItems": "5fe49444ae6628187a2e78b9",
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe49444ae6628187a2e78b8"
+                    "stash": "5fe49444ae6628187a2e78b8",
+					"hideoutCustomizationStashId": "676db384777490e23c45b657"
                 },
                 "Notes": {
                     "Notes": []
@@ -41653,6 +41728,8 @@
         },
         "usec": {
             "character": {
+				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -44222,6 +44299,9 @@
                             "_id": "5fe49444ae6628187a2e77b8",
                             "_tpl": "55d7217a4bdc2d86028b456d"
                         }, {
+							"_id": "676db384777490e23c45b657",
+							"_tpl": "673c7b00cbf4b984b5099181"
+						}, {
                             "_id": "f5e6bdac05e699d687993249",
                             "_tpl": "5857a8bc2459772bad15db29",
                             "parentId": "5fe49444ae6628187a2e77b8",
@@ -44384,7 +44464,8 @@
                     "questRaidItems": "5fe49444ae6628187a2e78b9",
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe49444ae6628187a2e78b8"
+                    "stash": "5fe49444ae6628187a2e78b8",
+					"hideoutCustomizationStashId": "676db384777490e23c45b657"
                 },
                 "Notes": {
                     "Notes": []
@@ -44774,6 +44855,8 @@
         "descriptionLocaleKey": "launcher-profile_spteasystart",
         "bear": {
             "character": {
+				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -47341,6 +47424,9 @@
                             "_id": "63db64cbf9963741dc0d741f",
                             "_tpl": "6401c7b213d9b818bf0e7dd7"
                         }, {
+							"_id": "676db384777490e23c45b657",
+							"_tpl": "673c7b00cbf4b984b5099181"
+						}, {
                             "_id": "f5e6bdac05e699d687993249",
                             "_tpl": "5857a8bc2459772bad15db29",
                             "parentId": "5fe49444ae6628187a2e77b8",
@@ -48176,6 +48262,8 @@
         },
         "usec": {
             "character": {
+				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -50743,6 +50831,9 @@
                             "_id": "63db64cbf9963741dc0d741f",
                             "_tpl": "6401c7b213d9b818bf0e7dd7"
                         }, {
+							"_id": "676db384777490e23c45b657",
+							"_tpl": "673c7b00cbf4b984b5099181"
+						}, {
                             "_id": "f5e6bdac05e699d687993249",
                             "_tpl": "5857a8bc2459772bad15db29",
                             "parentId": "5fe49444ae6628187a2e77b8",
@@ -51193,7 +51284,8 @@
                     "questRaidItems": "5fe49444ae6628187a2e78b9",
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe49444ae6628187a2e78b8"
+                    "stash": "5fe49444ae6628187a2e78b8",
+					"hideoutCustomizationStashId": "676db384777490e23c45b657"
                 },
                 "Notes": {
                     "Notes": []
@@ -51581,6 +51673,8 @@
         "descriptionLocaleKey": "launcher-profile_sptzerotohero",
         "bear": {
             "character": {
+				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -52121,6 +52215,9 @@
                             "_id": "63db64cbf9963741dc0d741f",
                             "_tpl": "6401c7b213d9b818bf0e7dd7"
                         }, {
+							"_id": "676db384777490e23c45b657",
+							"_tpl": "673c7b00cbf4b984b5099181"
+						}, {
                             "_id": "f5e6bdac05e699d687993249",
                             "_tpl": "544a11ac4bdc2d470e8b456a",
                             "parentId": "5fe49444ae6628187a2e77b8",
@@ -52158,7 +52255,8 @@
                     "questRaidItems": "5fe49444ae6628187a2e78b9",
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe49444ae6628187a2e78b8"
+                    "stash": "5fe49444ae6628187a2e78b8",
+					"hideoutCustomizationStashId": "676db384777490e23c45b657"
                 },
                 "Notes": {
                     "Notes": []
@@ -52542,6 +52640,8 @@
         },
         "usec": {
             "character": {
+				"Achievements": [],
+				"Prestige": [],
                 "TaskConditionCounters": {},
                 "Bonuses": [{
                         "id": "64f5b9e5fa34f11b380756c0",
@@ -53093,6 +53193,9 @@
                             "_id": "63db64cbf9963741dc0d741f",
                             "_tpl": "6401c7b213d9b818bf0e7dd7"
                         }, {
+							"_id": "676db384777490e23c45b657",
+							"_tpl": "673c7b00cbf4b984b5099181"
+						}, {
                             "_id": "f5e6bdac05e699d687993249",
                             "_tpl": "544a11ac4bdc2d470e8b456a",
                             "parentId": "5fe49444ae6628187a2e77b8",
@@ -53130,7 +53233,8 @@
                     "questRaidItems": "5fe49444ae6628187a2e78b9",
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe49444ae6628187a2e78b8"
+                    "stash": "5fe49444ae6628187a2e78b8",
+					"hideoutCustomizationStashId": "676db384777490e23c45b657"
                 },
                 "Notes": {
                     "Notes": []

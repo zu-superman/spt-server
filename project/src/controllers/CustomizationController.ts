@@ -238,4 +238,8 @@ export class CustomizationController {
 
         return result;
     }
+
+    public getHideoutCustomisation(sessionID: string, info: any) {
+        return this.databaseService.getHideout().customisation;
+    }
 }

@@ -1,4 +1,4 @@
-import { MinMax } from "@spt/models/common/MinMax";
+import type { MinMax } from "@spt/models/common/MinMax";
 import type { IBaseConfig } from "@spt/models/spt/config/IBaseConfig";
 
 export interface IInventoryConfig extends IBaseConfig {

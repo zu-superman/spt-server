@@ -202,7 +202,7 @@ export class HideoutCallbacks implements OnUpdate {
     /**
      * Handle client/game/profile/items/moving - HideoutDeleteProductionCommand
      */
-    hideoutDeleteProductionCommand(
+    public hideoutDeleteProductionCommand(
         pmcData: IPmcData,
         request: IHideoutDeleteProductionRequestData,
         sessionId: string,

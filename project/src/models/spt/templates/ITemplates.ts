@@ -2,6 +2,7 @@ import type { IAchievement } from "@spt/models/eft/common/tables/IAchievement";
 import type { ICustomizationItem } from "@spt/models/eft/common/tables/ICustomizationItem";
 import type { IHandbookBase } from "@spt/models/eft/common/tables/IHandbookBase";
 import type { ILocationServices } from "@spt/models/eft/common/tables/ILocationServices";
+import type { IPrestige } from "@spt/models/eft/common/tables/IPrestige";
 import type { IProfileTemplates } from "@spt/models/eft/common/tables/IProfileTemplate";
 import type { IQuest } from "@spt/models/eft/common/tables/IQuest";
 import type { IRepeatableQuestDatabase } from "@spt/models/eft/common/tables/IRepeatableQuests";
@@ -11,6 +12,7 @@ import type { IDefaultEquipmentPreset } from "@spt/models/eft/profile/ISptProfil
 export interface ITemplates {
     character: string[];
     items: Record<string, ITemplateItem>;
+    prestige: IPrestige;
     quests: Record<string, IQuest>;
     repeatableQuests: IRepeatableQuestDatabase;
     handbook: IHandbookBase;

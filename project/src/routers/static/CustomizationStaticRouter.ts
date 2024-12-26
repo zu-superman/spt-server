@@ -19,6 +19,17 @@ export class CustomizationStaticRouter extends StaticRouter {
                     return this.customizationCallbacks.getSuits(url, info, sessionID);
                 },
             ),
+            new RouteAction(
+                "/client/hideout/customization/offer/list",
+                async (
+                    url: string,
+                    info: any,
+                    sessionID: string,
+                    output: string,
+                ): Promise<IGetBodyResponseData<IGetSuitsResponse>> => {
+                    return this.customizationCallbacks.getHideoutCustomisation(url, info, sessionID);
+                },
+            ),
         ]);
     }
 }
