@@ -126,6 +126,7 @@ export interface ICustomization {
     Body: string;
     Feet: string;
     Hands: string;
+    DogTag: string;
 }
 
 export interface IHealth {
