@@ -246,8 +246,8 @@ export class CustomizationController {
         return this.databaseService.getHideout().customisation;
     }
 
-    public getCustomisationStoage(sessionID: string, info: any): ICustomisationStorage[] {
-        return this.databaseService.getTemplates().customisationStoage;
+    public getCustomisationStorage(sessionID: string, info: any): ICustomisationStorage[] {
+        return this.databaseService.getTemplates().customisationStorage;
     }
 
     /** Handle CustomizationSet event */

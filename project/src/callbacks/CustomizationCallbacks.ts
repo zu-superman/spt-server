@@ -75,7 +75,7 @@ export class CustomizationCallbacks {
         request: IEmptyRequestData,
         sessionID: string,
     ): IGetBodyResponseData<ICustomisationStorage[]> {
-        return this.httpResponse.getBody(this.customizationController.getCustomisationStoage(sessionID, request));
+        return this.httpResponse.getBody(this.customizationController.getCustomisationStorage(sessionID, request));
     }
 
     /** Handle CustomizationSet */

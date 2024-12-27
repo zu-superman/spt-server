@@ -12,7 +12,7 @@ import type { IDefaultEquipmentPreset } from "@spt/models/eft/profile/ISptProfil
 
 export interface ITemplates {
     character: string[];
-    customisationStoage: ICustomisationStorage[];
+    customisationStorage: ICustomisationStorage[];
     items: Record<string, ITemplateItem>;
     prestige: IPrestige;
     quests: Record<string, IQuest>;
