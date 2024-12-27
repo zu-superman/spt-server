@@ -10,7 +10,7 @@ import type { IItem } from "@spt/models/eft/common/tables/IItem";
 import { AccountTypes } from "@spt/models/enums/AccountTypes";
 import { BonusType } from "@spt/models/enums/BonusType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
-import type { ItemAddedResult } from "@spt/models/enums/ItemAddedResult";
+import { ItemAddedResult } from "@spt/models/enums/ItemAddedResult";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
 import { Traders } from "@spt/models/enums/Traders";
 import type { IKarmaLevel, IPlayerScavConfig } from "@spt/models/spt/config/IPlayerScavConfig";
