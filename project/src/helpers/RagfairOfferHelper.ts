@@ -14,7 +14,7 @@ import type { ITraderAssort } from "@spt/models/eft/common/tables/ITrader";
 import type { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import type { ISptProfile, ISystemData } from "@spt/models/eft/profile/ISptProfile";
 import type { IRagfairOffer } from "@spt/models/eft/ragfair/IRagfairOffer";
-import type { ISearchRequestData, OfferOwnerType } from "@spt/models/eft/ragfair/ISearchRequestData";
+import {OfferOwnerType, type ISearchRequestData } from "@spt/models/eft/ragfair/ISearchRequestData";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
