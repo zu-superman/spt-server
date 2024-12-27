@@ -1393,6 +1393,16 @@ export class HideoutController {
     }
 
     /**
+     * Handle HideoutCustomizationApply event
+     * @param sessionId Session id
+     * @param pmcData Player profile
+     * @param request Client request data
+     */
+    public hideoutCustomizationApply(sessionId: string, pmcData: IPmcData, request: any): IItemEventRouterResponse {
+        throw new Error("Method not implemented.");
+    }
+
+    /**
      * Function called every `hideoutConfig.runIntervalSeconds` seconds as part of onUpdate event
      */
     public update(): void {
