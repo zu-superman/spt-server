@@ -68,11 +68,11 @@ export class CustomizationCallbacks {
     }
 
     /** Handle CustomizationSet */
-    public setClothing(
+    public async setClothing(
         pmcData: IPmcData,
         info: ICustomizationSetRequest,
         sessionID: string,
-    ): IGetBodyResponseData<any> {
-        return this.httpResponse.getBody(this.customizationController.setClothing(sessionID, info));
+    ): Promise<IGetBodyResponseData<any>> {
+        return this.httpResponse.getBody(await this.customizationController.setClothing(sessionID, info, pmcData));
     }
 }
