@@ -94,7 +94,7 @@ export class BotNameService {
                         // 5 attempts to generate a name, pool probably isn't big enough
                         const genericName = `${botGenerationDetails.side} ${this.randomUtil.getInt(100000, 999999)}`;
                         this.logger.debug(
-                            `Failed to find unique name for: ${name} after 5 attempts, using: ${genericName}`,
+                            `Failed to find unique name for: ${botRole} ${botGenerationDetails.side} after 5 attempts, using: ${genericName}`,
                         );
                         return genericName;
                     }
