@@ -49,6 +49,7 @@ import { RandomUtil } from "@spt/utils/RandomUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
 import { ICloner } from "@spt/utils/cloners/ICloner";
 import { inject, injectable } from "tsyringe";
+import { TransitionType } from "../models/enums/TransitionType";
 
 @injectable()
 export class LocationLifecycleService {
@@ -106,8 +107,9 @@ export class LocationLifecycleService {
             serverSettings: this.databaseService.getLocationServices(), // TODO - is this per map or global?
             profile: { insuredItems: playerProfile.InsuredItems },
             locationLoot: this.generateLocationAndLoot(request.location, !request.sptSkipLootGeneration),
+            transitionType: TransitionType.None,
             transition: {
-                isLocationTransition: false,
+                transitionType: TransitionType.None,
                 transitionRaidId: this.hashUtil.generate(),
                 transitionCount: 0,
                 visitedLocations: [],
@@ -126,7 +128,7 @@ export class LocationLifecycleService {
             ?.getValue<ILocationTransit>();
         if (transitionData) {
             this.logger.success(`Player: ${sessionId} is in transit to ${request.location}`);
-            result.transition.isLocationTransition = true;
+            result.transition.transitionType = TransitionType.Common;
             result.transition.transitionRaidId = transitionData.transitionRaidId;
             result.transition.transitionCount += 1;
 
