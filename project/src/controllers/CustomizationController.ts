@@ -248,4 +248,8 @@ export class CustomizationController {
     public getCustomisationStoage(sessionID: string, info: any): ICustomisationStorage[] {
         return this.databaseService.getTemplates().customisationStoage;
     }
+
+    public setClothing(sessionId: string, info: any): any {
+        throw new Error("Method not implemented.");
+    }
 }

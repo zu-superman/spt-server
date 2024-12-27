@@ -27,6 +27,8 @@ export class CustomizationItemEventRouter extends ItemEventRouterDefinition {
                 return this.customizationCallbacks.wearClothing(pmcData, body, sessionID);
             case "CustomizationBuy":
                 return this.customizationCallbacks.buyClothing(pmcData, body, sessionID);
+            case "CustomizationSet":
+                return this.customizationCallbacks.setClothing(pmcData, body, sessionID);
         }
     }
 }
