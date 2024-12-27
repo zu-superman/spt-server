@@ -758,6 +758,7 @@ export class SeasonalEventService {
             const mapData: ILocation = maps[mapName];
             if (typeof mapData.base?.Events?.Khorovod?.Chance !== "undefined") {
                 mapData.base.Events.Khorovod.Chance = 100;
+                mapData.base.BotLocationModifier.KhorovodChance = 100;
             }
         }
     }
