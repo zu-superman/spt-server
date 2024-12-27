@@ -62,7 +62,12 @@ export class CustomizationCallbacks {
         return this.httpResponse.getBody(this.customizationController.getHideoutCustomisation(sessionID, info));
     }
 
-    getStorage(url: string, info: any, sessionID: string): IGetBodyResponseData<ICustomisationStorage> {
+    public getStorage(url: string, info: any, sessionID: string): IGetBodyResponseData<ICustomisationStorage> {
         return this.httpResponse.getBody(this.customizationController.getCustomisationStoage(sessionID, info));
+    }
+
+    /** Handle CustomizationSet */
+    public setClothing(pmcData: IPmcData, info: any, sessionID: string): IItemEventRouterResponse {
+        return this.httpResponse.getBody(this.customizationController.setClothing(sessionID, info));
     }
 }
