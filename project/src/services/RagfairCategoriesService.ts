@@ -1,6 +1,6 @@
 import { PaymentHelper } from "@spt/helpers/PaymentHelper";
 import type { IRagfairOffer } from "@spt/models/eft/ragfair/IRagfairOffer";
-import type { ISearchRequestData, OfferOwnerType } from "@spt/models/eft/ragfair/ISearchRequestData";
+import {OfferOwnerType, type ISearchRequestData } from "@spt/models/eft/ragfair/ISearchRequestData";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
 import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { inject, injectable } from "tsyringe";
