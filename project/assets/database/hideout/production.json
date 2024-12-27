@@ -15,7 +15,7 @@
           "type": "Resource"
         }
       ],
-      "productionTime": 19500.0,
+      "productionTime": 19500,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d1b33a686f7742523398398",
@@ -51,7 +51,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 114000.0,
+      "productionTime": 114000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c12613b86f7743bbe2c3f76",
@@ -79,7 +79,7 @@
           "type": "Area"
         }
       ],
-      "productionTime": 6200.0,
+      "productionTime": 6200,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "57371aab2459775a77142f22",
@@ -127,10 +127,11 @@
           "type": "Item"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "5a27bc8586f7741b543d8ea4"
         }
       ],
-      "productionTime": 6840.0,
+      "productionTime": 6840,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5a608bf24f39f98ffc77720e",
@@ -166,7 +167,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 5400.0,
+      "productionTime": 5400,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "573719df2459775a626ccbc2",
@@ -194,7 +195,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 1320.0,
+      "productionTime": 1320,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5755356824597772cb798962",
@@ -242,7 +243,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 12000.0,
+      "productionTime": 12000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c127c4486f7745625356c13",
@@ -286,7 +287,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 2800.0,
+      "productionTime": 2800,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5e4abfed86f77406a2713cf7",
@@ -326,7 +327,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 3720.0,
+      "productionTime": 3720,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d1b371186f774253763a656",
@@ -374,7 +375,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 5000.0,
+      "productionTime": 5000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5ac4cd105acfc40016339859",
@@ -418,7 +419,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 2310.0,
+      "productionTime": 2310,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "59e3556c86f7741776641ac2",
@@ -458,7 +459,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 6250.0,
+      "productionTime": 6250,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "60194943740c5d77f6705eea",
@@ -514,7 +515,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 30000.0,
+      "productionTime": 30000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5e2af55f86f7746d4159f07c",
@@ -550,7 +551,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 2950.0,
+      "productionTime": 2950,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d02778e86f774203e7dedbe",
@@ -578,7 +579,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 5400.0,
+      "productionTime": 5400,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5a26abfac4a28232980eabff",
@@ -610,7 +611,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 1800.0,
+      "productionTime": 1800,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "57f4c844245977379d5c14d1",
@@ -670,10 +671,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "625d6ffaf7308432be1d44c5"
         }
       ],
-      "productionTime": 5400.0,
+      "productionTime": 5400,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "63a0b2eabea67a6d93009e52",
@@ -717,7 +719,7 @@
           "type": "Area"
         }
       ],
-      "productionTime": 16000.0,
+      "productionTime": 16000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "67586bee39b1b82b0d0f9d06",
@@ -757,7 +759,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 6000.0,
+      "productionTime": 6000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5e340dcdcb6d5863cc5e5efb",
@@ -797,7 +799,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 14400.0,
+      "productionTime": 14400,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5887431f2459777e1612938f",
@@ -845,7 +847,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 15480.0,
+      "productionTime": 15480,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5656d7c34bdc2d9d198b4587",
@@ -885,7 +887,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 300.0,
+      "productionTime": 300,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "665732f4464c4b4ba4670fa9",
@@ -925,10 +927,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "59c512ad86f7741f0d09de9b"
         }
       ],
-      "productionTime": 8500.0,
+      "productionTime": 8500,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "56dff2ced2720bb4668b4567",
@@ -972,7 +975,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 4500.0,
+      "productionTime": 4500,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "590c657e86f77412b013051d",
@@ -1008,7 +1011,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 2350.0,
+      "productionTime": 2350,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "544fb45d4bdc2dee738b4568",
@@ -1048,7 +1051,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 7250.0,
+      "productionTime": 7250,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c925fa22e221601da359b7b",
@@ -1080,7 +1083,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 10000.0,
+      "productionTime": 10000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5733279d245977289b77ec24",
@@ -1124,7 +1127,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 4350.0,
+      "productionTime": 4350,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "544fb3f34bdc2d03748b456a",
@@ -1184,7 +1187,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 12400.0,
+      "productionTime": 12400,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5efb0cabfb3e451d70735af5",
@@ -1236,10 +1239,11 @@
           "type": "Item"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "5c0d4e61d09282029f53920e"
         }
       ],
-      "productionTime": 12400.0,
+      "productionTime": 12400,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5ba26835d4351e0035628ff5",
@@ -1295,7 +1299,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 6400.0,
+      "productionTime": 6400,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d403f9186f7743cac3f229b",
@@ -1335,7 +1339,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 2770.0,
+      "productionTime": 2770,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5c0d5ae286f7741e46554302",
@@ -1375,7 +1379,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 6000.0,
+      "productionTime": 6000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "56742c324bdc2d150f8b456d",
@@ -1411,7 +1415,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 2700.0,
+      "productionTime": 2700,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5af0484c86f7740f02001f7f",
@@ -1451,7 +1455,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 8200.0,
+      "productionTime": 8200,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d0376a486f7747d8050965c",
@@ -1519,10 +1523,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "63966ff54c3ef01b6f3ffad8"
         }
       ],
-      "productionTime": 32200.0,
+      "productionTime": 32200,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5d1b5e94d7ad1a2b865a96b0",
@@ -1553,7 +1558,7 @@
           "type": "QuestComplete"
         }
       ],
-      "productionTime": 600.0,
+      "productionTime": 600,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "660bc341c38b837877075e4c",
@@ -1597,7 +1602,7 @@
           "type": "Area"
         }
       ],
-      "productionTime": 2900.0,
+      "productionTime": 2900,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "590c5d4b86f774784e1b9c45",
@@ -1641,7 +1646,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 6900.0,
+      "productionTime": 6900,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c0e530286f7747fa1419862",
@@ -1673,7 +1678,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 4700.0,
+      "productionTime": 4700,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d1c819a86f774771b0acd6c",
@@ -1709,7 +1714,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 3400.0,
+      "productionTime": 3400,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "57347cd0245977445a2d6ff1",
@@ -1765,7 +1770,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 39000.0,
+      "productionTime": 39000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d0379a886f77420407aa271",
@@ -1797,7 +1802,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 900.0,
+      "productionTime": 900,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d1b31ce86f7742523398394",
@@ -1825,7 +1830,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 2100.0,
+      "productionTime": 2100,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "590c657e86f77412b013051d",
@@ -1877,7 +1882,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 1200.0,
+      "productionTime": 1200,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "55d485be4bdc2d962f8b456f",
@@ -1891,7 +1896,7 @@
       "_id": "5d5c205bd582a50d042a3c0e",
       "areaType": 20,
       "requirements": [],
-      "productionTime": 145000.0,
+      "productionTime": 145000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "59faff1d86f7746c51718c9c",
@@ -1922,7 +1927,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 11000.0,
+      "productionTime": 11000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d1b376e86f774252519444e",
@@ -1966,7 +1971,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 3000.0,
+      "productionTime": 3000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "590c678286f77426c9660122",
@@ -2002,7 +2007,7 @@
           "type": "Area"
         }
       ],
-      "productionTime": 2100.0,
+      "productionTime": 2100,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d40412b86f7743cb332ac3a",
@@ -2034,7 +2039,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 5350.0,
+      "productionTime": 5350,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "590c5a7286f7747884343aea",
@@ -2078,7 +2083,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 2100.0,
+      "productionTime": 2100,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "59e36c6f86f774176c10a2a7",
@@ -2114,7 +2119,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 1000.0,
+      "productionTime": 1000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5751a25924597722c463c472",
@@ -2158,10 +2163,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "63966fccac6f8f3c677b9d89"
         }
       ],
-      "productionTime": 192000.0,
+      "productionTime": 192000,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5c052fb986f7746b2101e909",
@@ -2205,7 +2211,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 5250.0,
+      "productionTime": 5250,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "64b8ee384b75259c590fa89b",
@@ -2237,7 +2243,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 2900.0,
+      "productionTime": 2900,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "590a3b0486f7743954552bdb",
@@ -2281,7 +2287,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 3000.0,
+      "productionTime": 3000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c13cd2486f774072c757944",
@@ -2337,7 +2343,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 476000.0,
+      "productionTime": 476000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c1e495a86f7743109743dfb",
@@ -2381,7 +2387,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 9100.0,
+      "productionTime": 9100,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d1b2ffd86f77425243e8d17",
@@ -2433,10 +2439,11 @@
           "type": "Item"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "60e71c48c1bfa3050473b8e5"
         }
       ],
-      "productionTime": 5500.0,
+      "productionTime": 5500,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5ed51652f6c34d2cc26336a1",
@@ -2484,7 +2491,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 4200.0,
+      "productionTime": 4200,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d6e68c4a4b9361b93413f79",
@@ -2528,7 +2535,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 17500.0,
+      "productionTime": 17500,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c0fa877d174af02a012e1cf",
@@ -2572,7 +2579,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 36000.0,
+      "productionTime": 36000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "62a09f32621468534a797acb",
@@ -2620,10 +2627,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "6179ad0a6e9dd54ac275e3f2"
         }
       ],
-      "productionTime": 8400.0,
+      "productionTime": 8400,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5d6e68a8a4b9360b6c0d54e2",
@@ -2667,7 +2675,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 4000.0,
+      "productionTime": 4000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c0e5edb86f77461f55ed1f7",
@@ -2711,7 +2719,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 11500.0,
+      "productionTime": 11500,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "590a3efd86f77437d351a25b",
@@ -2766,7 +2774,7 @@
           "type": "QuestComplete"
         }
       ],
-      "productionTime": 1800.0,
+      "productionTime": 1800,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "63a0b2eabea67a6d93009e52",
@@ -2814,7 +2822,8 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "5b478d0f86f7744d190d91b5"
         },
         {
           "templateId": "656fb21fa0dce000a2020f7c",
@@ -2825,7 +2834,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 6000.0,
+      "productionTime": 6000,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "61bcc89aef0f505f0c6cd0fc",
@@ -2857,7 +2866,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 2600.0,
+      "productionTime": 2600,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5e2af47786f7746d404f3aaa",
@@ -2885,7 +2894,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 5000.0,
+      "productionTime": 5000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "59e3577886f774176a362503",
@@ -2917,7 +2926,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 120.0,
+      "productionTime": 120,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "590c595c86f7747884343ad7",
@@ -2973,7 +2982,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 18900.0,
+      "productionTime": 18900,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c052e6986f7746b207bc3c9",
@@ -3021,7 +3030,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 6500.0,
+      "productionTime": 6500,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5751435d24597720a27126d1",
@@ -3057,7 +3066,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 3800.0,
+      "productionTime": 3800,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5e8f3423fd7471236e6e3b64",
@@ -3089,7 +3098,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 2600.0,
+      "productionTime": 2600,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "590a391c86f774385a33c404",
@@ -3141,7 +3150,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 4900.0,
+      "productionTime": 4900,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5644bd2b4bdc2d3b4c8b4572",
@@ -3189,7 +3198,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 3600.0,
+      "productionTime": 3600,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5648a69d4bdc2ded0b8b457b",
@@ -3225,7 +3234,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 1800.0,
+      "productionTime": 1800,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5e8488fa988a8701445df1e4",
@@ -3265,7 +3274,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 15000.0,
+      "productionTime": 15000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5fc275cf85fd526b824a571a",
@@ -3296,7 +3305,7 @@
           "type": "QuestComplete"
         }
       ],
-      "productionTime": 600.0,
+      "productionTime": 600,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "660bc341c38b837877075e4c",
@@ -3336,7 +3345,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 300.0,
+      "productionTime": 300,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "66573310a1657263d816a139",
@@ -3376,7 +3385,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 6750.0,
+      "productionTime": 6750,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d6fc87386f77449db3db94e",
@@ -3412,7 +3421,7 @@
           "type": "Area"
         }
       ],
-      "productionTime": 4900.0,
+      "productionTime": 4900,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5734773724597737fd047c14",
@@ -3464,7 +3473,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 9400.0,
+      "productionTime": 9400,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d1b2f3f86f774252167a52c",
@@ -3508,7 +3517,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 12100.0,
+      "productionTime": 12100,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "59e35cbb86f7741778269d83",
@@ -3560,10 +3569,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "63966fe7ea74a47c2d3fc0e6"
         }
       ],
-      "productionTime": 225000.0,
+      "productionTime": 225000,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5c05300686f7746dce784e5d",
@@ -3615,7 +3625,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 4600.0,
+      "productionTime": 4600,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d02797c86f774203f38e30a",
@@ -3647,7 +3657,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 8400.0,
+      "productionTime": 8400,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "59e77a2386f7742ee578960a",
@@ -3711,10 +3721,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "6396701b9113f06a7c3b2379"
         }
       ],
-      "productionTime": 86400.0,
+      "productionTime": 86400,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5a1eaa87fcdbcb001865f75e",
@@ -3762,7 +3773,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 15500.0,
+      "productionTime": 15500,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c12688486f77426843c7d32",
@@ -3794,7 +3805,8 @@
           "type": "Area"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "625d700cc48e6c62a440fab5"
         },
         {
           "templateId": "590c2d8786f774245b1f03f3",
@@ -3809,7 +3821,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 43200.0,
+      "productionTime": 43200,
       "needFuelForAllProductionTime": true,
       "locked": true,
       "endProduct": "62e910aaf957f2915e0a5e36",
@@ -3849,10 +3861,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "6396700fea19ac7ed845db32"
         }
       ],
-      "productionTime": 50400.0,
+      "productionTime": 50400,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "6389c7750ef44505c87f5996",
@@ -3928,7 +3941,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 43200.0,
+      "productionTime": 43200,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "62a0a124de7ac81993580542",
@@ -3980,10 +3993,11 @@
           "type": "Item"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "60e71bb4e456d449cd47ca75"
         }
       ],
-      "productionTime": 9400.0,
+      "productionTime": 9400,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "59e0d99486f7744a32234762",
@@ -4027,7 +4041,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 12500.0,
+      "productionTime": 12500,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c0530ee86f774697952d952",
@@ -4079,7 +4093,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 4305.0,
+      "productionTime": 4305,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d5e9c74a4b9364855191c40",
@@ -4115,7 +4129,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 18300.0,
+      "productionTime": 18300,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5448be9a4bdc2dfd2f8b456a",
@@ -4159,7 +4173,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 4800.0,
+      "productionTime": 4800,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d1b2fa286f77425227d1674",
@@ -4211,7 +4225,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 4990.0,
+      "productionTime": 4990,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c0e531286f7747fa54205c2",
@@ -4263,10 +4277,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "63966faeea19ac7ed845db2c"
         }
       ],
-      "productionTime": 135399.0,
+      "productionTime": 135399,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5c05308086f7746b2101e90b",
@@ -4302,7 +4317,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 3250.0,
+      "productionTime": 3250,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "59e7635f86f7742cbf2c1095",
@@ -4334,7 +4349,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 2200.0,
+      "productionTime": 2200,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5e2af4a786f7746d3f3c3400",
@@ -4390,7 +4405,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 5500.0,
+      "productionTime": 5500,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5672cb724bdc2dc2088b456b",
@@ -4442,7 +4457,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 236000.0,
+      "productionTime": 236000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5e42c81886f7742a01529f57",
@@ -4502,7 +4517,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 16500.0,
+      "productionTime": 16500,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5e85a9f4add9fe03027d9bf1",
@@ -4546,7 +4561,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 17510.0,
+      "productionTime": 17510,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "67600929bd0a0549d70993f6",
@@ -4582,7 +4597,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 1670.0,
+      "productionTime": 1670,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5b4335ba86f7744d2837a264",
@@ -4650,7 +4665,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 120000.0,
+      "productionTime": 120000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c0530ee86f774697952d952",
@@ -4682,7 +4697,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 3200.0,
+      "productionTime": 3200,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5af0454c86f7746bf20992e8",
@@ -4726,7 +4741,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 5600.0,
+      "productionTime": 5600,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5a3c16fe86f77452b62de32a",
@@ -4766,7 +4781,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 4000.0,
+      "productionTime": 4000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "60098b1705871270cd5352a1",
@@ -4790,7 +4805,8 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "5c0d190cd09282029f5390d8"
         },
         {
           "templateId": "5e2af51086f7746d3f3c3402",
@@ -4809,7 +4825,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 4800.0,
+      "productionTime": 4800,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5e32f56fcb6d5863cc5e5ee4",
@@ -4837,7 +4853,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 5210.0,
+      "productionTime": 5210,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "6680304edadb7aa61d00cef0",
@@ -4865,7 +4881,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 4600.0,
+      "productionTime": 4600,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5ed51652f6c34d2cc26336a1",
@@ -4896,7 +4912,7 @@
           "type": "QuestComplete"
         }
       ],
-      "productionTime": 900.0,
+      "productionTime": 900,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "660bbc98c38b837877075e4a",
@@ -4936,7 +4952,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 300.0,
+      "productionTime": 300,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "665732e7ac60f009f270d1ef",
@@ -4968,7 +4984,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 6650.0,
+      "productionTime": 6650,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5448fee04bdc2dbc018b4567",
@@ -5004,7 +5020,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 5750.0,
+      "productionTime": 5750,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d40407c86f774318526545a",
@@ -5036,7 +5052,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 7450.0,
+      "productionTime": 7450,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c06782b86f77426df5407d2",
@@ -5076,7 +5092,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 8000.0,
+      "productionTime": 8000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d1b385e86f774252167b98a",
@@ -5116,7 +5132,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 5870.0,
+      "productionTime": 5870,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d6fc78386f77449d825f9dc",
@@ -5148,7 +5164,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 4400.0,
+      "productionTime": 4400,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "590a358486f77429692b2790",
@@ -5180,7 +5196,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 9000.0,
+      "productionTime": 9000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "590c5bbd86f774785762df04",
@@ -5224,7 +5240,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 4710.0,
+      "productionTime": 4710,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "57347d7224597744596b4e72",
@@ -5272,7 +5288,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 4800.0,
+      "productionTime": 4800,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5e2af29386f7746d4159f077",
@@ -5308,7 +5324,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 10400.0,
+      "productionTime": 10400,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "637b620db7afa97bfc3d7009",
@@ -5352,7 +5368,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 5100.0,
+      "productionTime": 5100,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "59d6088586f774275f37482f",
@@ -5404,7 +5420,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 10000.0,
+      "productionTime": 10000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "60391a8b3364dc22b04d0ce5",
@@ -5464,7 +5480,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 25000.0,
+      "productionTime": 25000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "619cbfeb6b8a1b37a54eebfa",
@@ -5504,10 +5520,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "5c0bc91486f7746ab41857a2"
         }
       ],
-      "productionTime": 3000.0,
+      "productionTime": 3000,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5d6e6911a4b9361bd5780d52",
@@ -5547,10 +5564,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "64e7b9bffd30422ed03dad38"
         }
       ],
-      "productionTime": 13000.0,
+      "productionTime": 13000,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "56dfef82d2720bbd668b4567",
@@ -5586,7 +5604,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 1200.0,
+      "productionTime": 1200,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "56e335e4d2720b6c058b456d",
@@ -5645,7 +5663,7 @@
           "type": "GameVersion"
         }
       ],
-      "productionTime": 4800.0,
+      "productionTime": 4800,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "66507eabf5ddb0818b085b68",
@@ -5697,10 +5715,11 @@
           "type": "Item"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "665eeca92f7aedcc900b0437"
         }
       ],
-      "productionTime": 4800.0,
+      "productionTime": 4800,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "66507eabf5ddb0818b085b68",
@@ -5752,7 +5771,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 1600.0,
+      "productionTime": 1600,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "656efd66034e8e01c407f35c",
@@ -5780,7 +5799,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 5950.0,
+      "productionTime": 5950,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "668fe5a998b5ad715703ddd6",
@@ -5812,7 +5831,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 1980.0,
+      "productionTime": 1980,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "590a3b0486f7743954552bdb",
@@ -5856,7 +5875,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 4670.0,
+      "productionTime": 4670,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5a0c27731526d80618476ac4",
@@ -5904,10 +5923,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "5bc47dbf86f7741ee74e93b9"
         }
       ],
-      "productionTime": 8470.0,
+      "productionTime": 8470,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5f0596629e22f464da6bbdd9",
@@ -5935,7 +5955,7 @@
           "type": "Area"
         }
       ],
-      "productionTime": 7100.0,
+      "productionTime": 7100,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c06779c86f77426e00dd782",
@@ -5979,7 +5999,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 2880.0,
+      "productionTime": 2880,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d1b3a5d86f774252167ba22",
@@ -6023,7 +6043,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 3300.0,
+      "productionTime": 3300,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5755383e24597772cb798966",
@@ -6071,7 +6091,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 8700.0,
+      "productionTime": 8700,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5cc80f38e4a949001152b560",
@@ -6103,7 +6123,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 2000.0,
+      "productionTime": 2000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5e2af4d286f7746d4159f07a",
@@ -6143,7 +6163,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 5000.0,
+      "productionTime": 5000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "55d482194bdc2d1d4e8b456b",
@@ -6191,7 +6211,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 2890.0,
+      "productionTime": 2890,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5aa7cfc0e5b5b00015693143",
@@ -6239,10 +6259,11 @@
           "type": "Item"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "5bc4856986f77454c317bea7"
         }
       ],
-      "productionTime": 9500.0,
+      "productionTime": 9500,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5e023d34e8a400319a28ed44",
@@ -6278,7 +6299,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 5400.0,
+      "productionTime": 5400,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c0e531286f7747fa54205c2",
@@ -6310,7 +6331,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 4400.0,
+      "productionTime": 4400,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "64b7af5a8532cf95ee0a0dbd",
@@ -6358,7 +6379,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 7000.0,
+      "productionTime": 7000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "590a3c0a86f774385a33c450",
@@ -6402,7 +6423,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 3600.0,
+      "productionTime": 3600,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "60098ad7c2240c0fe85c570a",
@@ -6458,7 +6479,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 61300.0,
+      "productionTime": 61300,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "590a3efd86f77437d351a25b",
@@ -6490,7 +6511,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 3100.0,
+      "productionTime": 3100,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d1c819a86f774771b0acd6c",
@@ -6518,7 +6539,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 1500.0,
+      "productionTime": 1500,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "59e366c186f7741778269d85",
@@ -6546,7 +6567,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 5200.0,
+      "productionTime": 5200,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d403f9186f7743cac3f229b",
@@ -6582,7 +6603,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 8400.0,
+      "productionTime": 8400,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5ed5160a87bb8443d10680b5",
@@ -6634,7 +6655,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 5950.0,
+      "productionTime": 5950,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "674d6121c09f69dfb201a888",
@@ -6678,10 +6699,11 @@
           "type": "Item"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "60e71c11d54b755a3b53eb65"
         }
       ],
-      "productionTime": 4200.0,
+      "productionTime": 4200,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5fca138c2a7b221b2852a5c6",
@@ -6721,7 +6743,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 300.0,
+      "productionTime": 300,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "665730fa4de4820934746c48",
@@ -6781,7 +6803,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 7000.0,
+      "productionTime": 7000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5ab8dced86f774646209ec87",
@@ -6809,10 +6831,11 @@
           "type": "Item"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "67040c22cc1f3752720376e9"
         }
       ],
-      "productionTime": 900.0,
+      "productionTime": 900,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "6707d13e4e617ec94f0e5631",
@@ -6827,7 +6850,8 @@
       "areaType": 7,
       "requirements": [
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "60e71c48c1bfa3050473b8e5"
         },
         {
           "areaType": 7,
@@ -6867,7 +6891,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 4800.0,
+      "productionTime": 4800,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5c0e534186f7747fa1419867",
@@ -6927,7 +6951,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 10000.0,
+      "productionTime": 10000,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5ab8e79e86f7742d8b372e78",
@@ -6971,7 +6995,8 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "5ae4497b86f7744cf402ed00"
         },
         {
           "templateId": "5e2af4d286f7746d4159f07a",
@@ -6982,7 +7007,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 14000.0,
+      "productionTime": 14000,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5b44cad286f77402a54ae7e5",
@@ -7038,10 +7063,11 @@
           "type": "Item"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "5c1141f386f77430ff393792"
         }
       ],
-      "productionTime": 8000.0,
+      "productionTime": 8000,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "628d0618d1ba6e4fa07ce5a4",
@@ -7069,7 +7095,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 10400.0,
+      "productionTime": 10400,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "66b6296d7994640992013b17",
@@ -7101,7 +7127,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 2900.0,
+      "productionTime": 2900,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5e2af41e86f774755a234b67",
@@ -7141,7 +7167,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 2450.0,
+      "productionTime": 2450,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "59e358a886f7741776641ac3",
@@ -7205,10 +7231,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "63966fbeea19ac7ed845db2e"
         }
       ],
-      "productionTime": 140000.0,
+      "productionTime": 140000,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5c052f6886f7746b1e3db148",
@@ -7260,7 +7287,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 5100.0,
+      "productionTime": 5100,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c0e531d86f7747fa23f4d42",
@@ -7300,10 +7327,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "60e71c9ad54b755a3b53eb66"
         }
       ],
-      "productionTime": 13000.0,
+      "productionTime": 13000,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5fd20ff893a8961fc660a954",
@@ -7351,10 +7379,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "639135534b15ca31f76bc317"
         }
       ],
-      "productionTime": 8400.0,
+      "productionTime": 8400,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "54527ac44bdc2d36668b4567",
@@ -7382,7 +7411,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 5550.0,
+      "productionTime": 5550,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "674da107c512807d1a0e7436",
@@ -7434,7 +7463,8 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "5b47876e86f7744d1c353205"
         },
         {
           "templateId": "656f9fa0498d1b7e3e071d98",
@@ -7445,7 +7475,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 9000.0,
+      "productionTime": 9000,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5d5d87f786f77427997cfaef",
@@ -7460,7 +7490,8 @@
       "areaType": 7,
       "requirements": [
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "67040cae4ac6d9c18c0ade2c"
         },
         {
           "areaType": 7,
@@ -7516,7 +7547,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 600.0,
+      "productionTime": 600,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "6707d0804e617ec94f0e562f",
@@ -7571,7 +7602,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 600.0,
+      "productionTime": 600,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "6707d0bdaab679420007e01a",
@@ -7610,7 +7641,7 @@
           "type": "QuestComplete"
         }
       ],
-      "productionTime": 10.0,
+      "productionTime": 10,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "674078c4a9c9adf0450d59f9",
@@ -7646,7 +7677,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 5950.0,
+      "productionTime": 5950,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "6176aca650224f204c1da3fb",
@@ -7682,7 +7713,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 6100.0,
+      "productionTime": 6100,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "573476f124597737e04bf328",
@@ -7726,7 +7757,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 4300.0,
+      "productionTime": 4300,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "544fb6cc4bdc2d34748b456e",
@@ -7758,10 +7789,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "5c0bd94186f7747a727f09b2"
         }
       ],
-      "productionTime": 7350.0,
+      "productionTime": 7350,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "61962d879bb3d20b0946d385",
@@ -7793,7 +7825,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 1320.0,
+      "productionTime": 1320,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d1b309586f77425227d1676",
@@ -7821,7 +7853,7 @@
           "type": "Area"
         }
       ],
-      "productionTime": 5900.0,
+      "productionTime": 5900,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5e023e53d4353e3302577c4c",
@@ -7857,7 +7889,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 3300.0,
+      "productionTime": 3300,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5737218f245977612125ba51",
@@ -7905,7 +7937,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 18000.0,
+      "productionTime": 18000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5e2aedd986f7746d404f3aa4",
@@ -7973,7 +8005,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 50400.0,
+      "productionTime": 50400,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5910968f86f77425cf569c32",
@@ -8033,10 +8065,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "60e71b62a0beca400d69efc4"
         }
       ],
-      "productionTime": 3000.0,
+      "productionTime": 3000,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5f60c74e3b85f6263c145586",
@@ -8064,7 +8097,7 @@
           "type": "Area"
         }
       ],
-      "productionTime": 1900.0,
+      "productionTime": 1900,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "544fb25a4bdc2dfb738b4567",
@@ -8124,7 +8157,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 43200.0,
+      "productionTime": 43200,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5751496424597720a27126da",
@@ -8152,7 +8185,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 6200.0,
+      "productionTime": 6200,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "651450ce0e00edc794068371",
@@ -8188,7 +8221,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 300.0,
+      "productionTime": 300,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "66582972ac60f009f270d2aa",
@@ -8232,7 +8265,8 @@
           "type": "Item"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "5ae4495086f77443c122bc40"
         },
         {
           "templateId": "5e2af4d286f7746d4159f07a",
@@ -8243,7 +8277,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 7000.0,
+      "productionTime": 7000,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "5c0e57ba86f7747fa141986d",
@@ -8299,7 +8333,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 2500.0,
+      "productionTime": 2500,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5f5e467b0bc58666c37e7821",
@@ -8347,7 +8381,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 2500.0,
+      "productionTime": 2500,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "59e763f286f7742ee57895da",
@@ -8403,7 +8437,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 18000.0,
+      "productionTime": 18000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5b7c710788a4506dec015957",
@@ -8431,7 +8465,7 @@
           "type": "Area"
         }
       ],
-      "productionTime": 1560.0,
+      "productionTime": 1560,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5c13cef886f774072e618e82",
@@ -8475,7 +8509,7 @@
           "type": "Area"
         }
       ],
-      "productionTime": 2150.0,
+      "productionTime": 2150,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5d6fc87386f77449db3db94e",
@@ -8519,7 +8553,7 @@
           "type": "Area"
         }
       ],
-      "productionTime": 123200.0,
+      "productionTime": 123200,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "590c621186f774138d11ea29",
@@ -8579,7 +8613,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 349000.0,
+      "productionTime": 349000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "57347ca924597744596b4e71",
@@ -8619,10 +8653,11 @@
           "type": "Tool"
         },
         {
-          "type": "QuestComplete"
+          "type": "QuestComplete",
+          "questId": "5a27bb8386f7741c770d2d0a"
         }
       ],
-      "productionTime": 6800.0,
+      "productionTime": 6800,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "619636be6db0f2477964e710",
@@ -8662,7 +8697,7 @@
           "type": "Tool"
         }
       ],
-      "productionTime": 3400.0,
+      "productionTime": 3400,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "5cc80f53e4a949000e1ea4f8",
@@ -8702,7 +8737,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 36000.0,
+      "productionTime": 36000,
       "needFuelForAllProductionTime": false,
       "locked": false,
       "endProduct": "62a0a16d0b9d3c46de5b6e97",
@@ -8737,7 +8772,7 @@
           "type": "QuestComplete"
         }
       ],
-      "productionTime": 10.0,
+      "productionTime": 10,
       "needFuelForAllProductionTime": false,
       "locked": true,
       "endProduct": "674098588466ebb03408b210",
@@ -8761,7 +8796,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 2500.0,
+      "productionTime": 2500,
       "endProducts": {
         "Common": {
           "min": 1,
@@ -8789,7 +8824,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 8100.0,
+      "productionTime": 8100,
       "endProducts": {
         "Common": {
           "min": 0,
@@ -8817,7 +8852,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 16800.0,
+      "productionTime": 16800,
       "endProducts": {
         "Common": {
           "min": 0,
@@ -8845,7 +8880,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 19200.0,
+      "productionTime": 19200,
       "endProducts": {
         "Common": {
           "min": 0,
@@ -8873,7 +8908,7 @@
           "type": "Item"
         }
       ],
-      "productionTime": 7700.0,
+      "productionTime": 7700,
       "endProducts": {
         "Common": {
           "min": 1,
