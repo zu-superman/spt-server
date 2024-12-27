@@ -350,6 +350,7 @@ export interface IHideout {
     Improvements: Record<string, IHideoutImprovement>;
     HideoutCounters: IHideoutCounters;
     Seed: number;
+    Customization: Record<string, string>;
     MannequinPoses: string[];
     sptUpdateLastRunTimestamp: number;
 }
