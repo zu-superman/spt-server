@@ -19,6 +19,7 @@ body:
       label: SPT Version
       description: What version of SPT are you using?
       options:
+        - "4.0"
         - "3.10"
         - "3.9"
     validations:
