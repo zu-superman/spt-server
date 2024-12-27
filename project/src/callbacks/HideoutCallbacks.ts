@@ -210,6 +210,17 @@ export class HideoutCallbacks implements OnUpdate {
         return this.hideoutController.hideoutDeleteProductionCommand(sessionId, pmcData, request);
     }
 
+    /**
+     * Handle client/game/profile/items/moving - HideoutCustomizationApply
+     */
+    public hideoutCustomizationApplyCommand(
+        pmcData: IPmcData,
+        request: any,
+        sessionId: string,
+    ): IItemEventRouterResponse {
+        return this.hideoutController.hideoutCustomizationApply(sessionId, pmcData, request);
+    }
+
     public async onUpdate(timeSinceLastRun: number): Promise<boolean> {
         if (timeSinceLastRun > this.hideoutConfig.runIntervalSeconds) {
             this.hideoutController.update();
