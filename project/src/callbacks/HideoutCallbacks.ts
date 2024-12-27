@@ -5,6 +5,7 @@ import type { IHandleQTEEventRequestData } from "@spt/models/eft/hideout/IHandle
 import type { IHideoutCancelProductionRequestData } from "@spt/models/eft/hideout/IHideoutCancelProductionRequestData";
 import type { IHideoutCircleOfCultistProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutCircleOfCultistProductionStartRequestData";
 import type { IHideoutContinuousProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutContinuousProductionStartRequestData";
+import type { IHideoutCustomizationApplyRequestData } from "@spt/models/eft/hideout/IHideoutCustomizationApplyRequestData";
 import type { IHideoutDeleteProductionRequestData } from "@spt/models/eft/hideout/IHideoutDeleteProductionRequestData";
 import type { IHideoutImproveAreaRequestData } from "@spt/models/eft/hideout/IHideoutImproveAreaRequestData";
 import type { IHideoutPutItemInRequestData } from "@spt/models/eft/hideout/IHideoutPutItemInRequestData";
@@ -215,7 +216,7 @@ export class HideoutCallbacks implements OnUpdate {
      */
     public hideoutCustomizationApplyCommand(
         pmcData: IPmcData,
-        request: any,
+        request: IHideoutCustomizationApplyRequestData,
         sessionId: string,
     ): IItemEventRouterResponse {
         return this.hideoutController.hideoutCustomizationApply(sessionId, pmcData, request);

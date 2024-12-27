@@ -1,11 +1,14 @@
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import type { IPmcData } from "@spt/models/eft/common/IPmcData";
+import type { ICustomisationStorage } from "@spt/models/eft/common/tables/ICustomisationStorage";
 import type { ISuit } from "@spt/models/eft/common/tables/ITrader";
 import type {
     IBuyClothingRequestData,
     IPaymentItemForClothing,
 } from "@spt/models/eft/customization/IBuyClothingRequestData";
 import type { IWearClothingRequestData } from "@spt/models/eft/customization/IWearClothingRequestData";
+import type { ICustomizationSetRequest } from "@spt/models/eft/customization/iCustomizationSetRequest";
+import type { IHideoutCustomisation } from "@spt/models/eft/hideout/IHideoutCustomisation";
 import type { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
@@ -13,8 +16,6 @@ import { SaveServer } from "@spt/servers/SaveServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { inject, injectable } from "tsyringe";
-import type { ICustomisationStorage } from "../models/eft/common/tables/ICustomisationStorage";
-import type { IHideoutCustomisation } from "../models/eft/hideout/IHideoutCustomisation";
 
 @injectable()
 export class CustomizationController {
@@ -249,7 +250,8 @@ export class CustomizationController {
         return this.databaseService.getTemplates().customisationStoage;
     }
 
-    public setClothing(sessionId: string, info: any): any {
+    /** Handle CustomizationSet event */
+    public setClothing(sessionId: string, info: ICustomizationSetRequest, pmcData: IPmcData): any {
         throw new Error("Method not implemented.");
     }
 }

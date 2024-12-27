@@ -18,6 +18,8 @@ import type { IHideoutArea, IStage } from "@spt/models/eft/hideout/IHideoutArea"
 import type { IHideoutCancelProductionRequestData } from "@spt/models/eft/hideout/IHideoutCancelProductionRequestData";
 import type { IHideoutCircleOfCultistProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutCircleOfCultistProductionStartRequestData";
 import type { IHideoutContinuousProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutContinuousProductionStartRequestData";
+import type { IHideoutCustomisationGlobal } from "@spt/models/eft/hideout/IHideoutCustomisation";
+import type { IHideoutCustomizationApplyRequestData } from "@spt/models/eft/hideout/IHideoutCustomizationApplyRequestData";
 import type { IHideoutDeleteProductionRequestData } from "@spt/models/eft/hideout/IHideoutDeleteProductionRequestData";
 import type { IHideoutImproveAreaRequestData } from "@spt/models/eft/hideout/IHideoutImproveAreaRequestData";
 import type { IHideoutProduction } from "@spt/models/eft/hideout/IHideoutProduction";
@@ -1403,8 +1405,43 @@ export class HideoutController {
      * @param pmcData Player profile
      * @param request Client request data
      */
-    public hideoutCustomizationApply(sessionId: string, pmcData: IPmcData, request: any): IItemEventRouterResponse {
-        throw new Error("Method not implemented.");
+    public hideoutCustomizationApply(
+        sessionId: string,
+        pmcData: IPmcData,
+        request: IHideoutCustomizationApplyRequestData,
+    ): IItemEventRouterResponse {
+        const output = this.eventOutputHolder.getOutput(sessionId);
+
+        const itemDetails = this.databaseService
+            .getHideout()
+            .customisation.globals.find((cust) => cust.id === request.offerId);
+        if (!itemDetails) {
+            this.logger.error(`Unable to find customisation: ${request.offerId} in db, cannot apply to hideout`);
+
+            return output;
+        }
+
+        pmcData.Hideout.Customization[this.getHideoutCustomisationType(itemDetails.type)];
+
+        return output;
+    }
+
+    protected getHideoutCustomisationType(type: string): string {
+        switch (type) {
+            case "wall":
+                return "Wall";
+            case "floor":
+                return "Floor";
+            case "light":
+                return "Light";
+            case "ceiling":
+                return "Ceiling";
+            case "shootingRangeMark":
+                return "ShootingRangeMark";
+            default:
+                this.logger.warning(`Unknown ${type}, unable to map`);
+                return type;
+        }
     }
 
     /**
