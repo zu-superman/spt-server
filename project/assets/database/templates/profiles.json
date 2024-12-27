@@ -406,6 +406,15 @@
                     ],
                     "Improvements": {},
                     "Production": {},
+					"Seed": 1234567,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -420,7 +429,9 @@
                     "Level": 1,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 0,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
+					"NeedWipeOptions": [],
 					"SelectedMemberCategory": 0,
                     "Nickname": "__REPLACEME__",
                     "NicknameChangeDate": 0,
@@ -3113,6 +3124,15 @@
                     ],
                     "Improvements": {},
                     "Production": {},
+					"Seed": 1234567,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -3127,7 +3147,9 @@
                     "Level": 1,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 0,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
+					"NeedWipeOptions": [],
 					"SelectedMemberCategory": 0,
                     "Nickname": "__REPLACEME__",
                     "NicknameChangeDate": 0,
@@ -6001,6 +6023,15 @@
                     ],
                     "Improvements": {},
                     "Production": {},
+					"Seed": 1234567,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -6015,7 +6046,9 @@
                     "Level": 1,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 0,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
+					"NeedWipeOptions": [],
 					"SelectedMemberCategory": 0,
                     "Nickname": "__REPLACEME__",
                     "NicknameChangeDate": 0,
@@ -9267,6 +9300,15 @@
                     ],
                     "Improvements": {},
                     "Production": {},
+					"Seed": 1234567,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -9281,6 +9323,7 @@
                     "Level": 1,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 0,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
 					"SelectedMemberCategory": 0,
                     "Nickname": "__REPLACEME__",
@@ -12623,6 +12666,15 @@
                     ],
                     "Improvements": {},
                     "Production": {},
+					"Seed": 1234567,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -12637,7 +12689,9 @@
                     "Level": 1,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 0,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
+					"NeedWipeOptions": [],
 					"SelectedMemberCategory": 0,
                     "Nickname": "__REPLACEME__",
                     "NicknameChangeDate": 0,
@@ -16359,6 +16413,15 @@
                     ],
                     "Improvements": {},
                     "Production": {},
+					"Seed": 1234567,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -16373,7 +16436,9 @@
                     "Level": 1,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 0,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
+					"NeedWipeOptions": [],
 					"SelectedMemberCategory": 0,
                     "Nickname": "__REPLACEME__",
                     "NicknameChangeDate": 0,
@@ -20326,6 +20391,14 @@
                     "Improvements": {},
                     "Production": {},
                     "Seed": 222222222,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -20340,6 +20413,7 @@
                     "Level": 1,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 2,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
 					"SelectedMemberCategory": 2,
                     "NeedWipeOptions": [],
@@ -24051,6 +24125,14 @@
                     "Improvements": {},
                     "Production": {},
                     "Seed": 111111111,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -24065,6 +24147,7 @@
                     "Level": 1,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 2,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
 					"SelectedMemberCategory": 2,
                     "NeedWipeOptions": [],
@@ -28062,6 +28145,14 @@
                     "Improvements": {},
                     "Production": {},
                     "Seed": 222222222,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -28076,6 +28167,7 @@
                     "Level": 1,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 1026,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
 					"SelectedMemberCategory": 1024,
                     "NeedWipeOptions": [],
@@ -32557,6 +32649,14 @@
                     "Improvements": {},
                     "Production": {},
                     "Seed": 111111111,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -32571,6 +32671,7 @@
                     "Level": 1,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 1026,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
 					"SelectedMemberCategory": 1024,
                     "NeedWipeOptions": [],
@@ -37152,6 +37253,14 @@
                     "Improvements": {},
                     "Production": {},
                     "Seed": 222222222,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -37166,6 +37275,7 @@
                     "Level": 1,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 2,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
 					"SelectedMemberCategory": 2,
                     "NeedWipeOptions": [],
@@ -38132,6 +38242,14 @@
                     "Improvements": {},
                     "Production": {},
                     "Seed": 111111111,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -38146,6 +38264,7 @@
                     "Level": 1,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 2,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
 					"SelectedMemberCategory": 2,
                     "NeedWipeOptions": [],
@@ -41125,6 +41244,15 @@
                     ],
                     "Improvements": {},
                     "Production": {},
+					"Seed": 1234567,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -41139,6 +41267,7 @@
                     "Level": 69,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 1,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
 					"SelectedMemberCategory": 1,
                     "NeedWipeOptions": [],
@@ -44265,6 +44394,15 @@
                     ],
                     "Improvements": {},
                     "Production": {},
+					"Seed": 1234567,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -44279,6 +44417,7 @@
                     "Level": 69,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 1,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
 					"SelectedMemberCategory": 1,
                     "NeedWipeOptions": [],
@@ -47393,6 +47532,15 @@
                     ],
                     "Improvements": {},
                     "Production": {},
+					"Seed": 1234567,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -47407,6 +47555,7 @@
                     "Level": 15,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 2,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
 					"SelectedMemberCategory": 2,
                     "NeedWipeOptions": [],
@@ -50801,6 +50950,15 @@
                     ],
                     "Improvements": {},
                     "Production": {},
+					"Seed": 1234567,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -50815,6 +50973,7 @@
                     "Level": 15,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 2,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
 					"SelectedMemberCategory": 2,
                     "NeedWipeOptions": [],
@@ -52187,6 +52346,15 @@
                     ],
                     "Improvements": {},
                     "Production": {},
+					"Seed": 1234567,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -52201,7 +52369,9 @@
                     "Level": 1,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 0,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
+					"NeedWipeOptions": [],
 					"SelectedMemberCategory": 0,
                     "Nickname": "__REPLACEME__",
                     "NicknameChangeDate": 0,
@@ -53166,6 +53336,15 @@
                     ],
                     "Improvements": {},
                     "Production": {},
+					"Seed": 1234567,
+					"Customization": {
+						"Wall": "675844bdf94a97cbbe096f1a",
+						"Floor": "6758443ff94a97cbbe096f18",
+						"Light": "675fe8abbc3deae49a0b947f",
+						"Ceiling": "673b3f977038192ee006aa09",
+						"ShootingRangeMark": "67585d416c72998cf60ed85a"
+					},
+					"MannequinPoses": [],
 					"HideoutCounters": null
                 },
                 "Info": {
@@ -53180,7 +53359,9 @@
                     "Level": 1,
                     "LowerNickname": "__REPLACEME__",
                     "MemberCategory": 0,
+					"PrestigeLevel": 0,
 					"isMigratedSkills": false,
+					"NeedWipeOptions": [],
 					"SelectedMemberCategory": 0,
                     "Nickname": "__REPLACEME__",
                     "NicknameChangeDate": 0,
