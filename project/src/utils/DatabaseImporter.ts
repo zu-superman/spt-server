@@ -79,6 +79,7 @@ export class DatabaseImporter implements OnLoad {
             "/files/handbook/",
             "/files/Hideout/",
             "/files/launcher/",
+            "/files/prestige/",
             "/files/quest/icon/",
             "/files/trader/avatar/",
         ]);
