@@ -1,17 +1,18 @@
 import { CustomizationController } from "@spt/controllers/CustomizationController";
 import type { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
 import type { IPmcData } from "@spt/models/eft/common/IPmcData";
+import type { ICustomisationStorage } from "@spt/models/eft/common/tables/ICustomisationStorage";
 import type { ISuit } from "@spt/models/eft/common/tables/ITrader";
 import type { IBuyClothingRequestData } from "@spt/models/eft/customization/IBuyClothingRequestData";
 import type { IGetSuitsResponse } from "@spt/models/eft/customization/IGetSuitsResponse";
 import type { IWearClothingRequestData } from "@spt/models/eft/customization/IWearClothingRequestData";
 import type { ICustomizationSetRequest } from "@spt/models/eft/customization/iCustomizationSetRequest";
+import type { IHideoutCustomisation } from "@spt/models/eft/hideout/IHideoutCustomisation";
 import type { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
 import type { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { SaveServer } from "@spt/servers/SaveServer";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 import { inject, injectable } from "tsyringe";
-import type { ICustomisationStorage } from "../models/eft/common/tables/ICustomisationStorage";
 
 @injectable()
 export class CustomizationCallbacks {
@@ -59,20 +60,30 @@ export class CustomizationCallbacks {
         return this.customizationController.buyClothing(pmcData, body, sessionID);
     }
 
-    public getHideoutCustomisation(url: string, info: any, sessionID: string): IGetBodyResponseData<any> {
+    /** Handle client/hideout/customization/offer/list */
+    public getHideoutCustomisation(
+        url: string,
+        info: IEmptyRequestData,
+        sessionID: string,
+    ): IGetBodyResponseData<IHideoutCustomisation> {
         return this.httpResponse.getBody(this.customizationController.getHideoutCustomisation(sessionID, info));
     }
 
-    public getStorage(url: string, info: any, sessionID: string): IGetBodyResponseData<ICustomisationStorage> {
-        return this.httpResponse.getBody(this.customizationController.getCustomisationStoage(sessionID, info));
+    /** Handle client/customization/storage */
+    public getStorage(
+        url: string,
+        request: IEmptyRequestData,
+        sessionID: string,
+    ): IGetBodyResponseData<ICustomisationStorage[]> {
+        return this.httpResponse.getBody(this.customizationController.getCustomisationStoage(sessionID, request));
     }
 
     /** Handle CustomizationSet */
-    public async setClothing(
+    public setClothing(
         pmcData: IPmcData,
-        info: ICustomizationSetRequest,
+        request: ICustomizationSetRequest,
         sessionID: string,
-    ): Promise<IGetBodyResponseData<any>> {
-        return this.httpResponse.getBody(await this.customizationController.setClothing(sessionID, info, pmcData));
+    ): IItemEventRouterResponse {
+        return this.customizationController.setClothing(sessionID, request, pmcData);
     }
 }

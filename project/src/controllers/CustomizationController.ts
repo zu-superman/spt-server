@@ -251,7 +251,15 @@ export class CustomizationController {
     }
 
     /** Handle CustomizationSet event */
-    public setClothing(sessionId: string, info: ICustomizationSetRequest, pmcData: IPmcData): any {
-        throw new Error("Method not implemented.");
+    public setClothing(
+        sessionId: string,
+        request: ICustomizationSetRequest,
+        pmcData: IPmcData,
+    ): IItemEventRouterResponse {
+        for (const customisation of request.customizations) {
+            pmcData.Customization[request.type] = customisation.id;
+        }
+
+        return this.eventOutputHolder.getOutput(sessionId);
     }
 }
