@@ -367,6 +367,7 @@ export class LocationLifecycleService {
             request.locationTransit.sptLastVisitedLocation = locationName;
             // TODO - Persist each players last visited location history over multiple transits, e.g using InMemoryCacheService, need to take care to not let data get stored forever
             // Store transfer data for later use in `startLocalRaid()` when next raid starts
+            request.locationTransit.sptExitName = request.results.exitName;
             this.applicationContext.addValue(ContextVariableType.TRANSIT_INFO, request.locationTransit);
         }
 
