@@ -1,12 +1,13 @@
 import { CustomizationController } from "@spt/controllers/CustomizationController";
-import { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
-import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { ISuit } from "@spt/models/eft/common/tables/ITrader";
-import { IBuyClothingRequestData } from "@spt/models/eft/customization/IBuyClothingRequestData";
-import { IGetSuitsResponse } from "@spt/models/eft/customization/IGetSuitsResponse";
-import { IWearClothingRequestData } from "@spt/models/eft/customization/IWearClothingRequestData";
-import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
-import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
+import type { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
+import type { IPmcData } from "@spt/models/eft/common/IPmcData";
+import type { ISuit } from "@spt/models/eft/common/tables/ITrader";
+import type { IBuyClothingRequestData } from "@spt/models/eft/customization/IBuyClothingRequestData";
+import type { IGetSuitsResponse } from "@spt/models/eft/customization/IGetSuitsResponse";
+import type { IWearClothingRequestData } from "@spt/models/eft/customization/IWearClothingRequestData";
+import type { ICustomizationSetRequest } from "@spt/models/eft/customization/iCustomizationSetRequest";
+import type { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
+import type { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { SaveServer } from "@spt/servers/SaveServer";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 import { inject, injectable } from "tsyringe";
@@ -67,7 +68,11 @@ export class CustomizationCallbacks {
     }
 
     /** Handle CustomizationSet */
-    public setClothing(pmcData: IPmcData, info: any, sessionID: string): IItemEventRouterResponse {
+    public setClothing(
+        pmcData: IPmcData,
+        info: ICustomizationSetRequest,
+        sessionID: string,
+    ): IGetBodyResponseData<any> {
         return this.httpResponse.getBody(this.customizationController.setClothing(sessionID, info));
     }
 }

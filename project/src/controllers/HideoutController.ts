@@ -5,30 +5,37 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PaymentHelper } from "@spt/helpers/PaymentHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
-import { IPmcData } from "@spt/models/eft/common/IPmcData";
-import { IBotHideoutArea, IProduct, IScavCase, ITaskConditionCounter } from "@spt/models/eft/common/tables/IBotBase";
-import { IItem } from "@spt/models/eft/common/tables/IItem";
-import { IHandleQTEEventRequestData } from "@spt/models/eft/hideout/IHandleQTEEventRequestData";
-import { IHideoutArea, IStage } from "@spt/models/eft/hideout/IHideoutArea";
-import { IHideoutCancelProductionRequestData } from "@spt/models/eft/hideout/IHideoutCancelProductionRequestData";
-import { IHideoutCircleOfCultistProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutCircleOfCultistProductionStartRequestData";
-import { IHideoutContinuousProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutContinuousProductionStartRequestData";
-import { IHideoutDeleteProductionRequestData } from "@spt/models/eft/hideout/IHideoutDeleteProductionRequestData";
-import { IHideoutImproveAreaRequestData } from "@spt/models/eft/hideout/IHideoutImproveAreaRequestData";
-import { IHideoutProduction } from "@spt/models/eft/hideout/IHideoutProduction";
-import { IHideoutPutItemInRequestData } from "@spt/models/eft/hideout/IHideoutPutItemInRequestData";
-import { IHideoutScavCaseStartRequestData } from "@spt/models/eft/hideout/IHideoutScavCaseStartRequestData";
-import { IHideoutSingleProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutSingleProductionStartRequestData";
-import { IHideoutTakeItemOutRequestData } from "@spt/models/eft/hideout/IHideoutTakeItemOutRequestData";
-import { IHideoutTakeProductionRequestData } from "@spt/models/eft/hideout/IHideoutTakeProductionRequestData";
-import { IHideoutToggleAreaRequestData } from "@spt/models/eft/hideout/IHideoutToggleAreaRequestData";
-import { IHideoutUpgradeCompleteRequestData } from "@spt/models/eft/hideout/IHideoutUpgradeCompleteRequestData";
-import { IHideoutUpgradeRequestData } from "@spt/models/eft/hideout/IHideoutUpgradeRequestData";
-import { IQteData, IQteResult } from "@spt/models/eft/hideout/IQteData";
-import { IRecordShootingRangePoints } from "@spt/models/eft/hideout/IRecordShootingRangePoints";
-import { IAddItemDirectRequest } from "@spt/models/eft/inventory/IAddItemDirectRequest";
-import { IAddItemsDirectRequest } from "@spt/models/eft/inventory/IAddItemsDirectRequest";
-import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
+import type { IPmcData } from "@spt/models/eft/common/IPmcData";
+import type {
+    IBotHideoutArea,
+    IProduct,
+    IScavCase,
+    ITaskConditionCounter,
+} from "@spt/models/eft/common/tables/IBotBase";
+import type { IItem } from "@spt/models/eft/common/tables/IItem";
+import type { IHandleQTEEventRequestData } from "@spt/models/eft/hideout/IHandleQTEEventRequestData";
+import type { IHideoutArea, IStage } from "@spt/models/eft/hideout/IHideoutArea";
+import type { IHideoutCancelProductionRequestData } from "@spt/models/eft/hideout/IHideoutCancelProductionRequestData";
+import type { IHideoutCircleOfCultistProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutCircleOfCultistProductionStartRequestData";
+import type { IHideoutContinuousProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutContinuousProductionStartRequestData";
+import type { IHideoutCustomisationGlobal } from "@spt/models/eft/hideout/IHideoutCustomisation";
+import type { IHideoutCustomizationApplyRequestData } from "@spt/models/eft/hideout/IHideoutCustomizationApplyRequestData";
+import type { IHideoutDeleteProductionRequestData } from "@spt/models/eft/hideout/IHideoutDeleteProductionRequestData";
+import type { IHideoutImproveAreaRequestData } from "@spt/models/eft/hideout/IHideoutImproveAreaRequestData";
+import type { IHideoutProduction } from "@spt/models/eft/hideout/IHideoutProduction";
+import type { IHideoutPutItemInRequestData } from "@spt/models/eft/hideout/IHideoutPutItemInRequestData";
+import type { IHideoutScavCaseStartRequestData } from "@spt/models/eft/hideout/IHideoutScavCaseStartRequestData";
+import type { IHideoutSingleProductionStartRequestData } from "@spt/models/eft/hideout/IHideoutSingleProductionStartRequestData";
+import type { IHideoutTakeItemOutRequestData } from "@spt/models/eft/hideout/IHideoutTakeItemOutRequestData";
+import type { IHideoutTakeProductionRequestData } from "@spt/models/eft/hideout/IHideoutTakeProductionRequestData";
+import type { IHideoutToggleAreaRequestData } from "@spt/models/eft/hideout/IHideoutToggleAreaRequestData";
+import type { IHideoutUpgradeCompleteRequestData } from "@spt/models/eft/hideout/IHideoutUpgradeCompleteRequestData";
+import type { IHideoutUpgradeRequestData } from "@spt/models/eft/hideout/IHideoutUpgradeRequestData";
+import type { IQteData, IQteResult } from "@spt/models/eft/hideout/IQteData";
+import type { IRecordShootingRangePoints } from "@spt/models/eft/hideout/IRecordShootingRangePoints";
+import type { IAddItemDirectRequest } from "@spt/models/eft/inventory/IAddItemDirectRequest";
+import type { IAddItemsDirectRequest } from "@spt/models/eft/inventory/IAddItemsDirectRequest";
+import type { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { BackendErrorCodes } from "@spt/models/enums/BackendErrorCodes";
 import { BonusType } from "@spt/models/enums/BonusType";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -1398,8 +1405,43 @@ export class HideoutController {
      * @param pmcData Player profile
      * @param request Client request data
      */
-    public hideoutCustomizationApply(sessionId: string, pmcData: IPmcData, request: any): IItemEventRouterResponse {
-        throw new Error("Method not implemented.");
+    public hideoutCustomizationApply(
+        sessionId: string,
+        pmcData: IPmcData,
+        request: IHideoutCustomizationApplyRequestData,
+    ): IItemEventRouterResponse {
+        const output = this.eventOutputHolder.getOutput(sessionId);
+
+        const itemDetails = this.databaseService
+            .getHideout()
+            .customisation.globals.find((cust) => cust.id === request.offerId);
+        if (!itemDetails) {
+            this.logger.error(`Unable to find customisation: ${request.offerId} in db, cannot apply to hideout`);
+
+            return output;
+        }
+
+        pmcData.Hideout.Customization[this.getHideoutCustomisationType(itemDetails.type)];
+
+        return output;
+    }
+
+    protected getHideoutCustomisationType(type: string): string {
+        switch (type) {
+            case "wall":
+                return "Wall";
+            case "floor":
+                return "Floor";
+            case "light":
+                return "Light";
+            case "ceiling":
+                return "Ceiling";
+            case "shootingRangeMark":
+                return "ShootingRangeMark";
+            default:
+                this.logger.warning(`Unknown ${type}, unable to map`);
+                return type;
+        }
     }
 
     /**
