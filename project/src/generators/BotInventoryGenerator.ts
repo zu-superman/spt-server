@@ -142,6 +142,7 @@ export class BotInventoryGenerator {
             hideoutAreaStashes: {},
             fastPanel: {},
             favoriteItems: [],
+            hideoutCustomizationStashId: "",
         };
     }
 
