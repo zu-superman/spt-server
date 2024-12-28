@@ -1,6 +1,6 @@
-import type { PrestigeCallbacks } from "@project/src/callbacks/PrestigeCallbacks";
-import type { IGetBodyResponseData } from "@project/src/models/eft/httpResponse/IGetBodyResponseData";
+import type { PrestigeCallbacks } from "@spt/callbacks/PrestigeCallbacks";
 import { RouteAction, StaticRouter } from "@spt/di/Router";
+import type { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
