@@ -257,7 +257,7 @@ export class CustomizationController {
         pmcData: IPmcData,
     ): IItemEventRouterResponse {
         for (const customisation of request.customizations) {
-            pmcData.Customization[request.type] = customisation.id;
+            pmcData.Customization[customisation.type] = customisation.id;
         }
 
         return this.eventOutputHolder.getOutput(sessionId);
