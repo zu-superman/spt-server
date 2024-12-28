@@ -1,11 +1,12 @@
+import { ILocations } from "@spt/models/spt/server/ILocations";
+
 export interface ILocationsBase {
     locations: ILocations;
     paths: IPath[];
 }
 
-export type ILocations = {};
-
 export interface IPath {
     Source: string;
+    Event: boolean;
     Destination: string;
 }
