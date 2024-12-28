@@ -6,8 +6,8 @@ import type {
     IBuyClothingRequestData,
     IPaymentItemForClothing,
 } from "@spt/models/eft/customization/IBuyClothingRequestData";
+import type { ICustomizationSetRequest } from "@spt/models/eft/customization/ICustomizationSetRequest";
 import type { IWearClothingRequestData } from "@spt/models/eft/customization/IWearClothingRequestData";
-import type { ICustomizationSetRequest } from "@spt/models/eft/customization/iCustomizationSetRequest";
 import type { IHideoutCustomisation } from "@spt/models/eft/hideout/IHideoutCustomisation";
 import type { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import type { ILogger } from "@spt/models/spt/utils/ILogger";
