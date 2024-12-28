@@ -7,5 +7,6 @@ export interface ILocationsGenerateAllResponse {
 
 export interface IPath {
     Source: string;
+    Event: boolean;
     Destination: string;
 }
