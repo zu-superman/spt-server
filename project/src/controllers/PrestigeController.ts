@@ -4,7 +4,7 @@ import type { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { QuestHelper } from "@spt/helpers/QuestHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
-import { IGetPrestigeResponse } from "@spt/models/eft/prestige/IGetPrestigeResponse";
+import { IPrestige } from "@spt/models/eft/common/tables/IPrestige";
 import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { SaveServer } from "@spt/servers/SaveServer";
@@ -44,8 +44,8 @@ export class PrestigeController {
     /**
      * Handle /client/prestige/list
      */
-    public getPrestige(sessionID: string, info: IEmptyRequestData): IGetPrestigeResponse {
-        return { elements: this.databaseService.getTemplates().prestige };
+    public getPrestige(sessionID: string, info: IEmptyRequestData): IPrestige {
+        return this.databaseService.getTemplates().prestige;
     }
 
     /**
