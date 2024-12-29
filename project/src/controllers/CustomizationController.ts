@@ -303,6 +303,25 @@ export class CustomizationController {
                 break;
         }
 
+        const pretigeLevel = profile?.characters?.pmc?.Info?.PrestigeLevel;
+        if (pretigeLevel) {
+            if (pretigeLevel >= 1) {
+                customisationResultsClone.push({
+                    id: "674dbf593bee1152d407f005",
+                    source: "default",
+                    type: "dogTag",
+                });
+            }
+
+            if (pretigeLevel >= 2) {
+                customisationResultsClone.push({
+                    id: "675dcfea7ae1a8792107ca99",
+                    source: "default",
+                    type: "dogTag",
+                });
+            }
+        }
+
         return customisationResultsClone;
     }
 
