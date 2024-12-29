@@ -11,6 +11,7 @@ import type { ICustomizationSetRequest } from "@spt/models/eft/customization/ICu
 import type { IWearClothingRequestData } from "@spt/models/eft/customization/IWearClothingRequestData";
 import type { IHideoutCustomisation } from "@spt/models/eft/hideout/IHideoutCustomisation";
 import type { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
+import { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 import { GameEditions } from "@spt/models/enums/GameEditions";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import type { ILogger } from "@spt/models/spt/utils/ILogger";
@@ -257,9 +258,10 @@ export class CustomizationController {
         const customisationResultsClone = this.cloner.clone(this.databaseService.getTemplates().customisationStorage);
 
         // Some game versions have additional dogtag variants, add them
-        const profile = this.profileHelper.getPmcProfile(sessionID);
-        switch (profile.Info.GameVersion) {
+        const profile = this.profileHelper.getFullProfile(sessionID);
+        switch (this.getGameEdition(profile)) {
             case GameEditions.EDGE_OF_DARKNESS:
+                // Gets EoD tags
                 customisationResultsClone.push({
                     id: ItemTpl.BARTER_DOGTAG_BEAR_EOD,
                     type: "dogTag",
@@ -274,6 +276,19 @@ export class CustomizationController {
 
                 break;
             case GameEditions.UNHEARD:
+                // Gets EoD+Unheard tags
+                customisationResultsClone.push({
+                    id: ItemTpl.BARTER_DOGTAG_BEAR_EOD,
+                    type: "dogTag",
+                    source: "default",
+                });
+
+                customisationResultsClone.push({
+                    id: ItemTpl.BARTER_DOGTAG_USEC_EOD,
+                    type: "dogTag",
+                    source: "default",
+                });
+
                 customisationResultsClone.push({
                     id: ItemTpl.BARTER_DOGTAG_BEAR_TUE,
                     type: "dogTag",
@@ -289,6 +304,24 @@ export class CustomizationController {
         }
 
         return customisationResultsClone;
+    }
+
+    protected getGameEdition(profile: ISptProfile): string {
+        const edition = profile.characters?.pmc?.Info?.GameVersion;
+        if (!edition) {
+            // Edge case - profile not created yet, fall back to what launcher has set
+            const launcherEdition = profile.info.edition;
+            switch (launcherEdition.toLowerCase()) {
+                case "edge of darkness":
+                    return GameEditions.EDGE_OF_DARKNESS;
+                case "unheard":
+                    return GameEditions.UNHEARD;
+                default:
+                    return GameEditions.STANDARD;
+            }
+        }
+
+        return edition;
     }
 
     /** Handle CustomizationSet event */
