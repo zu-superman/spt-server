@@ -259,51 +259,69 @@ export class CustomizationController {
 
         // Some game versions have additional dogtag variants, add them
         const profile = this.profileHelper.getFullProfile(sessionID);
-        switch (profile.characters?.pmc?.Info?.GameVersion ?? profile.info.edition) {
+        switch (this.getGameEdition(profile)) {
             case GameEditions.EDGE_OF_DARKNESS:
                 // Gets EoD tags
                 customisationResultsClone.push({
-                    id: ItemTpl.BARTER_DOGTAG_BEAR_EOD,
-                    type: "dogTag",
+                    id: "6746fd09bafff85008048838",
                     source: "default",
+                    type: "dogTag",
                 });
 
                 customisationResultsClone.push({
-                    id: ItemTpl.BARTER_DOGTAG_USEC_EOD,
-                    type: "dogTag",
+                    id: "67471938bafff850080488b7",
                     source: "default",
+                    type: "dogTag",
                 });
 
                 break;
             case GameEditions.UNHEARD:
                 // Gets EoD+Unheard tags
                 customisationResultsClone.push({
-                    id: ItemTpl.BARTER_DOGTAG_BEAR_EOD,
-                    type: "dogTag",
+                    id: "6746fd09bafff85008048838",
                     source: "default",
+                    type: "dogTag",
                 });
 
                 customisationResultsClone.push({
-                    id: ItemTpl.BARTER_DOGTAG_USEC_EOD,
-                    type: "dogTag",
+                    id: "67471938bafff850080488b7",
                     source: "default",
+                    type: "dogTag",
                 });
 
                 customisationResultsClone.push({
-                    id: ItemTpl.BARTER_DOGTAG_BEAR_TUE,
-                    type: "dogTag",
+                    id: "67471928d17d6431550563b5",
                     source: "default",
+                    type: "dogTag",
                 });
 
                 customisationResultsClone.push({
-                    id: ItemTpl.BARTER_DOGTAG_USEC_TUE,
-                    type: "dogTag",
+                    id: "6747193f170146228c0d2226",
                     source: "default",
+                    type: "dogTag",
                 });
                 break;
         }
 
         return customisationResultsClone;
+    }
+
+    protected getGameEdition(profile: ISptProfile): string {
+        const edition = profile.characters?.pmc?.Info?.GameVersion;
+        if (!edition) {
+            // Edge case - profile not created yet, fall back to what launcher has set
+            const launcherEdition = profile.info.edition;
+            switch (launcherEdition.toLowerCase()) {
+                case "edge of darkness":
+                    return GameEditions.EDGE_OF_DARKNESS;
+                case "unheard":
+                    return GameEditions.UNHEARD;
+                default:
+                    return GameEditions.STANDARD;
+            }
+        }
+
+        return edition;
     }
 
     /** Handle CustomizationSet event */
