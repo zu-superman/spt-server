@@ -48041,7 +48041,8 @@
                     "questRaidItems": "5fe49444ae6628187a2e78b9",
                     "questStashItems": "5fe49444ae6628187a2e78ba",
                     "sortingTable": "60dca3da42ad9b706b369aca",
-                    "stash": "5fe49444ae6628187a2e78b8"
+                    "stash": "5fe49444ae6628187a2e78b8",
+					"hideoutCustomizationStashId": "676db384777490e23c45b657"
                 },
                 "Notes": {
                     "Notes": []
