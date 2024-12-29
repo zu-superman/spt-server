@@ -27248,35 +27248,35 @@
             "Station": "RunddansEvent"
           },
           {
-            "Enabled": true,
+            "Enabled": false,
             "Station": "HipHop"
           },
           {
-            "Enabled": true,
+            "Enabled": false,
             "Station": "Acoustic"
           },
           {
-            "Enabled": true,
+            "Enabled": false,
             "Station": "EDM"
           },
           {
-            "Enabled": true,
+            "Enabled": false,
             "Station": "Rock"
           },
           {
-            "Enabled": true,
+            "Enabled": false,
             "Station": "LoFi"
           },
           {
-            "Enabled": true,
+            "Enabled": false,
             "Station": "Metal"
           },
           {
-            "Enabled": true,
+            "Enabled": false,
             "Station": "Punk"
           },
           {
-            "Enabled": true,
+            "Enabled": false,
             "Station": "Pop"
           }
         ]
@@ -29777,7 +29777,7 @@
           "PriceModDelivery": 2000,
           "PriceModTaxi": 1000,
           "PriceModifier": 0.8,
-          "ReactOnMarkOnUnknowns": false,
+          "ReactOnMarkOnUnknowns": true,
           "ReactOnMarkOnUnknownsPVE": true,
           "SavageCooldownModifier": 0.4,
           "ScavAttackSupport": true,
@@ -33539,6 +33539,7 @@
           "TemplateId": "5d0378d486f77420421a5ff4"
         }
       ],
+      "RagfairTurnOnTimestamp": 0,
       "balancerAveragePriceCoefficient": 10,
       "balancerMinPriceCount": 3,
       "balancerRemovePriceCoefficient": 5,
@@ -34541,7 +34542,7 @@
         "TemplateId": "675aaae1dcf102478202c537"
       },
       {
-        "MaxInLobby": 1,
+        "MaxInLobby": 0,
         "MaxInRaid": 1,
         "TemplateId": "675aaab74bca0b001d02f356"
       },
@@ -34564,6 +34565,111 @@
         "MaxInLobby": 0,
         "MaxInRaid": 0,
         "TemplateId": "67600929bd0a0549d70993f6"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676a93c51888885b4e008b18"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676a95041888885b4e008b36"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676a98d7b4ba2f4afa04c704"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676a9a5c744595610f0ed501"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676a9b15b4ba2f4afa04c7ad"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676a9b1afe1fc45172014d32"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676a9bc6744595610f0ed52e"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676a9da81888885b4e008c51"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676a9e46744595610f0ed53f"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676a9f03744595610f0ed55f"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676a9fc7a65670a58c084c9e"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676aa016744595610f0ed563"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676aa025fe1fc45172014d9f"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676aa0f11888885b4e008c8b"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676aa104fe1fc45172014da3"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676aa29243000db5340061b5"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676aa30ffe1fc45172014dce"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676aa37ff90b6f429601afb5"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676aa3cf7a232aa5c70bda8d"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676aa3fc20a7cc6f4309e078"
+      },
+      {
+        "MaxInLobby": 0,
+        "MaxInRaid": 0,
+        "TemplateId": "676aa450fe1fc45172014df2"
       }
     ],
     "RunddansSettings": {

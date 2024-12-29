@@ -1164,6 +1164,7 @@ export interface IRagFair {
     delaySinceOfferAdd: number;
     uniqueBuyerTimeoutInDays: number;
     userRatingChangeFrequencyMultiplayer: number;
+    RagfairTurnOnTimestamp: number;
     ratingSumForIncrease: number;
     ratingIncreaseCount: number;
     ratingSumForDecrease: number;
