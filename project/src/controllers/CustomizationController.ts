@@ -259,7 +259,7 @@ export class CustomizationController {
 
         // Some game versions have additional dogtag variants, add them
         const profile = this.profileHelper.getFullProfile(sessionID);
-        switch (this.getGameEdition(profile)) {
+        switch (profile.characters?.pmc?.Info?.GameVersion ?? profile.info.edition) {
             case GameEditions.EDGE_OF_DARKNESS:
                 // Gets EoD tags
                 customisationResultsClone.push({
@@ -304,24 +304,6 @@ export class CustomizationController {
         }
 
         return customisationResultsClone;
-    }
-
-    protected getGameEdition(profile: ISptProfile): string {
-        const edition = profile.characters?.pmc?.Info?.GameVersion;
-        if (!edition) {
-            // Edge case - profile not created yet, fall back to what launcher has set
-            const launcherEdition = profile.info.edition;
-            switch (launcherEdition.toLowerCase()) {
-                case "edge of darkness":
-                    return GameEditions.EDGE_OF_DARKNESS;
-                case "unheard":
-                    return GameEditions.UNHEARD;
-                default:
-                    return GameEditions.STANDARD;
-            }
-        }
-
-        return edition;
     }
 
     /** Handle CustomizationSet event */
