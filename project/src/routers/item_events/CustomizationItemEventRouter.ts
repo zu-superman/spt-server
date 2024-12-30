@@ -13,11 +13,7 @@ export class CustomizationItemEventRouter extends ItemEventRouterDefinition {
     }
 
     public override getHandledRoutes(): HandledRoute[] {
-        return [
-            new HandledRoute("CustomizationWear", false),
-            new HandledRoute("CustomizationBuy", false),
-            new HandledRoute("CustomizationSet", false),
-        ];
+        return [new HandledRoute("CustomizationBuy", false), new HandledRoute("CustomizationSet", false)];
     }
 
     public override async handleItemEvent(
