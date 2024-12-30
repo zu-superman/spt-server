@@ -1,4 +1,4 @@
-name: Run Code Linter
+name: Run Type Check
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
     branches: ["*"]
 
 jobs:
-  biome:
+  types:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,9 +19,9 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version-file: "project/.nvmrc"
+          node-version-file: "./project/.nvmrc"
           cache: "npm"
-          cache-dependency-path: "project/package.json"
+          cache-dependency-path: "./project/package.json"
 
       - name: Check NPM Cache
         id: cache-check
@@ -37,6 +37,6 @@ jobs:
         run: npm install
         working-directory: ./project
 
-      - name: Run Linter
-        run: npm run lint
+      - name: Run Type Check
+        run: npm run lint:types
         working-directory: ./project

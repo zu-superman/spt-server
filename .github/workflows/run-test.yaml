@@ -23,7 +23,17 @@ jobs:
           cache: "npm"
           cache-dependency-path: "project/package.json"
 
+      - name: Check NPM Cache
+        id: cache-check
+        uses: actions/cache@v4
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('./project/package.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Install NPM Dependencies
+        if: steps.cache-check.outputs.cache-hit != 'true'
         run: npm install
         working-directory: ./project
 
