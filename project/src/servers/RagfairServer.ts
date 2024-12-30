@@ -33,6 +33,7 @@ export class RagfairServer {
     }
 
     public async load(): Promise<void> {
+        this.logger.info(this.localisationService.getText("ragfair-generating_offers"));
         await this.ragfairOfferGenerator.generateDynamicOffers();
         await this.update();
     }
