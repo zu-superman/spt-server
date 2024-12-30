@@ -26,7 +26,6 @@ import { ISearchRequestData } from "@spt/models/eft/ragfair/ISearchRequestData";
 import { IProcessBuyTradeRequestData } from "@spt/models/eft/trade/IProcessBuyTradeRequestData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { FleaOfferType } from "@spt/models/enums/FleaOfferType";
-import { MemberCategory } from "@spt/models/enums/MemberCategory";
 import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
@@ -336,7 +335,7 @@ export class RagfairController {
 
                     // Figure out how many items the requirementsCost is applying to, and what the per-item price is
                     const offerItemCount = Math.max(
-                        offer.sellInOnePiece ? offer.items[0].upd?.StackObjectsCount ?? 1 : 1,
+                        offer.sellInOnePiece ? (offer.items[0].upd?.StackObjectsCount ?? 1) : 1,
                     );
                     const perItemPrice = offer.requirementsCost / offerItemCount;
 

@@ -18,7 +18,7 @@ import { EquipmentSlots } from "@spt/models/enums/EquipmentSlots";
 import { GameEditions } from "@spt/models/enums/GameEditions";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { IGenerateEquipmentProperties } from "@spt/models/spt/bots/IGenerateEquipmentProperties";
-import { IBotConfig, IEquipmentFilterDetails } from "@spt/models/spt/config/IBotConfig";
+import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { BotEquipmentFilterService } from "@spt/services/BotEquipmentFilterService";
