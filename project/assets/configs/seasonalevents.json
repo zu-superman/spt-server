@@ -81,7 +81,10 @@
 			"bosskilla": {
                 "ArmorVest": {
                     "674d91ce6e862d5a95059ed6": 200
-                }
+                },
+				"Headwear": {
+					"6759af0f9c8a538dd70bfae6": 200
+				}
             },
             "bossknight": {
                 "FaceCover": {
