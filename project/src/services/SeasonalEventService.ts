@@ -491,6 +491,7 @@ export class SeasonalEventService {
                         break;
                     case SeasonalEventType.NEW_YEARS.toLowerCase():
                         this.giveGift(sessionId, "NewYear2023");
+                        this.giveGift(sessionId, "NewYear2024");
                         break;
                 }
             }
