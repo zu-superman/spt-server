@@ -285,7 +285,13 @@ export class SeasonalEventService {
                 seasonRange.startMonth - 1, // Month value starts at 0
                 seasonRange.startDay,
             );
-            const eventEndDate = new Date(currentDate.getFullYear(), seasonRange.endMonth - 1, seasonRange.endDay);
+            const eventEndDate = new Date(
+                currentDate.getFullYear(),
+                seasonRange.endMonth - 1,
+                seasonRange.endDay,
+                23,
+                59,
+            );
 
             // Does todays date fit inside the above range
             if (currentDate >= eventStartDate && currentDate <= eventEndDate) {
