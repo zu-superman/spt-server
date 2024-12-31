@@ -2,17 +2,10 @@ import { ErrorHandler } from "@spt/ErrorHandler";
 import { Container } from "@spt/di/Container";
 import buildInfo from "@spt/entry/build.json" assert { type: "json" };
 import type { PreSptModLoader } from "@spt/loaders/PreSptModLoader";
+import { EntryType } from "@spt/models/enums/EntryType";
 import { App } from "@spt/utils/App";
 import { Watermark } from "@spt/utils/Watermark";
 import { container } from "tsyringe";
-
-export enum EntryType {
-    LOCAL = "LOCAL",
-    DEBUG = "DEBUG",
-    RELEASE = "RELEASE",
-    BLEEDING_EDGE = "BLEEDING_EDGE",
-    BLEEDING_EDGE_MODS = "BLEEDING_EDGE_MODS",
-}
 
 export class Program {
     private static _ENTRY_TYPE: EntryType;

@@ -1,8 +1,9 @@
-import { EntryType, Program } from "@spt/Program";
+import { Program } from "@spt/Program";
 import { ClientLogController } from "@spt/controllers/ClientLogController";
 import { ModLoadOrder } from "@spt/loaders/ModLoadOrder";
 import { INullResponseData } from "@spt/models/eft/httpResponse/INullResponseData";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
+import { EntryType } from "@spt/models/enums/EntryType";
 import { IBsgLogging, ICoreConfig, IRelease } from "@spt/models/spt/config/ICoreConfig";
 import { IClientLogRequest } from "@spt/models/spt/logging/IClientLogRequest";
 import { ConfigServer } from "@spt/servers/ConfigServer";

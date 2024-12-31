@@ -1,8 +1,9 @@
 import { IncomingHttpHeaders, IncomingMessage, ServerResponse } from "node:http";
 import util from "node:util";
 import zlib from "node:zlib";
-import { EntryType, Program } from "@spt/Program";
+import { Program } from "@spt/Program";
 import { Serializer } from "@spt/di/Serializer";
+import { EntryType } from "@spt/models/enums/EntryType";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
 import { HttpRouter } from "@spt/routers/HttpRouter";
 import { IHttpListener } from "@spt/servers/http/IHttpListener";
