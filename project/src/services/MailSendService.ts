@@ -174,7 +174,10 @@ export class MailSendService {
 
         // Add items to message
         if (items.length > 0) {
-            details.items = items;
+            const rootItemParentID = this.hashUtil.generate();
+
+            details.items = this.itemHelper.adoptOrphanedItems(rootItemParentID, items);
+
             details.itemsMaxStorageLifetimeSeconds = maxStorageTimeSeconds ?? 172800; // 48 hours if no value supplied
         }
 
