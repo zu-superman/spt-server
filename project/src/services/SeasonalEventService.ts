@@ -247,14 +247,15 @@ export class SeasonalEventService {
 
         // Add active events to array
         for (const event of seasonalEvents) {
+            if (!event.enabled) {
+                continue;
+            }
+
             const eventStartDate = new Date(currentDate.getFullYear(), event.startMonth - 1, event.startDay);
-            const eventEndDate = new Date(currentDate.getFullYear(), event.endMonth - 1, event.endDay);
+            const eventEndDate = new Date(currentDate.getFullYear(), event.endMonth - 1, event.endDay, 23, 59);
 
             // Current date is between start/end dates
             if (currentDate >= eventStartDate && currentDate <= eventEndDate) {
-                if (!event.enabled) {
-                    continue;
-                }
                 this.currentlyActiveEvents.push(event);
 
                 if (SeasonalEventType[event.type] === SeasonalEventType.CHRISTMAS) {
