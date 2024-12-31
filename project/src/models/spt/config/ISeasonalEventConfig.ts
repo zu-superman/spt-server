@@ -16,6 +16,8 @@ export interface ISeasonalEventConfig extends IBaseConfig {
     gifterSettings: IGifterSetting[];
     /** key = event, second key = map name */
     hostilitySettingsForEvent: Record<string, Record<string, IAdditionalHostilitySettings[]>>;
+    /** Ids of containers on locations that only have christmas loot */
+    christmasContainerIds: string[];
 }
 
 export interface ISeasonalEvent {

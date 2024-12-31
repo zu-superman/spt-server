@@ -12270,5 +12270,12 @@
                 }
             ]
         }
-    }
+    },
+	"christmasContainerIds": [
+		"container_custom_DesignStuff_00427",
+		"container_Shopping_Mall_DesignStuff_00808",
+		"container_Lighthouse_DesignStuff_00001",
+		"container_shoreline_DesignStuff_00418",
+		"container_woods_design_stuff_00328"
+	]
 }

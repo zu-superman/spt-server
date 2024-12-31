@@ -273,12 +273,12 @@ export class LocationLifecycleService {
             return locationBaseClone;
         }
 
-        // If new spawn system is enabled, clear the spawn waves
+        // If new spawn system is enabled, clear the spawn waves to prevent x2 spawns
         if (locationBaseClone.NewSpawn) {
             locationBaseClone.waves = [];
         }
 
-        // We only need the base data
+        // Only requested base data, not loot
         if (!generateLoot) {
             return locationBaseClone;
         }
@@ -307,6 +307,7 @@ export class LocationLifecycleService {
             name.toLowerCase(),
         );
 
+        // Push chosen spawn points into returned object
         for (const spawnPoint of dynamicSpawnPoints) {
             locationBaseClone.Loot.push(spawnPoint);
         }
