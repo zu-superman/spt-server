@@ -119,6 +119,14 @@ export class SeasonalEventService {
     }
 
     /**
+     * Get active seasonal events
+     * @returns Array of active events
+     */
+    public getActiveEvents(): ISeasonalEvent[] {
+        return this.currentlyActiveEvents;
+    }
+
+    /**
      * Get an array of seasonal items that should not appear
      * e.g. if halloween is active, only return christmas items
      * or, if halloween and christmas are inactive, return both sets of items
