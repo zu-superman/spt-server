@@ -26,7 +26,7 @@ export class NotificationSendHelper {
      */
     public sendMessage(sessionID: string, notificationMessage: IWsNotificationEvent): void {
         if (this.sptWebSocketConnection.isConnectionWebSocket(sessionID)) {
-            this.sptWebSocketConnection.sendMessage(sessionID, notificationMessage);
+            this.sptWebSocketConnection.sendMessageAsync(sessionID, notificationMessage);
         } else {
             this.notificationService.add(sessionID, notificationMessage);
         }
