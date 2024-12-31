@@ -409,10 +409,10 @@ export class SeasonalEventService {
                 if (event.settings?.zombieSettings?.enabled) {
                     this.configureZombies(event.settings?.zombieSettings);
                 }
-                if (event.settings.removeEntryRequirement) {
+                if (event.settings?.removeEntryRequirement) {
                     this.removeEntryRequirement(event.settings.removeEntryRequirement);
                 }
-                if (event.settings.replaceBotHostility) {
+                if (event.settings?.replaceBotHostility) {
                     this.replaceBotHostility(this.seasonalEventConfig.hostilitySettingsForEvent.zombies);
                 }
                 this.addPumpkinsToScavBackpacks();
