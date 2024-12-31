@@ -28,11 +28,14 @@ export interface ISeasonalEvent {
     startMonth: number;
     endDay: number;
     endMonth: number;
-    settings?: Record<string, any>;
+    settings?: Record<string, ISeasonalEventSettings>;
 }
 
-export interface IZombieSettings {
+export interface ISeasonalEventSettings {
     enabled: boolean;
+}
+
+export interface IZombieSettings extends ISeasonalEventSettings {
     mapInfectionAmount: Record<string, number>;
     disableBosses: string[];
     disableWaves: string[];
