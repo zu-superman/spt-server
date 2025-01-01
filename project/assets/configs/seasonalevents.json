@@ -8361,6 +8361,7 @@
             "endDay": "31",
             "endMonth": "12",
             "settings": {
+				"enableChristmasHideout": true,
                 "enableSanta": true,
 				"adjustBotAppearances": true
             }
@@ -8371,8 +8372,27 @@
             "type": "NEWYEARS",
             "startDay": "1",
             "startMonth": "1",
+            "endDay": "1",
+            "endMonth": "1",
+			"settings": {
+				"enableChristmasHideout": true,
+                "enableSanta": true,
+				"adjustBotAppearances": true
+            }
+        },
+		{
+            "enabled": true,
+            "name": "christmas January",
+            "type": "CHRISTMAS",
+            "startDay": "2",
+            "startMonth": "1",
             "endDay": "7",
-            "endMonth": "1"
+            "endMonth": "1",
+            "settings": {
+				"enableChristmasHideout": true,
+                "enableSanta": true,
+				"adjustBotAppearances": true
+            }
         },
         {
             "enabled": true,

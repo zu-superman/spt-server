@@ -30,7 +30,7 @@ export interface ISeasonalEvent {
     startMonth: number;
     endDay: number;
     endMonth: number;
-    settings?: Record<string, ISeasonalEventSettings>;
+    settings?: Record<string, ISeasonalEventSettings | IZombieSettings>;
 }
 
 export interface ISeasonalEventSettings {

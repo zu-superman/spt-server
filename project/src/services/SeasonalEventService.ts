@@ -404,41 +404,14 @@ export class SeasonalEventService {
 
         switch (event.type.toLowerCase()) {
             case SeasonalEventType.HALLOWEEN.toLowerCase():
-                globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
-                globalConfig.EventType.push("Halloween");
-                globalConfig.EventType.push("HalloweenIllumination");
-                globalConfig.Health.ProfileHealthSettings.DefaultStimulatorBuff = "Buffs_Halloween";
-                this.addEventGearToBots(event.type);
-                this.adjustZryachiyMeleeChance();
-                if (event.settings?.enableSummoning) {
-                    this.enableHalloweenSummonEvent();
-                    this.addEventBossesToMaps("halloweensummon");
-                }
-                if (event.settings?.zombieSettings?.enabled) {
-                    this.configureZombies(event.settings?.zombieSettings);
-                }
-                if (event.settings?.removeEntryRequirement) {
-                    this.removeEntryRequirement(event.settings.removeEntryRequirement);
-                }
-                if (event.settings?.replaceBotHostility) {
-                    this.replaceBotHostility(this.seasonalEventConfig.hostilitySettingsForEvent.zombies);
-                }
-                this.addPumpkinsToScavBackpacks();
-                this.adjustTraderIcons(event.type);
+                this.applyHalloweenEvent(event, globalConfig);
                 break;
             case SeasonalEventType.CHRISTMAS.toLowerCase():
-                globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
-                globalConfig.EventType.push("Christmas");
-                this.addEventGearToBots(event.type);
-                this.addEventLootToBots(event.type);
-                if (event.settings?.enableSanta) {
-                    this.addGifterBotToMaps();
-                    this.addLootItemsToGifterDropItemsList();
-                }
-                this.enableDancingTree();
-                this.adjustBotAppearanceValues(event.type);
+                this.applyChristmasEvent(event, globalConfig);
                 break;
             case SeasonalEventType.NEW_YEARS.toLowerCase():
+                this.applyNewYearsEvent(event, globalConfig);
+
                 break;
             case SeasonalEventType.APRIL_FOOLS.toLowerCase():
                 this.addGifterBotToMaps();
@@ -456,6 +429,74 @@ export class SeasonalEventService {
                 // Likely a mod event
                 this.handleModEvent(event);
                 break;
+        }
+    }
+
+    protected applyHalloweenEvent(event: ISeasonalEvent, globalConfig: IConfig) {
+        globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
+        globalConfig.EventType.push("Halloween");
+        globalConfig.EventType.push("HalloweenIllumination");
+        globalConfig.Health.ProfileHealthSettings.DefaultStimulatorBuff = "Buffs_Halloween";
+        this.addEventGearToBots(event.type);
+        this.adjustZryachiyMeleeChance();
+        if (event.settings?.enableSummoning) {
+            this.enableHalloweenSummonEvent();
+            this.addEventBossesToMaps("halloweensummon");
+        }
+        if (event.settings?.zombieSettings?.enabled) {
+            this.configureZombies(event.settings.zombieSettings);
+        }
+        if (event.settings?.removeEntryRequirement) {
+            this.removeEntryRequirement(event.settings.removeEntryRequirement);
+        }
+        if (event.settings?.replaceBotHostility) {
+            this.replaceBotHostility(this.seasonalEventConfig.hostilitySettingsForEvent.zombies);
+        }
+        if (event.settings?.adjustBotAppearances) {
+            this.adjustBotAppearanceValues(event.type);
+        }
+        this.addPumpkinsToScavBackpacks();
+        this.adjustTraderIcons(event.type);
+    }
+
+    protected applyChristmasEvent(event: ISeasonalEvent, globalConfig: IConfig) {
+        if (event.settings?.enableChristmasHideout) {
+            globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
+            globalConfig.EventType.push("Christmas");
+        }
+
+        this.addEventGearToBots(event.type);
+        this.addEventLootToBots(event.type);
+
+        if (event.settings?.enableSanta) {
+            this.addGifterBotToMaps();
+            this.addLootItemsToGifterDropItemsList();
+        }
+
+        this.enableDancingTree();
+        if (event.settings?.adjustBotAppearances) {
+            this.adjustBotAppearanceValues(event.type);
+        }
+    }
+
+    protected applyNewYearsEvent(event: ISeasonalEvent, globalConfig: IConfig) {
+        if (event.settings?.enableChristmasHideout) {
+            globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
+            globalConfig.EventType.push("Christmas");
+        }
+
+        this.addEventGearToBots(SeasonalEventType.CHRISTMAS);
+        this.addEventLootToBots(SeasonalEventType.CHRISTMAS);
+
+        if (event.settings?.enableSanta) {
+            this.addGifterBotToMaps();
+            this.addLootItemsToGifterDropItemsList();
+        }
+
+        this.enableDancingTree();
+
+        if (event.settings?.adjustBotAppearances) {
+            this.adjustBotAppearanceValues(SeasonalEventType.CHRISTMAS);
         }
     }
 
