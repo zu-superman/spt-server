@@ -436,6 +436,7 @@ export class SeasonalEventService {
                     this.addLootItemsToGifterDropItemsList();
                 }
                 this.enableDancingTree();
+                this.adjustBotAppearanceValues(event.type);
                 break;
             case SeasonalEventType.NEW_YEARS.toLowerCase():
                 break;
@@ -455,6 +456,27 @@ export class SeasonalEventService {
                 // Likely a mod event
                 this.handleModEvent(event);
                 break;
+        }
+    }
+
+    protected adjustBotAppearanceValues(season: SeasonalEventType): void {
+        const adjustments = this.seasonalEventConfig.botAppearanceChanges[season];
+        if (!adjustments) {
+            return;
+        }
+
+        for (const botTypeKey in adjustments) {
+            const botDb = this.databaseService.getBots().types[botTypeKey];
+            if (!botDb) {
+                continue;
+            }
+            const botAppearanceAdjustments = adjustments[botTypeKey];
+            for (const appearanceKey in botAppearanceAdjustments) {
+                const weightAdjustments = botAppearanceAdjustments[appearanceKey];
+                for (const itemKey in weightAdjustments) {
+                    botDb.appearance[appearanceKey][itemKey] = weightAdjustments[itemKey];
+                }
+            }
         }
     }
 

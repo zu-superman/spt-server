@@ -18,6 +18,8 @@ export interface ISeasonalEventConfig extends IBaseConfig {
     hostilitySettingsForEvent: Record<string, Record<string, IAdditionalHostilitySettings[]>>;
     /** Ids of containers on locations that only have christmas loot */
     christmasContainerIds: string[];
+    /** Season - botType - location (body/feet/hands/head) */
+    botAppearanceChanges: Record<SeasonalEventType, Record<string, Record<string, Record<string, number>>>>;
 }
 
 export interface ISeasonalEvent {

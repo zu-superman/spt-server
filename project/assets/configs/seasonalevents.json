@@ -1,5 +1,25 @@
 {
     "enableSeasonalEventDetection": true,
+    "botAppearanceChanges": {
+        "CHRISTMAS": {
+            "usec": {
+                "body": {
+                    "675fd6dc7a57e0b2a00e340a": 10
+                },
+                "feet": {
+                    "675fd71c1c153e52f1050fd6": 10
+                }
+            },
+            "bear": {
+                "body": {
+                    "675998aba378f89a3e089b5c": 10
+                },
+                "feet": {
+                    "67599889a378f89a3e089b5a": 10
+                }
+            }
+        }
+    },
     "eventGear": {
         "halloween": {
             "assault": {
@@ -8341,7 +8361,8 @@
             "endDay": "31",
             "endMonth": "12",
             "settings": {
-                "enableSanta": true
+                "enableSanta": true,
+				"adjustBotAppearances": true
             }
         },
         {
