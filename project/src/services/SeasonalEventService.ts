@@ -427,7 +427,7 @@ export class SeasonalEventService {
                 break;
             default:
                 // Likely a mod event
-                this.handleModEvent(event);
+                this.handleModEvent(event, globalConfig);
                 break;
         }
     }
@@ -890,18 +890,38 @@ export class SeasonalEventService {
         }
     }
 
-    protected handleModEvent(event: ISeasonalEvent) {
-        this.addEventGearToBots(event.type);
+    protected handleModEvent(event: ISeasonalEvent, globalConfig: IConfig): void {
+        if (event.settings?.enableChristmasHideout) {
+            globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
+            globalConfig.EventType.push("Christmas");
+        }
+
+        if (event.settings?.enableHalloweenHideout) {
+            globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
+            globalConfig.EventType.push("Halloween");
+            globalConfig.EventType.push("HalloweenIllumination");
+        }
+
+        if (event.settings?.addEventGearToBots) {
+            this.addEventGearToBots(event.type);
+        }
+        if (event.settings?.addEventLootToBots) {
+            this.addEventLootToBots(event.type);
+        }
 
         if (event.settings?.enableSummoning) {
             this.enableHalloweenSummonEvent();
             this.addEventBossesToMaps("halloweensummon");
         }
         if (event.settings?.zombieSettings?.enabled) {
-            this.configureZombies(event.settings?.zombieSettings);
+            this.configureZombies(event.settings.zombieSettings);
         }
-        if (event.settings?.forceSnow) {
-            this.enableSnow();
+        if (event.settings?.forceSeason) {
+            this.weatherConfig.overrideSeason = event.settings.forceSeason;
+        }
+
+        if (event.settings?.adjustBotAppearances) {
+            this.adjustBotAppearanceValues(event.type);
         }
     }
 
