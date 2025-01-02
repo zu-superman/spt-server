@@ -2809,17 +2809,17 @@
     "maxBotCap": {
         "factory4_day": 12,
         "factory4_night": 12,
-        "bigmap": 20,
-        "woods": 21,
-        "shoreline": 21,
-        "lighthouse": 21,
+        "bigmap": 18,
+        "woods": 19,
+        "shoreline": 20,
+        "lighthouse": 18,
         "rezervbase": 20,
         "interchange": 20,
         "laboratory": 18,
         "tarkovstreets": 20,
-        "sandbox": 12,
+        "sandbox": 11,
         "sandbox_high": 12,
-        "default": 20
+        "default": 18
     },
     "walletLoot": {
         "chancePercent": 35,
