@@ -701,30 +701,14 @@ export class BotGenerator {
      * @returns Bot with dogtag added
      */
     protected addDogtagToBot(bot: IBotBase): void {
-        const dogtagUpd: IUpd = {
-            SpawnedInSession: true,
-            Dogtag: {
-                AccountId: bot.sessionId,
-                ProfileId: bot._id,
-                Nickname: bot.Info.Nickname,
-                Side: bot.Info.Side,
-                Level: bot.Info.Level,
-                Time: new Date().toISOString(),
-                Status: "Killed by ",
-                KillerAccountId: "Unknown",
-                KillerProfileId: "Unknown",
-                KillerName: "Unknown",
-                WeaponName: "Unknown",
-            },
-        };
-
         const inventoryItem: IItem = {
             _id: this.hashUtil.generate(),
             _tpl: this.getDogtagTplByGameVersionAndSide(bot.Info.Side, bot.Info.GameVersion),
             parentId: bot.Inventory.equipment,
             slotId: "Dogtag",
-            location: undefined,
-            upd: dogtagUpd,
+            upd: {
+                SpawnedInSession: true,
+            },
         };
 
         bot.Inventory.items.push(inventoryItem);
