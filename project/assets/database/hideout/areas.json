@@ -1964,7 +1964,7 @@
             "count": 2,
             "isEncoded": false,
             "isFunctional": false,
-            "isSpawnedInSession": false,
+            "isSpawnedInSession": true,
             "templateId": "590c2e1186f77425357b6124",
             "type": "Item"
           },
