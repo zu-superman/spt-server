@@ -1,7 +1,7 @@
 {
     "enableSeasonalEventDetection": true,
     "botAppearanceChanges": {
-        "CHRISTMAS": {
+        "CHRISTMAS_TODO": {
             "usec": {
                 "body": {
                     "675fd6dc7a57e0b2a00e340a": 10
