@@ -6,11 +6,12 @@ import { Weapons } from "@spt/models/enums/Weapons";
 import { IBotConfig } from "@spt/models/spt/config/IBotConfig";
 import { ICoreConfig } from "@spt/models/spt/config/ICoreConfig";
 import { IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
+import { IItemConfig } from "@spt/models/spt/config/IItemConfig";
 import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
 import { ILootConfig } from "@spt/models/spt/config/ILootConfig";
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import { IRagfairConfig } from "@spt/models/spt/config/IRagfairConfig";
-import { ILogger } from "@spt/models/spt/utils/ILogger";
+import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { CustomLocationWaveService } from "@spt/services/CustomLocationWaveService";
 import { DatabaseService } from "@spt/services/DatabaseService";
@@ -18,7 +19,7 @@ import { ItemBaseClassService } from "@spt/services/ItemBaseClassService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { OpenZoneService } from "@spt/services/OpenZoneService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
-import { ICloner } from "@spt/utils/cloners/ICloner";
+import type { ICloner } from "@spt/utils/cloners/ICloner";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -30,6 +31,7 @@ export class PostDbLoadService {
     protected pmcConfig: IPmcConfig;
     protected lootConfig: ILootConfig;
     protected botConfig: IBotConfig;
+    protected itemConfig: IItemConfig;
 
     constructor(
         @inject("PrimaryLogger") protected logger: ILogger,
@@ -49,6 +51,7 @@ export class PostDbLoadService {
         this.pmcConfig = this.configServer.getConfig(ConfigTypes.PMC);
         this.lootConfig = this.configServer.getConfig(ConfigTypes.LOOT);
         this.botConfig = this.configServer.getConfig(ConfigTypes.BOT);
+        this.itemConfig = this.configServer.getConfig(ConfigTypes.ITEM);
     }
 
     public performPostDbLoadActions(): void {
@@ -120,6 +123,8 @@ export class PostDbLoadService {
         this.addMissingTraderBuyRestrictionMaxValue();
 
         this.applyFleaPriceOverrides();
+
+        this.addCustomItemPresetsToGlobals();
     }
 
     protected adjustMinReserveRaiderSpawnChance(): void {
@@ -517,6 +522,12 @@ export class PostDbLoadService {
         const fleaPrices = this.databaseService.getPrices();
         for (const [key, value] of Object.entries(this.ragfairConfig.dynamic.itemPriceOverrideRouble)) {
             fleaPrices[key] = value;
+        }
+    }
+
+    protected addCustomItemPresetsToGlobals() {
+        for (const presetToAdd of this.itemConfig.customItemGlobalPresets) {
+            this.databaseService.getGlobals().ItemPresets[presetToAdd._id] = presetToAdd;
         }
     }
 }
