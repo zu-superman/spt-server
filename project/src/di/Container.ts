@@ -332,16 +332,16 @@ export class Container {
         depContainer.register("StaticRouterModService", { useValue: new StaticRouterModService(depContainer) });
 
         depContainer.registerType("OnLoad", "DatabaseImporter");
+        depContainer.registerType("OnLoad", "GameCallbacks"); // Must occur prior to PresetCallbacks and TraderCallbacks
         depContainer.registerType("OnLoad", "PostDBModLoader");
         depContainer.registerType("OnLoad", "HandbookCallbacks");
         depContainer.registerType("OnLoad", "HttpCallbacks");
-        depContainer.registerType("OnLoad", "PresetCallbacks");
         depContainer.registerType("OnLoad", "SaveCallbacks");
-        depContainer.registerType("OnLoad", "TraderCallbacks"); // must occur prior to RagfairCallbacks
-        depContainer.registerType("OnLoad", "RagfairPriceService");
-        depContainer.registerType("OnLoad", "RagfairCallbacks");
+        depContainer.registerType("OnLoad", "TraderCallbacks"); // Must occur prior to RagfairCallbacks
         depContainer.registerType("OnLoad", "ModCallbacks");
-        depContainer.registerType("OnLoad", "GameCallbacks");
+        depContainer.registerType("OnLoad", "PresetCallbacks");
+        depContainer.registerType("OnLoad", "RagfairPriceService"); // Must occur after to GameCallbacks
+        depContainer.registerType("OnLoad", "RagfairCallbacks");
         depContainer.registerType("OnUpdate", "DialogueCallbacks");
         depContainer.registerType("OnUpdate", "HideoutCallbacks");
         depContainer.registerType("OnUpdate", "TraderCallbacks");
