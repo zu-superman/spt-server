@@ -673,7 +673,7 @@
   "BotMax": 17,
   "BotMaxPlayer": 7,
   "BotMaxPvE": 29,
-  "BotMaxTimePlayer": 1000,
+  "BotMaxTimePlayer": 1200,
   "BotNormal": 50,
   "BotSpawnCountStep": 3,
   "BotSpawnPeriodCheck": 15,
