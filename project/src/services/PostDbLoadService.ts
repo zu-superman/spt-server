@@ -527,6 +527,12 @@ export class PostDbLoadService {
 
     protected addCustomItemPresetsToGlobals() {
         for (const presetToAdd of this.itemConfig.customItemGlobalPresets) {
+            if (this.databaseService.getGlobals().ItemPresets[presetToAdd._id]) {
+                this.logger.warning(
+                    `Global ItemPreset with Id of: ${presetToAdd._id} already exists, unable to overwrite`,
+                );
+                continue;
+            }
             this.databaseService.getGlobals().ItemPresets[presetToAdd._id] = presetToAdd;
         }
     }
