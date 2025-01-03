@@ -350,7 +350,7 @@ export class RagfairOfferGenerator {
 
         // get assort items from param if they exist, otherwise grab freshly generated assorts
         const assortItemsToProcess: IItem[][] = replacingExpiredOffers
-            ? expiredOffers
+            ? expiredOffers ?? []
             : this.ragfairAssortGenerator.getAssortItems();
 
         // Create offers for each item set concurrently

@@ -89,6 +89,7 @@ export class GameController {
     }
 
     public load(): void {
+        // Runs on server start
         this.postDbLoadService.performPostDbLoadActions();
     }
 
