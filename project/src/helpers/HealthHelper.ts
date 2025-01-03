@@ -85,7 +85,8 @@ export class HealthHelper {
         const profileSide = fullProfile.characters.pmc.Info.Side;
 
         const defaultTemperature =
-            this.databaseService.getProfiles()[profileEdition][profileSide].character.Health.Temperature;
+            this.databaseService.getProfiles()[profileEdition][profileSide.toLowerCase()]?.character?.Health
+                ?.Temperature ?? 36.6;
 
         this.storeHydrationEnergyTempInProfile(
             fullProfile,
