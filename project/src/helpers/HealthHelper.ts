@@ -4,11 +4,12 @@ import { ISyncHealthRequestData } from "@spt/models/eft/health/ISyncHealthReques
 import { IEffects, ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IHealthConfig } from "@spt/models/spt/config/IHealthConfig";
-import { ILogger } from "@spt/models/spt/utils/ILogger";
+import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { SaveServer } from "@spt/servers/SaveServer";
+import { DatabaseService } from "@spt/services/DatabaseService";
 import { TimeUtil } from "@spt/utils/TimeUtil";
-import { ICloner } from "@spt/utils/cloners/ICloner";
+import type { ICloner } from "@spt/utils/cloners/ICloner";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -19,6 +20,7 @@ export class HealthHelper {
         @inject("PrimaryLogger") protected logger: ILogger,
         @inject("TimeUtil") protected timeUtil: TimeUtil,
         @inject("SaveServer") protected saveServer: SaveServer,
+        @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("PrimaryCloner") protected cloner: ICloner,
     ) {
@@ -79,12 +81,17 @@ export class HealthHelper {
         isDead: boolean,
     ): void {
         const fullProfile = this.saveServer.getProfile(sessionID);
+        const profileEdition = fullProfile.info.edition;
+        const profileSide = fullProfile.characters.pmc.Info.Side;
+
+        const defaultTemperature =
+            this.databaseService.getProfiles()[profileEdition][profileSide].character.Health.Temperature;
 
         this.storeHydrationEnergyTempInProfile(
             fullProfile,
             postRaidHealth.Hydration.Current,
             postRaidHealth.Energy.Current,
-            postRaidHealth.Temperature.Current,
+            defaultTemperature.Current, // Reset profile temp to the default to prevent very cold/hot temps persisting into next raid
         );
 
         // Store limb effects from post-raid in profile
