@@ -73,7 +73,10 @@ export class FenceBaseAssortGenerator {
             }
 
             // Only allow rigs with no slots (carrier rigs)
-            if (this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.VEST) && rootItemDb._props.Slots.length > 0) {
+            if (
+                this.itemHelper.isOfBaseclass(rootItemDb._id, BaseClasses.VEST) &&
+                (rootItemDb._props.Slots?.length ?? 0) > 0
+            ) {
                 continue;
             }
 
