@@ -282,6 +282,68 @@
 			"_name": "MTEK FLUX Ballistic helmet (Coyote/MultiCam Arid) Default",
 			"_parent": "6777c10f4989fc544063b5a1",
 			"_type": "Preset"
+		},
+		"67784df15058057382b28f87": {
+		  "_changeWeaponName": false,
+		  "_encyclopedia": "674d91ce6e862d5a95059ed6",
+		  "_id": "67784df15058057382b28f87",
+		  "_items": [
+			{
+			  "_id": "67784dfaf57296ecbdbfc87f",
+			  "_tpl": "674d91ce6e862d5a95059ed6"
+			},
+			{
+			  "_id": "67784e27ee352de60dc982a3",
+			  "_tpl": "6575ea3060703324250610da",
+			  "parentId": "67784dfaf57296ecbdbfc87f",
+			  "slotId": "Soft_armor_front"
+			},
+			{
+			  "_id": "67784e32d75f52daffe36de5",
+			  "_tpl": "6575ea4cf6a13a7b7100adc4",
+			  "parentId": "67784dfaf57296ecbdbfc87f",
+			  "slotId": "Soft_armor_back"
+			},
+			{
+			  "_id": "67784e36e778f8aace662e1d",
+			  "_tpl": "6575ea5cf6a13a7b7100adc8",
+			  "parentId": "67784dfaf57296ecbdbfc87f",
+			  "slotId": "Soft_armor_left"
+			},
+			{
+			  "_id": "67784e3c0e4afac4ebdab52d",
+			  "_tpl": "6575ea6760703324250610de",
+			  "parentId": "67784dfaf57296ecbdbfc87f",
+			  "slotId": "soft_armor_right"
+			},
+			{
+			  "_id": "67784e40832d547cb2c986bf",
+			  "_tpl": "6575ea719c7cad336508e418",
+			  "parentId": "67784dfaf57296ecbdbfc87f",
+			  "slotId": "Collar"
+			},
+			{
+			  "_id": "67784e446c92fcb0e0d8fea8",
+			  "_tpl": "6575ea7c60703324250610e2",
+			  "parentId": "67784dfaf57296ecbdbfc87f",
+			  "slotId": "Groin"
+			},
+			{
+			  "_id": "67784e473abf2a39a05dba5a",
+			  "_tpl": "656f611f94b480b8a500c0db",
+			  "parentId": "67784dfaf57296ecbdbfc87f",
+			  "slotId": "Front_plate"
+			},
+			{
+			  "_id": "67784e4b934ace8451681bee",
+			  "_tpl": "656efaf54772930db4031ff5",
+			  "parentId": "67784dfaf57296ecbdbfc87f",
+			  "slotId": "Back_plate"
+			}
+		  ],
+		  "_name": "Body armor 6B13 M Killa Christmas Standard",
+		  "_parent": "67784dfaf57296ecbdbfc87f",
+		  "_type": "Preset"
 		}
 	]
 }
