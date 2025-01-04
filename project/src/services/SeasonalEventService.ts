@@ -276,7 +276,7 @@ export class SeasonalEventService {
      * @returns Season enum value
      */
     public getActiveWeatherSeason(): Season {
-        if (!this.weatherConfig.overrideSeason) {
+        if (this.weatherConfig.overrideSeason !== null) {
             return this.weatherConfig.overrideSeason;
         }
 

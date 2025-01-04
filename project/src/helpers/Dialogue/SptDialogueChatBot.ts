@@ -176,7 +176,7 @@ export class SptDialogueChatBot implements IDialogueChatBot {
                     sessionId,
                     sptFriendUser,
                     this.randomUtil.getArrayValue([
-                        this.localisationService.getText("chatbot-halloween_event_enabled"),
+                        this.localisationService.getText("chatbot-forced_event_enabled", SeasonalEventType.HALLOWEEN),
                     ]),
                 );
             }
@@ -189,7 +189,7 @@ export class SptDialogueChatBot implements IDialogueChatBot {
                     sessionId,
                     sptFriendUser,
                     this.randomUtil.getArrayValue([
-                        this.localisationService.getText("chatbot-christmas_event_enabled"),
+                        this.localisationService.getText("chatbot-forced_event_enabled", SeasonalEventType.CHRISTMAS),
                     ]),
                 );
             }
