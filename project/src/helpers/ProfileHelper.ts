@@ -3,7 +3,7 @@ import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { BanType, Common, ICounterKeyValue, IStats } from "@spt/models/eft/common/tables/IBotBase";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { ISearchFriendResponse } from "@spt/models/eft/profile/ISearchFriendResponse";
-import { ISptProfile } from "@spt/models/eft/profile/ISptProfile";
+import { ISpt, ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 import { IValidateNicknameRequestData } from "@spt/models/eft/profile/IValidateNicknameRequestData";
 import { AccountTypes } from "@spt/models/enums/AccountTypes";
 import { BonusType } from "@spt/models/enums/BonusType";
@@ -184,8 +184,15 @@ export class ProfileHelper {
         return this.databaseService.getGlobals().config.exp.level.exp_table.length - 1;
     }
 
-    public getDefaultSptDataObject(): any {
-        return { version: this.watermark.getVersionTag(true) };
+    public getDefaultSptDataObject(): ISpt {
+        return {
+            version: this.watermark.getVersionTag(true),
+            freeRepeatableRefreshUsedCount: {},
+            migrations: {},
+            cultistRewards: new Map(),
+            mods: [],
+            receivedGifts: [],
+        };
     }
 
     /**
