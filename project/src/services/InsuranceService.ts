@@ -78,14 +78,27 @@ export class InsuranceService {
         // Get insurance items for each trader
         const globals = this.databaseService.getGlobals();
         for (const traderId in this.getInsurance(sessionID)) {
+            const traderEnum = this.traderHelper.getTraderById(traderId);
+            if (!traderEnum) {
+                this.logger.error(this.localisationService.getText("insurance-trader_missing_from_enum", traderId));
+
+                continue;
+            }
+
             const traderBase = this.traderHelper.getTrader(traderId, sessionID);
             if (!traderBase) {
-                throw new Error(this.localisationService.getText("insurance-unable_to_find_trader_by_id", traderId));
+                this.logger.error(this.localisationService.getText("insurance-unable_to_find_trader_by_id", traderId));
+
+                continue;
             }
 
             const dialogueTemplates = this.databaseService.getTrader(traderId).dialogue;
             if (!dialogueTemplates) {
-                throw new Error(this.localisationService.getText("insurance-trader_lacks_dialogue_property", traderId));
+                this.logger.error(
+                    this.localisationService.getText("insurance-trader_lacks_dialogue_property", traderId),
+                );
+
+                continue;
             }
 
             const systemData = {
@@ -94,10 +107,6 @@ export class InsuranceService {
                 location: mapId,
             };
 
-            const traderEnum = this.traderHelper.getTraderById(traderId);
-            if (!traderEnum) {
-                throw new Error(this.localisationService.getText("insurance-trader_missing_from_enum", traderId));
-            }
             // Send "i will go look for your stuff" message from trader to player
             this.mailSendService.sendLocalisedNpcMessageToPlayer(
                 sessionID,
