@@ -13,7 +13,7 @@ import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
 import { IQuestConfig } from "@spt/models/spt/config/IQuestConfig";
 import { ISeasonalEvent, ISeasonalEventConfig, IZombieSettings } from "@spt/models/spt/config/ISeasonalEventConfig";
 import { IWeatherConfig } from "@spt/models/spt/config/IWeatherConfig";
-import { ILogger } from "@spt/models/spt/utils/ILogger";
+import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { GiftService } from "@spt/services/GiftService";
@@ -230,10 +230,16 @@ export class SeasonalEventService {
         }
     }
 
+    /**
+     * Force a seasonal event to be active
+     * @param eventType Event to force active
+     * @returns True if event was successfully force enabled
+     */
     public forceSeasonalEvent(eventType: SeasonalEventType): boolean {
         const globalConfig = this.databaseService.getGlobals().config;
         const event = this.seasonalEventConfig.events.find((event) => SeasonalEventType[event.type] === eventType);
         if (!event) {
+            this.logger.warning(`Unable to force event: ${eventType} as it cannot be found in events config`);
             return false;
         }
         this.updateGlobalEvents(globalConfig, event);
@@ -250,8 +256,6 @@ export class SeasonalEventService {
 
         // reset existing data
         this.currentlyActiveEvents = [];
-        this.christmasEventActive = false;
-        this.halloweenEventActive = false;
 
         // Add active events to array
         for (const event of seasonalEvents) {
@@ -263,14 +267,6 @@ export class SeasonalEventService {
                 this.dateIsBetweenTwoDates(currentDate, event.startMonth, event.startDay, event.endMonth, event.endDay)
             ) {
                 this.currentlyActiveEvents.push(event);
-
-                if (SeasonalEventType[event.type] === SeasonalEventType.CHRISTMAS) {
-                    this.christmasEventActive = true;
-                }
-
-                if (SeasonalEventType[event.type] === SeasonalEventType.HALLOWEEN) {
-                    this.halloweenEventActive = true;
-                }
             }
         }
     }
@@ -280,7 +276,7 @@ export class SeasonalEventService {
      * @returns Season enum value
      */
     public getActiveWeatherSeason(): Season {
-        if (this.weatherConfig.overrideSeason !== null) {
+        if (!this.weatherConfig.overrideSeason) {
             return this.weatherConfig.overrideSeason;
         }
 
@@ -401,6 +397,8 @@ export class SeasonalEventService {
      */
     protected updateGlobalEvents(globalConfig: IConfig, event: ISeasonalEvent): void {
         this.logger.success(this.localisationService.getText("season-event_is_active", event.type));
+        this.christmasEventActive = false;
+        this.halloweenEventActive = false;
 
         switch (event.type.toLowerCase()) {
             case SeasonalEventType.HALLOWEEN.toLowerCase():
@@ -433,6 +431,8 @@ export class SeasonalEventService {
     }
 
     protected applyHalloweenEvent(event: ISeasonalEvent, globalConfig: IConfig) {
+        this.halloweenEventActive = true;
+
         globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
         globalConfig.EventType.push("Halloween");
         globalConfig.EventType.push("HalloweenIllumination");
@@ -460,6 +460,8 @@ export class SeasonalEventService {
     }
 
     protected applyChristmasEvent(event: ISeasonalEvent, globalConfig: IConfig) {
+        this.christmasEventActive = true;
+
         if (event.settings?.enableChristmasHideout) {
             globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
             globalConfig.EventType.push("Christmas");
@@ -480,6 +482,8 @@ export class SeasonalEventService {
     }
 
     protected applyNewYearsEvent(event: ISeasonalEvent, globalConfig: IConfig) {
+        this.christmasEventActive = true;
+
         if (event.settings?.enableChristmasHideout) {
             globalConfig.EventType = globalConfig.EventType.filter((x) => x !== "None");
             globalConfig.EventType.push("Christmas");
