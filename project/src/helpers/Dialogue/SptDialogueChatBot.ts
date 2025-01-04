@@ -169,6 +169,16 @@ export class SptDialogueChatBot implements IDialogueChatBot {
             );
         }
 
+        if (requestInput === "givemesunshine") {
+            this.weatherConfig.overrideSeason = Season.SUMMER;
+
+            this.mailSendService.sendUserMessageToPlayer(
+                sessionId,
+                sptFriendUser,
+                this.randomUtil.getArrayValue([this.localisationService.getText("chatbot-summer_enabled")]),
+            );
+        }
+
         if (requestInput === "veryspooky") {
             const enableEventResult = this.seasonalEventService.forceSeasonalEvent(SeasonalEventType.HALLOWEEN);
             if (enableEventResult) {
