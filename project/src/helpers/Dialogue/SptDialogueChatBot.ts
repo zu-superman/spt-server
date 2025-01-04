@@ -182,6 +182,19 @@ export class SptDialogueChatBot implements IDialogueChatBot {
             }
         }
 
+        if (requestInput === "hohoho") {
+            const enableEventResult = this.seasonalEventService.forceSeasonalEvent(SeasonalEventType.CHRISTMAS);
+            if (enableEventResult) {
+                this.mailSendService.sendUserMessageToPlayer(
+                    sessionId,
+                    sptFriendUser,
+                    this.randomUtil.getArrayValue([
+                        this.localisationService.getText("chatbot-christmas_event_enabled"),
+                    ]),
+                );
+            }
+        }
+
         if (requestInput === "givemespace") {
             const stashRowGiftId = "StashRows";
             const maxGiftsToSendCount = this.coreConfig.features.chatbotFeatures.commandUseLimits[stashRowGiftId] ?? 5;

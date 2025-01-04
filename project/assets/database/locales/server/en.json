@@ -729,6 +729,7 @@
     "websocket-started": "Started websocket at %s",
 	"chatbot-cannot_accept_any_more_of_gift": "You cannot accept any more of this gift",
 	"chatbot-halloween_event_enabled": "Halloween event has been enabled, restart your game client before starting a raid",
+	"chatbot-christmas_event_enabled": "Christmas event has been enabled, restart your game client before starting a raid",
 	"chatbot-added_stash_rows_please_restart": "Added 2 rows to stash, please restart your game to see them",
 	"chatbot-snow_enabled": "Snow is enabled for all subsequent raids until the server is restarted"
 }
