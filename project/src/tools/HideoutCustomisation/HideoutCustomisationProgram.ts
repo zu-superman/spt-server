@@ -26,9 +26,10 @@ export class HideoutCustomisationProgram {
             Container.registerListTypes(childContainer);
             Container.registerPostLoadTypes(container, childContainer);
 
-            childContainer.resolve<HideoutCustomisationGen>("HideoutCustomisationGen").run();
+            await childContainer.resolve<HideoutCustomisationGen>("HideoutCustomisationGen").run();
         } catch (err: unknown) {
-            new ErrorHandler().handleCriticalError(err instanceof Error ? err : new Error(String(err)));
+            console.log("HideoutCustomisationGen broke");
+            //new ErrorHandler().handleCriticalError(err instanceof Error ? err : new Error(String(err)));
         }
 
         // Kill the process, something holds it open so we need to manually kill it

@@ -19,9 +19,9 @@ export class HideoutCustomisationGen {
     private achievementCustomisationReward: Record<string, IQuestReward[]> = {};
 
     constructor(
-        @injectAll("OnLoad") protected onLoadComponents: OnLoad[],
         @inject("DatabaseServer") protected databaseServer: DatabaseServer,
         @inject("PrimaryLogger") protected logger: ILogger,
+        @injectAll("OnLoad") protected onLoadComponents: OnLoad[],
     ) {}
 
     async run(): Promise<void> {
@@ -99,7 +99,11 @@ export class HideoutCustomisationGen {
     // Build a dictionary of all quests with a `CustomizationDirect` reward
     private buildQuestCustomisationList(): void {
         for (const quest of Object.values(this.databaseServer.getTables().templates.quests)) {
-            const allRewards: IQuestReward[] = Object.values(quest.rewards);
+            const allRewards: IQuestReward[] = [
+                ...quest.rewards.Fail,
+                ...quest.rewards.Success,
+                ...quest.rewards.Started,
+            ];
             const customisationDirectRewards = allRewards.filter((reward) => reward.type === "CustomizationDirect");
             for (const directReward of customisationDirectRewards) {
                 if (!this.questCustomisationReward[quest._id]) {
