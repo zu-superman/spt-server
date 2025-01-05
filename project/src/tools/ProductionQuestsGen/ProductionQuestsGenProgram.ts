@@ -26,7 +26,7 @@ export class ProductionQuestsGenProgram {
             Container.registerPostLoadTypes(container, childContainer);
             await childContainer.resolve<ProductionQuestsGen>("ProductionQuestsGen").run();
         } catch (err: any) {
-            this.errorHandler.handleCriticalError(err instanceof Error ? err : new Error(err));
+            //this.errorHandler.handleCriticalError(err instanceof Error ? err : new Error(err));
         }
 
         // Kill the process, something holds it open so we need to manually kill it

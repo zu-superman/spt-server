@@ -15,7 +15,7 @@ import * as path from "node:path";
 import { OnLoad } from "@spt/di/OnLoad";
 import { IHideoutProduction, IRequirement } from "@spt/models/eft/hideout/IHideoutProduction";
 import { QuestRewardType } from "@spt/models/enums/QuestRewardType";
-import { ILogger } from "@spt/models/spt/utils/ILogger";
+import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
 import { inject, injectAll, injectable } from "tsyringe";
 
