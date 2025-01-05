@@ -537,6 +537,7 @@
         "BASE_ROTATE_SPEED": 270,
         "BASE_SQRT_START_SERACH": 1225,
         "BASE_START_SERACH": 35,
+        "BREACH_CHANCE_100": 40,
         "CHANCE_TO_RUN_IF_NO_AMMO_0_100": 100,
         "DELTA_LAST_SEEN_ENEMY": 20,
         "DIST_TO_CAN_CHANGE_WAY": 8,
@@ -3145,7 +3146,8 @@
         "60363c0c92ec1c31037959f5": 2,
         "60a7ad2a2198820d95707a2e": 2,
         "62a09dd4621468534a797ac7": 2,
-        "657089638db3adca1009f4ca": 2
+        "657089638db3adca1009f4ca": 2,
+        "675ac888803644528007b3f6": 4
       },
       "FirstPrimaryWeapon": {
         "5447a9cd4bdc2dbd208b4567": 4,
@@ -3258,7 +3260,7 @@
         "67124dcfa3541f2a1f0e788b": 2,
         "6718817435e3cfd9550d2c27": 2,
         "673cab3e03c6a20581028bc1": 1,
-        "674d6121c09f69dfb201a888": 2,
+        "674d6121c09f69dfb201a888": 3,
         "674fe9a75e51f1c47c04ec23": 2,
         "676176d362e0497044079f4c": 2
       },
@@ -3425,7 +3427,8 @@
         "64be7110bf597ba84a0a41ea": 15,
         "66b6295178bbc0200425f995": 25,
         "66b6295a8ca68c6461709efa": 25,
-        "66b6296d7994640992013b17": 25
+        "66b6296d7994640992013b17": 25,
+        "674589d98dd67746010329e6": 15
       }
     },
     "items": {
