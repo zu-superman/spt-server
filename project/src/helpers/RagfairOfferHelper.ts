@@ -264,6 +264,11 @@ export class RagfairOfferHelper {
                         tieredFleaLimitTypes,
                         pmcData.Info.Level,
                     );
+
+                    // Do not add offer to build if user does not have access to it
+                    if (offer.locked) {
+                        continue;
+                    }
                 }
 
                 const key = offer.items[0]._tpl;
