@@ -11,4 +11,5 @@ export enum QuestRewardType {
     STASH_ROWS = "StashRows",
     ACHIEVEMENT = "Achievement",
     POCKETS = "Pockets",
+    CUSTOMIZATION_DIRECT = "CustomizationDirect",
 }
