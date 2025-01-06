@@ -1,4 +1,4 @@
-import { Program } from "@spt/Program";
+import { ProgramStatics } from "@spt/ProgramStatics";
 import { ClientLogController } from "@spt/controllers/ClientLogController";
 import { ModLoadOrder } from "@spt/loaders/ModLoadOrder";
 import { INullResponseData } from "@spt/models/eft/httpResponse/INullResponseData";
@@ -36,7 +36,7 @@ export class ClientLogCallbacks {
     public releaseNotes(): string {
         const data: IRelease = this.configServer.getConfig<ICoreConfig>(ConfigTypes.CORE).release;
 
-        data.betaDisclaimerText = Program.MODS
+        data.betaDisclaimerText = ProgramStatics.MODS
             ? this.localisationService.getText("release-beta-disclaimer-mods-enabled")
             : this.localisationService.getText("release-beta-disclaimer");
 
@@ -50,8 +50,9 @@ export class ClientLogCallbacks {
         data.releaseSummaryText = this.localisationService.getText("release-summary");
 
         data.isBeta =
-            Program.ENTRY_TYPE === EntryType.BLEEDING_EDGE || Program.ENTRY_TYPE === EntryType.BLEEDING_EDGE_MODS;
-        data.isModdable = Program.MODS;
+            ProgramStatics.ENTRY_TYPE === EntryType.BLEEDING_EDGE ||
+            ProgramStatics.ENTRY_TYPE === EntryType.BLEEDING_EDGE_MODS;
+        data.isModdable = ProgramStatics.MODS;
         data.isModded = this.modLoadOrder.getLoadOrder().length > 0;
 
         return this.httpResponse.noBody(data);

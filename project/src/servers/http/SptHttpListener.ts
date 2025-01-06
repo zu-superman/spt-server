@@ -1,10 +1,10 @@
 import { IncomingHttpHeaders, IncomingMessage, ServerResponse } from "node:http";
 import util from "node:util";
 import zlib from "node:zlib";
-import { Program } from "@spt/Program";
+import { ProgramStatics } from "@spt/ProgramStatics";
 import { Serializer } from "@spt/di/Serializer";
 import { EntryType } from "@spt/models/enums/EntryType";
-import { ILogger } from "@spt/models/spt/utils/ILogger";
+import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { HttpRouter } from "@spt/routers/HttpRouter";
 import { IHttpListener } from "@spt/servers/http/IHttpListener";
 import { LocalisationService } from "@spt/services/LocalisationService";
@@ -134,7 +134,7 @@ export class SptHttpListener implements IHttpListener {
      */
     protected logRequest(req: IncomingMessage, output: string): void {
         //
-        if (Program.ENTRY_TYPE !== EntryType.RELEASE) {
+        if (ProgramStatics.ENTRY_TYPE !== EntryType.RELEASE) {
             const log = new Response(req.method, output);
             this.requestsLogger.info(`RESPONSE=${this.jsonUtil.serialize(log)}`);
         }
@@ -142,7 +142,7 @@ export class SptHttpListener implements IHttpListener {
 
     public async getResponse(sessionID: string, req: IncomingMessage, body: Buffer | undefined): Promise<string> {
         const info = this.getBodyInfo(body, req.url);
-        if (Program.ENTRY_TYPE !== EntryType.RELEASE) {
+        if (ProgramStatics.ENTRY_TYPE !== EntryType.RELEASE) {
             // Parse quest info into object
             const data = typeof info === "object" ? info : this.jsonUtil.deserialize(info);
 

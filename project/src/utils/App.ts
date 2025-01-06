@@ -1,10 +1,10 @@
 import os from "node:os";
-import { Program } from "@spt/Program";
+import { ProgramStatics } from "@spt/ProgramStatics";
 import { OnLoad } from "@spt/di/OnLoad";
 import { OnUpdate } from "@spt/di/OnUpdate";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ICoreConfig } from "@spt/models/spt/config/ICoreConfig";
-import { ILogger } from "@spt/models/spt/utils/ILogger";
+import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { HttpServer } from "@spt/servers/HttpServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
@@ -41,14 +41,14 @@ export class App {
         this.logger.debug(`RAM: ${(os.totalmem() / 1024 / 1024 / 1024).toFixed(2)}GB`);
         this.logger.debug(`PATH: ${this.encodingUtil.toBase64(process.argv[0])}`);
         this.logger.debug(`PATH: ${this.encodingUtil.toBase64(process.execPath)}`);
-        this.logger.debug(`Server: ${Program.SPT_VERSION || this.coreConfig.sptVersion}`);
+        this.logger.debug(`Server: ${ProgramStatics.SPT_VERSION || this.coreConfig.sptVersion}`);
 
-        if (Program.BUILD_TIME) {
-            this.logger.debug(`Date: ${Program.BUILD_TIME}`);
+        if (ProgramStatics.BUILD_TIME) {
+            this.logger.debug(`Date: ${ProgramStatics.BUILD_TIME}`);
         }
 
-        if (Program.COMMIT) {
-            this.logger.debug(`Commit: ${Program.COMMIT}`);
+        if (ProgramStatics.COMMIT) {
+            this.logger.debug(`Commit: ${ProgramStatics.COMMIT}`);
         }
 
         for (const onLoad of this.onLoadComponents) {

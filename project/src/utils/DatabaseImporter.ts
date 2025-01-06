@@ -1,9 +1,9 @@
-import { Program } from "@spt/Program";
+import { ProgramStatics } from "@spt/ProgramStatics";
 import { OnLoad } from "@spt/di/OnLoad";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { IHttpConfig } from "@spt/models/spt/config/IHttpConfig";
 import { IDatabaseTables } from "@spt/models/spt/server/IDatabaseTables";
-import { ILogger } from "@spt/models/spt/utils/ILogger";
+import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ImageRouter } from "@spt/routers/ImageRouter";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseServer } from "@spt/servers/DatabaseServer";
@@ -42,13 +42,13 @@ export class DatabaseImporter implements OnLoad {
      * @returns path to data
      */
     public getSptDataPath(): string {
-        return Program.COMPILED ? "SPT_Data/Server/" : "./assets/";
+        return ProgramStatics.COMPILED ? "SPT_Data/Server/" : "./assets/";
     }
 
     public async onLoad(): Promise<void> {
         this.filepath = this.getSptDataPath();
 
-        if (Program.COMPILED) {
+        if (ProgramStatics.COMPILED) {
             try {
                 // Reading the dynamic SHA1 file
                 const file = "checks.dat";
@@ -105,7 +105,7 @@ export class DatabaseImporter implements OnLoad {
 
     protected onReadValidate(fileWithPath: string, data: string): void {
         // Validate files
-        if (Program.COMPILED && this.hashedFile && !this.validateFile(fileWithPath, data)) {
+        if (ProgramStatics.COMPILED && this.hashedFile && !this.validateFile(fileWithPath, data)) {
             this.valid = VaildationResult.FAILED;
         }
     }

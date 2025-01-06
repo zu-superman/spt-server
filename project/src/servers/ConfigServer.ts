@@ -1,6 +1,6 @@
-import { Program } from "@spt/Program";
+import { ProgramStatics } from "@spt/ProgramStatics";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
-import { ILogger } from "@spt/models/spt/utils/ILogger";
+import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { JsonUtil } from "@spt/utils/JsonUtil";
 import { VFS } from "@spt/utils/VFS";
 import { inject, injectable } from "tsyringe";
@@ -34,7 +34,7 @@ export class ConfigServer {
         this.logger.debug("Importing configs...");
 
         // Get all filepaths
-        const filepath = Program.COMPILED ? "SPT_Data/Server/configs/" : "./assets/configs/";
+        const filepath = ProgramStatics.COMPILED ? "SPT_Data/Server/configs/" : "./assets/configs/";
         const files = this.vfs.getFiles(filepath);
 
         // Add file content to result
@@ -60,7 +60,7 @@ export class ConfigServer {
             }
         }
 
-        this.logger.info(`Commit hash: ${Program.COMMIT || "DEBUG"}`);
-        this.logger.info(`Build date: ${Program.BUILD_TIME || "DEBUG"}`);
+        this.logger.info(`Commit hash: ${ProgramStatics.COMMIT || "DEBUG"}`);
+        this.logger.info(`Build date: ${ProgramStatics.BUILD_TIME || "DEBUG"}`);
     }
 }

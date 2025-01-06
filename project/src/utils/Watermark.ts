@@ -1,4 +1,4 @@
-import { Program } from "@spt/Program";
+import { ProgramStatics } from "@spt/ProgramStatics";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ICoreConfig } from "@spt/models/spt/config/ICoreConfig";
 import { LogTextColor } from "@spt/models/spt/logging/LogTextColor";
@@ -79,10 +79,10 @@ export class Watermark {
         this.text = [this.versionLabel];
         this.text = [...this.text, ...description];
 
-        if (Program.DEBUG) {
+        if (ProgramStatics.DEBUG) {
             this.text = this.text.concat([...warning]);
         }
-        if (!Program.MODS) {
+        if (!ProgramStatics.MODS) {
             this.text = this.text.concat([...modding]);
         }
 
@@ -105,8 +105,8 @@ export class Watermark {
      * @returns string
      */
     public getVersionTag(withEftVersion = false): string {
-        const sptVersion = Program.SPT_VERSION || this.sptConfig.sptVersion;
-        const versionTag = Program.DEBUG
+        const sptVersion = ProgramStatics.SPT_VERSION || this.sptConfig.sptVersion;
+        const versionTag = ProgramStatics.DEBUG
             ? `${sptVersion} - ${this.localisationService.getText("bleeding_edge_build")}`
             : sptVersion;
 
@@ -124,10 +124,10 @@ export class Watermark {
      * @returns string
      */
     public getInGameVersionLabel(): string {
-        const sptVersion = Program.SPT_VERSION || this.sptConfig.sptVersion;
-        const versionTag = Program.DEBUG
-            ? `${sptVersion} - BLEEDINGEDGE ${Program.COMMIT?.slice(0, 6) ?? ""}`
-            : `${sptVersion} - ${Program.COMMIT?.slice(0, 6) ?? ""}`;
+        const sptVersion = ProgramStatics.SPT_VERSION || this.sptConfig.sptVersion;
+        const versionTag = ProgramStatics.DEBUG
+            ? `${sptVersion} - BLEEDINGEDGE ${ProgramStatics.COMMIT?.slice(0, 6) ?? ""}`
+            : `${sptVersion} - ${ProgramStatics.COMMIT?.slice(0, 6) ?? ""}`;
 
         return `${this.sptConfig.projectName} ${versionTag}`;
     }
@@ -139,7 +139,7 @@ export class Watermark {
 
     /** Reset console cursor to top */
     protected resetCursor(): void {
-        if (!Program.COMPILED) {
+        if (!ProgramStatics.COMPILED) {
             process.stdout.write("\u001B[2J\u001B[0;0f");
         }
     }

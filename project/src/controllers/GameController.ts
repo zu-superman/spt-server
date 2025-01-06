@@ -1,4 +1,4 @@
-import { Program } from "@spt/Program";
+import { ProgramStatics } from "@spt/ProgramStatics";
 import { ApplicationContext } from "@spt/context/ApplicationContext";
 import { ContextVariableType } from "@spt/context/ContextVariableType";
 import { HideoutHelper } from "@spt/helpers/HideoutHelper";
@@ -567,9 +567,11 @@ export class GameController {
 
     protected logProfileDetails(fullProfile: ISptProfile): void {
         this.logger.debug(`Profile made with: ${fullProfile.spt.version}`);
-        this.logger.debug(`Server version: ${Program.SPT_VERSION || this.coreConfig.sptVersion} ${Program.COMMIT}`);
-        this.logger.debug(`Debug enabled: ${Program.DEBUG}`);
-        this.logger.debug(`Mods enabled: ${Program.MODS}`);
+        this.logger.debug(
+            `Server version: ${ProgramStatics.SPT_VERSION || this.coreConfig.sptVersion} ${ProgramStatics.COMMIT}`,
+        );
+        this.logger.debug(`Debug enabled: ${ProgramStatics.DEBUG}`);
+        this.logger.debug(`Mods enabled: ${ProgramStatics.MODS}`);
     }
 
     public getSurvey(sessionId: string): ISurveyResponseData {

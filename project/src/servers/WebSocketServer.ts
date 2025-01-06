@@ -1,5 +1,5 @@
 import http, { IncomingMessage } from "node:http";
-import { Program } from "@spt/Program";
+import { ProgramStatics } from "@spt/ProgramStatics";
 import { HttpServerHelper } from "@spt/helpers/HttpServerHelper";
 import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { IWebSocketConnectionHandler } from "@spt/servers/ws/IWebSocketConnectionHandler";
@@ -49,7 +49,7 @@ export class WebSocketServer {
             return this.localisationService.getRandomTextThatMatchesPartialKey("server_start_meme_");
         }
 
-        return Program.COMPILED
+        return ProgramStatics.COMPILED
             ? `${this.localisationService.getText("server_start_success")}!`
             : this.localisationService.getText("server_start_success");
     }
