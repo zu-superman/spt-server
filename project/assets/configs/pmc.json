@@ -769,7 +769,8 @@
     "hostilitySettings": {
         "pmcusec": {
             "additionalEnemyTypes": [
-                "bossPartisan",
+				"arenaFighterEvent",
+				"marksman",
                 "peacemaker",
                 "skier",
                 "ravangeZryachiyEvent",
@@ -777,23 +778,29 @@
                 "infectedPmc",
                 "infectedCivil",
                 "infectedLaborant",
-                "infectedTagilla"
+                "infectedTagilla",
+                "bossKilla",
+                "bossBoar",
+                "bossBully",
+                "bossGluhar",
+                "bossKnight",
+                "bossKojaniy",
+                "bossKolontay",
+                "bossPartisan",
+                "bossSanitar",
+                "bossTagilla",
+                "exUsec",
+                "followerBigPipe",
+                "followerBirdEye",
+                "followerBully",
+				"followerBoarClose1",
+				"followerBoarClose2"
             ],
-            "additionalFriendlyTypes": ["shooterBTR", "sectactPriestEvent", "peacefullZryachiyEvent"],
-            "chancedEnemies": [
-                {
-                    "EnemyChance": 100,
-                    "Role": "assault"
-                },
-                {
-                    "EnemyChance": 100,
-                    "Role": "marksman"
-                },
-                {
+            "additionalFriendlyTypes": ["gifter", "shooterBTR", "sectactPriestEvent", "peacefullZryachiyEvent"],
+            "chancedEnemies": [{
                     "EnemyChance": 85,
                     "Role": "pmcUSEC"
-                },
-                {
+                }, {
                     "EnemyChance": 100,
                     "Role": "pmcBEAR"
                 }
@@ -805,7 +812,8 @@
         },
         "pmcbear": {
             "additionalEnemyTypes": [
-                "bossPartisan",
+				"arenaFighterEvent",
+				"marksman",
                 "peacemaker",
                 "skier",
                 "ravangeZryachiyEvent",
@@ -813,23 +821,29 @@
                 "infectedPmc",
                 "infectedCivil",
                 "infectedLaborant",
-                "infectedTagilla"
+                "infectedTagilla",
+                "bossKilla",
+                "bossBoar",
+                "bossBully",
+                "bossGluhar",
+                "bossKnight",
+                "bossKojaniy",
+                "bossKolontay",
+                "bossPartisan",
+                "bossSanitar",
+                "bossTagilla",
+                "exUsec",
+                "followerBigPipe",
+                "followerBirdEye",
+                "followerBully",
+				"followerBoarClose1",
+				"followerBoarClose2"
             ],
-            "additionalFriendlyTypes": ["shooterBTR", "sectactPriestEvent", "peacefullZryachiyEvent"],
-            "chancedEnemies": [
-                {
-                    "EnemyChance": 100,
-                    "Role": "assault"
-                },
-                {
-                    "EnemyChance": 100,
-                    "Role": "marksman"
-                },
-                {
+            "additionalFriendlyTypes": ["gifter", "shooterBTR", "sectactPriestEvent", "peacefullZryachiyEvent"],
+            "chancedEnemies": [{
                     "EnemyChance": 85,
                     "Role": "pmcBEAR"
-                },
-                {
+                }, {
                     "EnemyChance": 100,
                     "Role": "pmcUSEC"
                 }
