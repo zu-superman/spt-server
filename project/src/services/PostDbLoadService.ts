@@ -90,8 +90,6 @@ export class PostDbLoadService {
 
         this.adjustLooseLootSpawnProbabilities();
 
-        this.checkTraderRepairValuesExist();
-
         this.adjustLocationBotValues();
 
         if (this.locationConfig.rogueLighthouseSpawnTimeSettings.enabled) {
@@ -264,41 +262,6 @@ export class PostDbLoadService {
                 }
 
                 lootPostionToAdjust.probability = newChanceValue;
-            }
-        }
-    }
-
-    /**
-     * Out of date/incorrectly made trader mods forget this data
-     */
-    protected checkTraderRepairValuesExist(): void {
-        const traders = this.databaseService.getTraders();
-        for (const trader of Object.values(traders)) {
-            if (!trader?.base?.repair) {
-                this.logger.warning(
-                    this.localisationService.getText("trader-missing_repair_property_using_default", {
-                        traderId: trader.base._id,
-                        nickname: trader.base.nickname,
-                    }),
-                );
-
-                // use ragfair trader as a default
-                trader.base.repair = this.cloner.clone(traders.ragfair.base.repair);
-
-                return;
-            }
-
-            if (trader.base.repair?.quality === undefined) {
-                this.logger.warning(
-                    this.localisationService.getText("trader-missing_repair_quality_property_using_default", {
-                        traderId: trader.base._id,
-                        nickname: trader.base.nickname,
-                    }),
-                );
-
-                // use ragfair trader as a default
-                trader.base.repair.quality = this.cloner.clone(traders.ragfair.base.repair.quality);
-                trader.base.repair.quality = traders.ragfair.base.repair.quality;
             }
         }
     }
