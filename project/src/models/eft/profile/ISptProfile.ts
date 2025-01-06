@@ -4,6 +4,8 @@ import { EquipmentBuildType } from "@spt/models/enums/EquipmentBuildType";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
 import { MessageType } from "@spt/models/enums/MessageType";
 import { IProfileChangeEvent } from "@spt/models/spt/dialog/ISendMessageDetails";
+import { ISystemData } from "./ISystemData";
+import { IUserDialogInfo } from "./IUserDialogInfo";
 
 export interface ISptProfile {
     info: Info;
@@ -98,20 +100,6 @@ export interface IDialogue {
     _id: string;
 }
 
-export interface IUserDialogInfo {
-    _id: string;
-    aid: number;
-    Info?: IUserDialogDetails;
-}
-
-export interface IUserDialogDetails {
-    Nickname: string;
-    Side: string;
-    Level: number;
-    MemberCategory: MemberCategory;
-    SelectedMemberCategory: MemberCategory;
-}
-
 // @Cleanup: Maybe the same as Dialogue?
 export interface IDialogueInfo {
     attachmentsNew: number;
@@ -161,15 +149,6 @@ export interface IMessagePreview {
 export interface IMessageItems {
     stash?: string;
     data?: IItem[];
-}
-
-export interface ISystemData {
-    date?: string;
-    time?: string;
-    location?: string;
-    buyerNickname?: string;
-    soldItem?: string;
-    itemCount?: number;
 }
 
 export interface IUpdatableChatMember {
@@ -281,10 +260,4 @@ export interface IInsurance {
     messageType: MessageType;
     messageTemplateId: string;
     items: IItem[];
-}
-
-export interface IMessageContentRagfair {
-    offerId: string;
-    count: number;
-    handbookId: string;
 }

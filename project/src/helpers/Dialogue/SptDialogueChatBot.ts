@@ -1,7 +1,7 @@
 import { IDialogueChatBot } from "@spt/helpers/Dialogue/IDialogueChatBot";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { ISendMessageRequest } from "@spt/models/eft/dialog/ISendMessageRequest";
-import { IUserDialogInfo } from "@spt/models/eft/profile/ISptProfile";
+import { IUserDialogInfo } from "@spt/models/eft/profile/IUserDialogInfo";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { GiftSentResult } from "@spt/models/enums/GiftSentResult";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";

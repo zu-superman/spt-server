@@ -3,7 +3,7 @@ import { ISptCommand } from "@spt/helpers/Dialogue/Commando/SptCommands/ISptComm
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { ISendMessageRequest } from "@spt/models/eft/dialog/ISendMessageRequest";
-import { IUserDialogInfo } from "@spt/models/eft/profile/ISptProfile";
+import { IUserDialogInfo } from "@spt/models/eft/profile/IUserDialogInfo";
 import { Money } from "@spt/models/enums/Money";
 import { IProfileChangeEvent, ProfileChangeEventType } from "@spt/models/spt/dialog/ISendMessageDetails";
 import { ILogger } from "@spt/models/spt/utils/ILogger";
@@ -56,7 +56,7 @@ export class TraderSptCommand implements ISptCommand {
 
         const trader: string = result.groups.trader;
         const command: string = result.groups.command;
-        let quantity: number = +result.groups.quantity;
+        let quantity = +result.groups.quantity;
 
         const dbTrader = Object.values(this.databaseService.getTraders()).find(
             (t) => t.base.nickname.toLocaleLowerCase() === trader.toLocaleLowerCase(),
