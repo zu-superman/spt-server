@@ -9,7 +9,9 @@ export class Program {
     private errorHandler: ErrorHandler;
 
     constructor() {
-        process.stdout.setEncoding("utf8");
+        if (process.stdout.isTTY) {
+            process.stdout?.setEncoding("utf8");
+        }
         process.title = "SPT Server";
 
         this.errorHandler = new ErrorHandler();
