@@ -1,7 +1,5 @@
-import { ILocations } from "@spt/models/spt/server/ILocations";
-
 export interface ILocationsBase {
-    locations: ILocations;
+    locations: any;
     paths: IPath[];
 }
 
