@@ -124,25 +124,25 @@ export class ImporterUtil {
 
         while (filesToProcess.length !== 0) {
             const fileNode = filesToProcess.dequeue();
-            if (!fileNode) continue;
-
-            if (this.vfs.getFileExtension(fileNode.fileName) === "json") {
-                const filePathAndName = `${fileNode.filePath}${fileNode.fileName}`;
-                promises.push(
-                    this.vfs
-                        .readFileAsync(filePathAndName)
-                        .then(async (fileData) => {
-                            onReadCallback(filePathAndName, fileData);
-                            return this.jsonUtil.deserializeWithCacheCheckAsync<any>(fileData, filePathAndName);
-                        })
-                        .then(async (fileDeserialized) => {
-                            onObjectDeserialized(filePathAndName, fileDeserialized);
-                            const strippedFilePath = this.vfs.stripExtension(filePathAndName).replace(filepath, "");
-                            this.placeObject(fileDeserialized, strippedFilePath, result, strippablePath);
-                        })
-                        .then(() => progressWriter.increment()),
-                );
+            if (!fileNode || this.vfs.getFileExtension(fileNode.fileName) !== "json") {
+                continue;
             }
+
+            const filePathAndName = `${fileNode.filePath}${fileNode.fileName}`;
+            promises.push(
+                this.vfs
+                    .readFileAsync(filePathAndName)
+                    .then(async (fileData) => {
+                        onReadCallback(filePathAndName, fileData);
+                        return this.jsonUtil.deserializeWithCacheCheckAsync<any>(fileData, filePathAndName);
+                    })
+                    .then(async (fileDeserialized) => {
+                        onObjectDeserialized(filePathAndName, fileDeserialized);
+                        const strippedFilePath = this.vfs.stripExtension(filePathAndName).replace(filepath, "");
+                        this.placeObject(fileDeserialized, strippedFilePath, result, strippablePath);
+                    })
+                    .then(() => progressWriter.increment()),
+            );
         }
 
         await Promise.all(promises).catch((e) => console.error(e));
