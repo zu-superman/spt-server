@@ -43,6 +43,15 @@ export class App {
         this.logger.debug(`PATH: ${this.encodingUtil.toBase64(process.execPath)}`);
         this.logger.debug(`Server: ${ProgramStatics.SPT_VERSION || this.coreConfig.sptVersion}`);
 
+        const nodeVersion = process.version.replace(/^v/, "");
+        if (ProgramStatics.EXPECTED_NODE && nodeVersion !== ProgramStatics.EXPECTED_NODE) {
+            this.logger.error(
+                `Node version mismatch. Required: ${ProgramStatics.EXPECTED_NODE} | Current: ${nodeVersion}`,
+            );
+            process.exit(1);
+        }
+        this.logger.debug(`Node: ${nodeVersion}`);
+
         if (ProgramStatics.BUILD_TIME) {
             this.logger.debug(`Date: ${ProgramStatics.BUILD_TIME}`);
         }
