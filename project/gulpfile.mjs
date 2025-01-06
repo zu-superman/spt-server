@@ -172,6 +172,7 @@ const writeBuildDataToJSON = async (entryType) => {
 
         const buildInfo = {};
         buildInfo.entryType = entryType;
+        buildInfo.expectedNode = manifest?.engines?.node ?? "";
         buildInfo.sptVersion = coreParsed.sptVersion;
         buildInfo.commit = coreParsed.commit;
         buildInfo.buildTime = coreParsed.buildTime;
