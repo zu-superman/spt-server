@@ -1,7 +1,9 @@
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { BanType, Common, ICounterKeyValue, IStats } from "@spt/models/eft/common/tables/IBotBase";
+import { ICustomisationStorage } from "@spt/models/eft/common/tables/ICustomisationStorage";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
+import { IQuestReward } from "@spt/models/eft/common/tables/IQuest";
 import { ISearchFriendResponse } from "@spt/models/eft/profile/ISearchFriendResponse";
 import { ISpt, ISptProfile } from "@spt/models/eft/profile/ISptProfile";
 import { IValidateNicknameRequestData } from "@spt/models/eft/profile/IValidateNicknameRequestData";
@@ -606,5 +608,41 @@ export class ProfileHelper {
         }
 
         return fullFavorites;
+    }
+
+    /**
+     * Store a hideout customisation unlock inside a profile
+     * @param fullProfile Profile to add unlock to
+     * @param reward reward given to player with customisation data
+     * @param source Source of reward, e.g. "unlockedInGame" for quests and "achievement" for achievements
+     */
+    public addHideoutCustomisationUnlock(fullProfile: ISptProfile, reward: IQuestReward, source: string): void {
+        // Get matching db data for reward
+        const hideoutCustomisationDb = this.databaseService
+            .getHideout()
+            .customisation.globals.find((customisation) => customisation.itemId === reward.target);
+        if (!hideoutCustomisationDb) {
+            this.logger.warning(
+                `Unable to add hideout customisaiton reward: ${reward.target} to profile: ${fullProfile.info.id} as matching object cannot be found in hideout/customisation.json`,
+            );
+
+            return;
+        }
+
+        fullProfile.hideoutCustomisationUnlocks ||= [];
+        if (fullProfile.hideoutCustomisationUnlocks?.some((unlock) => unlock.id === hideoutCustomisationDb.id)) {
+            this.logger.warning(
+                `Profile: ${fullProfile.info.id} already has hideout customisaiton reward: ${reward.target}, skipping`,
+            );
+            return;
+        }
+
+        const rewardToStore: ICustomisationStorage = {
+            id: hideoutCustomisationDb.id,
+            source: source,
+            type: hideoutCustomisationDb.type,
+        };
+
+        fullProfile.hideoutCustomisationUnlocks.push(rewardToStore);
     }
 }

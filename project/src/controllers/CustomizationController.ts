@@ -230,8 +230,12 @@ export class CustomizationController {
     public getCustomisationStorage(sessionID: string, info: IEmptyRequestData): ICustomisationStorage[] {
         const customisationResultsClone = this.cloner.clone(this.databaseService.getTemplates().customisationStorage);
 
-        // Some game versions have additional dogtag variants, add them
         const profile = this.profileHelper.getFullProfile(sessionID);
+        if (!profile) {
+            return customisationResultsClone;
+        }
+
+        // Some game versions have additional dogtag variants, add them
         switch (this.getGameEdition(profile)) {
             case GameEditions.EDGE_OF_DARKNESS:
                 // Gets EoD tags
@@ -294,6 +298,9 @@ export class CustomizationController {
                 });
             }
         }
+
+        // Append on customisations unlocked by player to results
+        customisationResultsClone.push(...(profile.hideoutCustomisationUnlocks ?? []));
 
         return customisationResultsClone;
     }

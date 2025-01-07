@@ -919,7 +919,13 @@ export class QuestHelper {
     ): IItem[] {
         // Repeatable quest base data is always in PMCProfile, `profileData` may be scav profile
         // TODO: consider moving repeatable quest data to profile-agnostic location
-        const pmcProfile = this.profileHelper.getPmcProfile(sessionId);
+        const fullProfile = this.profileHelper.getFullProfile(sessionId);
+        const pmcProfile = fullProfile?.characters.pmc;
+        if (!pmcProfile) {
+            this.logger.error(`Unable to get pmc profile for: ${sessionId}, no rewards given`);
+            return [];
+        }
+
         let questDetails = this.getQuestFromDb(questId, pmcProfile);
         if (!questDetails) {
             this.logger.warning(
@@ -989,6 +995,9 @@ export class QuestHelper {
                     break;
                 case QuestRewardType.POCKETS:
                     this.profileHelper.replaceProfilePocketTpl(pmcProfile, reward.target);
+                    break;
+                case QuestRewardType.CUSTOMIZATION_DIRECT:
+                    this.profileHelper.addHideoutCustomisationUnlock(fullProfile, reward, "unlockedInGame");
                     break;
                 default:
                     this.logger.error(
