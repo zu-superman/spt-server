@@ -1438,6 +1438,7 @@ export class HideoutController {
         pmcData: IPmcData,
         request: IHideoutCustomizationSetMannequinPoseRequest,
     ): IItemEventRouterResponse {
+        pmcData.Hideout.MannequinPoses ||= {};
         for (const [key, value] of Object.entries(request.poses)) {
             pmcData.Hideout.MannequinPoses[key] = value;
         }
