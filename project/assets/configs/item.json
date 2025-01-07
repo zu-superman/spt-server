@@ -349,6 +349,38 @@
 		  "_name": "Body armor 6B13 M Killa Christmas Standard",
 		  "_parent": "67784dfaf57296ecbdbfc87f",
 		  "_type": "Preset"
+		},
+		{
+		  "_changeWeaponName": false,
+		  "_encyclopedia": "6745895717824b1ec20570a6",
+		  "_id": "677d14927f8ee8353d85918d",
+		  "_items": [
+			{
+			  "_id": "677d14a27757dcc54a3054fb",
+			  "_tpl": "6745895717824b1ec20570a6"
+			},
+			{
+			  "_id": "677d14abef2285ed18ee3e62",
+			  "_tpl": "657baaf0b7e9ca9a02045c02",
+			  "parentId": "677d14a27757dcc54a3054fb",
+			  "slotId": "Helmet_top"
+			},
+			{
+			  "_id": "677d14b0024eda59d1544794",
+			  "_tpl": "657bab6ec6f689d3a205b85f",
+			  "parentId": "677d14a27757dcc54a3054fb",
+			  "slotId": "Helmet_back"
+			},
+			{
+			  "_id": "677d14bb1dfea5b33fa31337",
+			  "_tpl": "657babc6f58ba5a6250107a2",
+			  "parentId": "677d14a27757dcc54a3054fb",
+			  "slotId": "Helmet_ears"
+			}
+		  ],
+		  "_name": "6B47 Ratnik-BSh helmet (EMR Arctic cover) default",
+		  "_parent": "677d14a27757dcc54a3054fb",
+		  "_type": "Preset"
 		}
 	]
 }
