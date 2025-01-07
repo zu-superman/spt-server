@@ -1,5 +1,4 @@
 import { ItemHelper } from "@spt/helpers/ItemHelper";
-import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { QuestConditionHelper } from "@spt/helpers/QuestConditionHelper";
 import { QuestRewardHelper } from "@spt/helpers/QuestRewardHelper";
@@ -7,7 +6,7 @@ import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Common, IQuestStatus } from "@spt/models/eft/common/tables/IBotBase";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
-import { IQuest, IQuestCondition, IQuestReward } from "@spt/models/eft/common/tables/IQuest";
+import { IQuest, IQuestCondition } from "@spt/models/eft/common/tables/IQuest";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { IAcceptQuestRequestData } from "@spt/models/eft/quests/IAcceptQuestRequestData";
 import { ICompleteQuestRequestData } from "@spt/models/eft/quests/ICompleteQuestRequestData";
@@ -49,7 +48,6 @@ export class QuestHelper {
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
-        @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("MailSendService") protected mailSendService: MailSendService,
         @inject("PlayerService") protected playerService: PlayerService,
         @inject("ConfigServer") protected configServer: ConfigServer,
@@ -232,116 +230,6 @@ export class QuestHelper {
 
                 return false;
         }
-    }
-
-    /**
-     * Take reward item from quest and set FiR status + fix stack sizes + fix mod Ids
-     * @param questReward Reward item to fix
-     * @returns Fixed rewards
-     */
-    protected processReward(questReward: IQuestReward): IItem[] {
-        /** item with mods to return */
-        let rewardItems: IItem[] = [];
-        let targets: IItem[] = [];
-        const mods: IItem[] = [];
-
-        // Is armor item that may need inserts / plates
-        if (questReward.items.length === 1 && this.itemHelper.armorItemCanHoldMods(questReward.items[0]._tpl)) {
-            // Only process items with slots
-            if (this.itemHelper.itemHasSlots(questReward.items[0]._tpl)) {
-                // Attempt to pull default preset from globals and add child items to reward (clones questReward.items)
-                this.generateArmorRewardChildSlots(questReward.items[0], questReward);
-            }
-        }
-
-        for (const rewardItem of questReward.items) {
-            this.itemHelper.addUpdObjectToItem(rewardItem);
-
-            // Reward items are granted Found in Raid status
-            rewardItem.upd.SpawnedInSession = true;
-
-            // Is root item, fix stacks
-            if (rewardItem._id === questReward.target) {
-                // Is base reward item
-                if (
-                    rewardItem.parentId !== undefined &&
-                    rewardItem.parentId === "hideout" && // Has parentId of hideout
-                    rewardItem.upd !== undefined &&
-                    rewardItem.upd.StackObjectsCount !== undefined && // Has upd with stackobject count
-                    rewardItem.upd.StackObjectsCount > 1 // More than 1 item in stack
-                ) {
-                    rewardItem.upd.StackObjectsCount = 1;
-                }
-                targets = this.itemHelper.splitStack(rewardItem);
-                // splitStack created new ids for the new stacks. This would destroy the relation to possible children.
-                // Instead, we reset the id to preserve relations and generate a new id in the downstream loop, where we are also reparenting if required
-                for (const target of targets) {
-                    target._id = rewardItem._id;
-                }
-            } else {
-                // Is child mod
-                if (questReward.items[0].upd.SpawnedInSession) {
-                    // Propigate FiR status into child items
-                    rewardItem.upd.SpawnedInSession = questReward.items[0].upd.SpawnedInSession;
-                }
-
-                mods.push(rewardItem);
-            }
-        }
-
-        // Add mods to the base items, fix ids
-        for (const target of targets) {
-            // This has all the original id relations since we reset the id to the original after the splitStack
-            const itemsClone = [this.cloner.clone(target)];
-            // Here we generate a new id for the root item
-            target._id = this.hashUtil.generate();
-
-            for (const mod of mods) {
-                itemsClone.push(this.cloner.clone(mod));
-            }
-
-            rewardItems = rewardItems.concat(this.itemHelper.reparentItemAndChildren(target, itemsClone));
-        }
-
-        return rewardItems;
-    }
-
-    /**
-     * Add missing mod items to a quest armor reward
-     * @param originalRewardRootItem Original armor reward item from IQuestReward.items object
-     * @param questReward Armor reward from quest
-     */
-    protected generateArmorRewardChildSlots(originalRewardRootItem: IItem, questReward: IQuestReward): void {
-        // Look for a default preset from globals for armor
-        const defaultPreset = this.presetHelper.getDefaultPreset(originalRewardRootItem._tpl);
-        if (defaultPreset) {
-            // Found preset, use mods to hydrate reward item
-            const presetAndMods: IItem[] = this.itemHelper.replaceIDs(defaultPreset._items);
-            const newRootId = this.itemHelper.remapRootItemId(presetAndMods);
-
-            questReward.items = presetAndMods;
-
-            // Find root item and set its stack count
-            const rootItem = questReward.items.find((item) => item._id === newRootId);
-
-            // Remap target id to the new presets root id
-            questReward.target = rootItem._id;
-
-            // Copy over stack count otherwise reward shows as missing in client
-            this.itemHelper.addUpdObjectToItem(rootItem);
-
-            rootItem.upd.StackObjectsCount = originalRewardRootItem.upd.StackObjectsCount;
-
-            return;
-        }
-
-        this.logger.warning(
-            `Unable to find default preset for armor ${originalRewardRootItem._tpl}, adding mods manually`,
-        );
-        const itemDbData = this.itemHelper.getItem(originalRewardRootItem._tpl)[1];
-
-        // Hydrate reward with only 'required' mods - necessary for things like helmets otherwise you end up with nvgs/visors etc
-        questReward.items = this.itemHelper.addChildSlotItems(questReward.items, itemDbData, undefined, true);
     }
 
     /**
@@ -975,7 +863,13 @@ export class QuestHelper {
 
         const newQuestState = QuestStatus.Success;
         this.updateQuestState(pmcData, newQuestState, completedQuestId);
-        const questRewards = this.applyQuestReward(pmcData, body.qid, newQuestState, sessionID, completeQuestResponse);
+        const questRewards = this.questRewardHelper.applyQuestReward(
+            pmcData,
+            body.qid,
+            newQuestState,
+            sessionID,
+            completeQuestResponse,
+        );
 
         // Check for linked failed + unrestartable quests (only get quests not already failed
         const questsToFail = this.getQuestsFromProfileFailedByCompletingQuest(completedQuestId, pmcData);
