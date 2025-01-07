@@ -235,7 +235,7 @@ export class CustomizationController {
             return customisationResultsClone;
         }
 
-        // Append on customisations unlocked by player to results
+        // Append customisations unlocked by player to results
         customisationResultsClone.push(...(profile.customisationUnlocks ?? []));
 
         return customisationResultsClone;

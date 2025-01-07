@@ -979,7 +979,7 @@ export class QuestHelper {
                     // Handled by getAssort(), locked assorts are stripped out by `assortHelper.stripLockedLoyaltyAssort()` before being sent to player
                     break;
                 case QuestRewardType.ACHIEVEMENT:
-                    this.profileHelper.addAchievementToProfile(pmcProfile, reward.target);
+                    this.profileHelper.addAchievementToProfile(fullProfile, reward.target);
                     break;
                 case QuestRewardType.STASH_ROWS:
                     this.profileHelper.addStashRowsBonusToProfile(sessionId, Number.parseInt(<string>reward.value)); // Add specified stash rows from quest reward - requires client restart

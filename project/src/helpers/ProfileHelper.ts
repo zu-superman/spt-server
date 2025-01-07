@@ -544,12 +544,47 @@ export class ProfileHelper {
     }
 
     /**
-     * Add an achievement to player profile
-     * @param pmcProfile Profile to add achievement to
+     * Add an achievement to player profile + check for and add any hideout customisation unlocks to profile
+     * @param fullProfile Profile to add achievement to
      * @param achievementId Id of achievement to add
      */
-    public addAchievementToProfile(pmcProfile: IPmcData, achievementId: string): void {
-        pmcProfile.Achievements[achievementId] = this.timeUtil.getTimestamp();
+    public addAchievementToProfile(fullProfile: ISptProfile, achievementId: string): void {
+        // Add achievement id to profile with timestamp it was unlocked
+        fullProfile.characters.pmc.Achievements[achievementId] = this.timeUtil.getTimestamp();
+
+        // Check for any customisation unlocks
+        const achievementDataDb = this.databaseService
+            .getTemplates()
+            .achievements.find((achievement) => achievement.id === achievementId);
+        if (!achievementDataDb) {
+            return;
+        }
+
+        // Get customisation reward object from achievement db
+        const customizationDirectReward = achievementDataDb.rewards.find(
+            (reward) => reward.type === "CustomizationDirect",
+        );
+        if (!customizationDirectReward) {
+            return;
+        }
+
+        const customisationDataDb = this.databaseService
+            .getHideout()
+            .customisation.globals.find((customisation) => customisation.itemId === customizationDirectReward.target);
+        if (!customisationDataDb) {
+            this.logger.error(
+                `Unable to find customisation data for ${customizationDirectReward.target} in profile ${fullProfile.info.id}`,
+            );
+
+            return;
+        }
+
+        // Reward found, add to profile
+        fullProfile.customisationUnlocks.push({
+            id: customizationDirectReward.target,
+            source: "achievement",
+            type: customisationDataDb.type,
+        });
     }
 
     public hasAccessToRepeatableFreeRefreshSystem(pmcProfile: IPmcData): boolean {
