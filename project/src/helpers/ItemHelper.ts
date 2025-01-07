@@ -18,7 +18,6 @@ import { CompareUtil } from "@spt/utils/CompareUtil";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { JsonUtil } from "@spt/utils/JsonUtil";
 import { MathUtil } from "@spt/utils/MathUtil";
-import { ObjectId } from "@spt/utils/ObjectId";
 import { ProbabilityObject, ProbabilityObjectArray, RandomUtil } from "@spt/utils/RandomUtil";
 import type { ICloner } from "@spt/utils/cloners/ICloner";
 import { inject, injectable } from "tsyringe";
@@ -40,7 +39,6 @@ export class ItemHelper {
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("JsonUtil") protected jsonUtil: JsonUtil,
         @inject("RandomUtil") protected randomUtil: RandomUtil,
-        @inject("ObjectId") protected objectId: ObjectId,
         @inject("MathUtil") protected mathUtil: MathUtil,
         @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
@@ -797,7 +795,7 @@ export class ItemHelper {
      * @param itemWithChildren Item with mods to update
      * @param newId new id to add on chidren of base item
      */
-    public replaceRootItemID(itemWithChildren: IItem[], newId = this.objectId.generate()): void {
+    public replaceRootItemID(itemWithChildren: IItem[], newId = this.hashUtil.generate()): void {
         // original id on base item
         const oldId = itemWithChildren[0]._id;
 
@@ -1457,7 +1455,7 @@ export class ItemHelper {
         foundInRaid = false,
     ): IItem {
         return {
-            _id: this.objectId.generate(),
+            _id: this.hashUtil.generate(),
             _tpl: ammoTpl,
             parentId: parentId,
             slotId: "cartridges",

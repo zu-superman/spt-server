@@ -25,7 +25,6 @@ import { LocalisationService } from "@spt/services/LocalisationService";
 import { SeasonalEventService } from "@spt/services/SeasonalEventService";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { MathUtil } from "@spt/utils/MathUtil";
-import { ObjectId } from "@spt/utils/ObjectId";
 import { RandomUtil } from "@spt/utils/RandomUtil";
 import type { ICloner } from "@spt/utils/cloners/ICloner";
 import { inject, injectable } from "tsyringe";
@@ -44,7 +43,6 @@ export class RepeatableQuestRewardGenerator {
         @inject("PresetHelper") protected presetHelper: PresetHelper,
         @inject("HandbookHelper") protected handbookHelper: HandbookHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
-        @inject("ObjectId") protected objectId: ObjectId,
         @inject("ItemFilterService") protected itemFilterService: ItemFilterService,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("ConfigServer") protected configServer: ConfigServer,
@@ -518,7 +516,7 @@ export class RepeatableQuestRewardGenerator {
      * @returns {object}                    Object of "Reward"-item-type
      */
     protected generateItemReward(tpl: string, count: number, index: number, foundInRaid = true): IQuestReward {
-        const id = this.objectId.generate();
+        const id = this.hashUtil.generate();
         const questRewardItem: IQuestReward = {
             id: this.hashUtil.generate(),
             unknown: false,
@@ -555,7 +553,7 @@ export class RepeatableQuestRewardGenerator {
         preset?: IItem[],
         foundInRaid = true,
     ): IQuestReward {
-        const id = this.objectId.generate();
+        const id = this.hashUtil.generate();
         const questRewardItem: IQuestReward = {
             id: this.hashUtil.generate(),
             unknown: false,
