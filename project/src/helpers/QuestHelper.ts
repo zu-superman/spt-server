@@ -2,6 +2,7 @@ import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { QuestConditionHelper } from "@spt/helpers/QuestConditionHelper";
+import { QuestRewardHelper } from "@spt/helpers/QuestRewardHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Common, IQuestStatus } from "@spt/models/eft/common/tables/IBotBase";
@@ -44,6 +45,7 @@ export class QuestHelper {
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("LocaleService") protected localeService: LocaleService,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
+        @inject("QuestRewardHelper") protected questRewardHelper: QuestRewardHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("TraderHelper") protected traderHelper: TraderHelper,
@@ -705,7 +707,7 @@ export class QuestHelper {
         }
 
         this.updateQuestState(pmcData, QuestStatus.Fail, failRequest.qid);
-        const questRewards = this.applyQuestReward(
+        const questRewards = this.questRewardHelper.applyQuestReward(
             pmcData,
             failRequest.qid,
             QuestStatus.Fail,
@@ -845,27 +847,6 @@ export class QuestHelper {
             // Remove all completed conditions
             questToUpdate.completedConditions = [];
         }
-    }
-
-    /**
-     * Does the provided quest reward have a game version requirement to be given and does it match
-     * @param reward Reward to check
-     * @param gameVersion Version of game to check reward against
-     * @returns True if it has requirement, false if it doesnt pass check
-     */
-    public questRewardIsForGameEdition(reward: IQuestReward, gameVersion: string) {
-        if (reward.availableInGameEditions?.length > 0 && !reward.availableInGameEditions?.includes(gameVersion)) {
-            // Reward has edition whitelist and game version isnt in it
-            return false;
-        }
-
-        if (reward.notAvailableInGameEditions?.length > 0 && reward.notAvailableInGameEditions?.includes(gameVersion)) {
-            // Reward has edition blacklist and game version is in it
-            return false;
-        }
-
-        // No whitelist/blacklist or reward isnt blacklisted/whitelisted
-        return true;
     }
 
     /**
@@ -1182,7 +1163,7 @@ export class QuestHelper {
             // Remove any reward that doesn't pass the game edition check
             for (const rewardType of Object.keys(quest.rewards)) {
                 quest.rewards[rewardType] = quest.rewards[rewardType].filter((reward) =>
-                    this.questRewardIsForGameEdition(reward, gameVersion),
+                    this.questRewardHelper.questRewardIsForGameEdition(reward, gameVersion),
                 );
             }
         }

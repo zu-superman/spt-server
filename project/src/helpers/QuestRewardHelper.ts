@@ -1,7 +1,6 @@
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { PaymentHelper } from "@spt/helpers/PaymentHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
-import { QuestHelper } from "@spt/helpers/QuestHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
@@ -25,7 +24,6 @@ export class QuestRewardHelper {
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("DatabaseService") protected databaseService: DatabaseService,
         @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
-        @inject("QuestHelper") protected questHelper: QuestHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("PaymentHelper") protected paymentHelper: PaymentHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
@@ -58,7 +56,7 @@ export class QuestRewardHelper {
             return [];
         }
 
-        let questDetails = this.questHelper.getQuestFromDb(questId, pmcProfile);
+        let questDetails = this.getQuestFromDb(questId, pmcProfile);
         if (!questDetails) {
             this.logger.warning(
                 this.localisationService.getText("quest-unable_to_find_quest_in_db_no_quest_rewards", questId),
@@ -79,7 +77,7 @@ export class QuestRewardHelper {
         const gameVersion = pmcProfile.Info.GameVersion;
         for (const reward of <IQuestReward[]>questDetails.rewards[questStateAsString]) {
             // Handle quest reward availability for different game versions, notAvailableInGameEditions currently not used
-            if (!this.questHelper.questRewardIsForGameEdition(reward, gameVersion)) {
+            if (!this.questRewardIsForGameEdition(reward, gameVersion)) {
                 continue;
             }
 
@@ -144,6 +142,49 @@ export class QuestRewardHelper {
         }
 
         return this.getQuestRewardItems(questDetails, state, gameVersion);
+    }
+
+    /**
+     * Does the provided quest reward have a game version requirement to be given and does it match
+     * @param reward Reward to check
+     * @param gameVersion Version of game to check reward against
+     * @returns True if it has requirement, false if it doesnt pass check
+     */
+    public questRewardIsForGameEdition(reward: IQuestReward, gameVersion: string) {
+        if (reward.availableInGameEditions?.length > 0 && !reward.availableInGameEditions?.includes(gameVersion)) {
+            // Reward has edition whitelist and game version isnt in it
+            return false;
+        }
+
+        if (reward.notAvailableInGameEditions?.length > 0 && reward.notAvailableInGameEditions?.includes(gameVersion)) {
+            // Reward has edition blacklist and game version is in it
+            return false;
+        }
+
+        // No whitelist/blacklist or reward isnt blacklisted/whitelisted
+        return true;
+    }
+
+    /**
+     * Get quest by id from database (repeatables are stored in profile, check there if questId not found)
+     * @param questId Id of quest to find
+     * @param pmcData Player profile
+     * @returns IQuest object
+     */
+    protected getQuestFromDb(questId: string, pmcData: IPmcData): IQuest {
+        // May be a repeatable quest
+        let quest = this.databaseService.getQuests()[questId];
+        if (!quest) {
+            // Check daily/weekly objects
+            for (const repeatableType of pmcData.RepeatableQuests) {
+                quest = <IQuest>(<unknown>repeatableType.activeQuests.find((repeatable) => repeatable._id === questId));
+                if (quest) {
+                    break;
+                }
+            }
+        }
+
+        return quest;
     }
 
     /**
