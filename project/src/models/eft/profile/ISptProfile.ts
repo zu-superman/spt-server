@@ -25,7 +25,7 @@ export interface ISptProfile {
     achievements: Record<string, number>;
     /** List of friend profile IDs */
     friends: string[];
-    hideoutCustomisationUnlocks: ICustomisationStorage[];
+    customisationUnlocks: ICustomisationStorage[];
 }
 
 export class ITraderPurchaseData {

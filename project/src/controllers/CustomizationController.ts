@@ -235,92 +235,10 @@ export class CustomizationController {
             return customisationResultsClone;
         }
 
-        // Some game versions have additional dogtag variants, add them
-        switch (this.getGameEdition(profile)) {
-            case GameEditions.EDGE_OF_DARKNESS:
-                // Gets EoD tags
-                customisationResultsClone.push({
-                    id: "6746fd09bafff85008048838",
-                    source: "default",
-                    type: "dogTag",
-                });
-
-                customisationResultsClone.push({
-                    id: "67471938bafff850080488b7",
-                    source: "default",
-                    type: "dogTag",
-                });
-
-                break;
-            case GameEditions.UNHEARD:
-                // Gets EoD+Unheard tags
-                customisationResultsClone.push({
-                    id: "6746fd09bafff85008048838",
-                    source: "default",
-                    type: "dogTag",
-                });
-
-                customisationResultsClone.push({
-                    id: "67471938bafff850080488b7",
-                    source: "default",
-                    type: "dogTag",
-                });
-
-                customisationResultsClone.push({
-                    id: "67471928d17d6431550563b5",
-                    source: "default",
-                    type: "dogTag",
-                });
-
-                customisationResultsClone.push({
-                    id: "6747193f170146228c0d2226",
-                    source: "default",
-                    type: "dogTag",
-                });
-                break;
-        }
-
-        const pretigeLevel = profile?.characters?.pmc?.Info?.PrestigeLevel;
-        if (pretigeLevel) {
-            if (pretigeLevel >= 1) {
-                customisationResultsClone.push({
-                    id: "674dbf593bee1152d407f005",
-                    source: "default",
-                    type: "dogTag",
-                });
-            }
-
-            if (pretigeLevel >= 2) {
-                customisationResultsClone.push({
-                    id: "675dcfea7ae1a8792107ca99",
-                    source: "default",
-                    type: "dogTag",
-                });
-            }
-        }
-
         // Append on customisations unlocked by player to results
-        customisationResultsClone.push(...(profile.hideoutCustomisationUnlocks ?? []));
+        customisationResultsClone.push(...(profile.customisationUnlocks ?? []));
 
         return customisationResultsClone;
-    }
-
-    protected getGameEdition(profile: ISptProfile): string {
-        const edition = profile.characters?.pmc?.Info?.GameVersion;
-        if (!edition) {
-            // Edge case - profile not created yet, fall back to what launcher has set
-            const launcherEdition = profile.info.edition;
-            switch (launcherEdition.toLowerCase()) {
-                case "edge of darkness":
-                    return GameEditions.EDGE_OF_DARKNESS;
-                case "unheard":
-                    return GameEditions.UNHEARD;
-                default:
-                    return GameEditions.STANDARD;
-            }
-        }
-
-        return edition;
     }
 
     /** Handle CustomizationSet event */

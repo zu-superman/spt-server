@@ -19,6 +19,7 @@ import { ISearchFriendRequestData } from "@spt/models/eft/profile/ISearchFriendR
 import { ISearchFriendResponse } from "@spt/models/eft/profile/ISearchFriendResponse";
 import { IInraid, ISptProfile, IVitality } from "@spt/models/eft/profile/ISptProfile";
 import { IValidateNicknameRequestData } from "@spt/models/eft/profile/IValidateNicknameRequestData";
+import { GameEditions } from "@spt/models/enums/GameEditions";
 import { ItemTpl } from "@spt/models/enums/ItemTpl";
 import { MessageType } from "@spt/models/enums/MessageType";
 import { QuestStatus } from "@spt/models/enums/QuestStatus";
@@ -127,10 +128,10 @@ export class ProfileController {
      */
     public createProfile(info: IProfileCreateRequestData, sessionID: string): string {
         const account = this.saveServer.getProfile(sessionID).info;
-        const profileTemplate: ITemplateSide = this.cloner.clone(
+        const profileTemplateClone: ITemplateSide = this.cloner.clone(
             this.databaseService.getProfiles()[account.edition][info.side.toLowerCase()],
         );
-        const pmcData = profileTemplate.character;
+        const pmcData = profileTemplateClone.character;
 
         // Delete existing profile
         this.deleteProfileBySessionId(sessionID);
@@ -176,9 +177,9 @@ export class ProfileController {
         const profileDetails: ISptProfile = {
             info: account,
             characters: { pmc: pmcData, scav: {} as IPmcData },
-            suits: profileTemplate.suits,
-            userbuilds: profileTemplate.userbuilds,
-            dialogues: profileTemplate.dialogues,
+            suits: profileTemplateClone.suits,
+            userbuilds: profileTemplateClone.userbuilds,
+            dialogues: profileTemplateClone.dialogues,
             spt: this.profileHelper.getDefaultSptDataObject(),
             vitality: {} as IVitality,
             inraid: {} as IInraid,
@@ -186,18 +187,21 @@ export class ProfileController {
             traderPurchases: {},
             achievements: {},
             friends: [],
+            customisationUnlocks: [],
         };
+
+        this.addCustomisationUnlocksToProfile(profileDetails);
 
         this.profileFixerService.checkForAndFixPmcProfileIssues(profileDetails.characters.pmc);
 
         this.saveServer.addProfile(profileDetails);
 
-        if (profileTemplate.trader.setQuestsAvailableForStart) {
+        if (profileTemplateClone.trader.setQuestsAvailableForStart) {
             this.questHelper.addAllQuestsToProfile(profileDetails.characters.pmc, [QuestStatus.AvailableForStart]);
         }
 
         // Profile is flagged as wanting quests set to ready to hand in and collect rewards
-        if (profileTemplate.trader.setQuestsAvailableForFinish) {
+        if (profileTemplateClone.trader.setQuestsAvailableForFinish) {
             this.questHelper.addAllQuestsToProfile(profileDetails.characters.pmc, [
                 QuestStatus.AvailableForStart,
                 QuestStatus.Started,
@@ -224,6 +228,90 @@ export class ProfileController {
         this.saveServer.saveProfile(sessionID);
 
         return pmcData._id;
+    }
+
+    protected addCustomisationUnlocksToProfile(fullProfile: ISptProfile) {
+        // Some game versions have additional dogtag variants, add them
+        switch (this.getGameEdition(fullProfile)) {
+            case GameEditions.EDGE_OF_DARKNESS:
+                // Gets EoD tags
+                fullProfile.customisationUnlocks.push({
+                    id: "6746fd09bafff85008048838",
+                    source: "default",
+                    type: "dogTag",
+                });
+
+                fullProfile.customisationUnlocks.push({
+                    id: "67471938bafff850080488b7",
+                    source: "default",
+                    type: "dogTag",
+                });
+
+                break;
+            case GameEditions.UNHEARD:
+                // Gets EoD+Unheard tags
+                fullProfile.customisationUnlocks.push({
+                    id: "6746fd09bafff85008048838",
+                    source: "default",
+                    type: "dogTag",
+                });
+
+                fullProfile.customisationUnlocks.push({
+                    id: "67471938bafff850080488b7",
+                    source: "default",
+                    type: "dogTag",
+                });
+
+                fullProfile.customisationUnlocks.push({
+                    id: "67471928d17d6431550563b5",
+                    source: "default",
+                    type: "dogTag",
+                });
+
+                fullProfile.customisationUnlocks.push({
+                    id: "6747193f170146228c0d2226",
+                    source: "default",
+                    type: "dogTag",
+                });
+                break;
+        }
+
+        const pretigeLevel = fullProfile?.characters?.pmc?.Info?.PrestigeLevel;
+        if (pretigeLevel) {
+            if (pretigeLevel >= 1) {
+                fullProfile.customisationUnlocks.push({
+                    id: "674dbf593bee1152d407f005",
+                    source: "default",
+                    type: "dogTag",
+                });
+            }
+
+            if (pretigeLevel >= 2) {
+                fullProfile.customisationUnlocks.push({
+                    id: "675dcfea7ae1a8792107ca99",
+                    source: "default",
+                    type: "dogTag",
+                });
+            }
+        }
+    }
+
+    protected getGameEdition(profile: ISptProfile): string {
+        const edition = profile.characters?.pmc?.Info?.GameVersion;
+        if (!edition) {
+            // Edge case - profile not created yet, fall back to what launcher has set
+            const launcherEdition = profile.info.edition;
+            switch (launcherEdition.toLowerCase()) {
+                case "edge of darkness":
+                    return GameEditions.EDGE_OF_DARKNESS;
+                case "unheard":
+                    return GameEditions.UNHEARD;
+                default:
+                    return GameEditions.STANDARD;
+            }
+        }
+
+        return edition;
     }
 
     /**

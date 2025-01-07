@@ -629,8 +629,8 @@ export class ProfileHelper {
             return;
         }
 
-        fullProfile.hideoutCustomisationUnlocks ||= [];
-        if (fullProfile.hideoutCustomisationUnlocks?.some((unlock) => unlock.id === hideoutCustomisationDb.id)) {
+        fullProfile.customisationUnlocks ||= [];
+        if (fullProfile.customisationUnlocks?.some((unlock) => unlock.id === hideoutCustomisationDb.id)) {
             this.logger.warning(
                 `Profile: ${fullProfile.info.id} already has hideout customisaiton reward: ${reward.target}, skipping`,
             );
@@ -643,6 +643,6 @@ export class ProfileHelper {
             type: hideoutCustomisationDb.type,
         };
 
-        fullProfile.hideoutCustomisationUnlocks.push(rewardToStore);
+        fullProfile.customisationUnlocks.push(rewardToStore);
     }
 }
