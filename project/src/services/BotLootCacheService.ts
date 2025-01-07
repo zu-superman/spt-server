@@ -1,5 +1,6 @@
 import { PMCLootGenerator } from "@spt/generators/PMCLootGenerator";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
+import { MinMax } from "@spt/models/common/MinMax";
 import { IBotType } from "@spt/models/eft/common/tables/IBotType";
 import { IProps, ITemplateItem } from "@spt/models/eft/common/tables/ITemplateItem";
 import { BaseClasses } from "@spt/models/enums/BaseClasses";
@@ -40,6 +41,7 @@ export class BotLootCacheService {
      * @param isPmc is the bot a pmc
      * @param lootType what type of loot is needed (backpack/pocket/stim/vest etc)
      * @param botJsonTemplate Base json db file for the bot having its loot generated
+     * @param itemPriceMinMax OPTIONAL - min max limit of loot item price
      * @returns ITemplateItem array
      */
     public getLootFromCache(
@@ -47,6 +49,7 @@ export class BotLootCacheService {
         isPmc: boolean,
         lootType: LootCacheType,
         botJsonTemplate: IBotType,
+        itemPriceMinMax?: MinMax,
     ): Record<string, number> {
         if (!this.botRoleExistsInCache(botRole)) {
             this.initCacheForBotRole(botRole);
@@ -103,6 +106,27 @@ export class BotLootCacheService {
                     }),
                 );
                 break;
+        }
+
+        if (itemPriceMinMax) {
+            const filteredResult = Object.entries(result).filter(([key, val]) => {
+                const itemPrice = this.itemHelper.getItemPrice(key);
+                if (itemPriceMinMax?.min && itemPriceMinMax?.max) {
+                    return itemPrice >= itemPriceMinMax?.min && itemPrice <= itemPriceMinMax?.max;
+                }
+
+                if (itemPriceMinMax?.min && !itemPriceMinMax?.max) {
+                    return itemPrice >= itemPriceMinMax?.min;
+                }
+
+                if (!itemPriceMinMax?.min && itemPriceMinMax?.max) {
+                    return itemPrice <= itemPriceMinMax?.max;
+                }
+
+                return false;
+            });
+
+            return this.cloner.clone(Object.fromEntries(filteredResult));
         }
 
         return this.cloner.clone(result);

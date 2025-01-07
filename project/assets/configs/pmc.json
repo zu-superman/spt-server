@@ -717,6 +717,40 @@
             "value": 2500000
         }
     ],
+    "lootItemLimitsRub": [
+        {
+            "min": 46,
+            "max": 64,
+            "backpack": {
+                "min": 5000,
+                "max": 0
+            },
+			"pocket": {
+                "min": 5000,
+                "max": 0
+            },
+			"vest": {
+                "min": 5000,
+                "max": 0
+            }
+        },
+        {
+            "min": 65,
+            "max": 100,
+            "backpack": {
+                "min": 10000,
+                "max": 0
+            },
+			"pocket": {
+                "min": 10000,
+                "max": 0
+            },
+			"vest": {
+                "min": 10000,
+                "max": 0
+            }
+        }
+    ],
     "maxPocketLootTotalRub": 50000,
     "maxVestLootTotalRub": 50000,
     "convertIntoPmcChance": {
