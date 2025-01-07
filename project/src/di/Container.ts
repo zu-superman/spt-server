@@ -113,6 +113,7 @@ import { ProbabilityHelper } from "@spt/helpers/ProbabilityHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { QuestConditionHelper } from "@spt/helpers/QuestConditionHelper";
 import { QuestHelper } from "@spt/helpers/QuestHelper";
+import { QuestRewardHelper } from "@spt/helpers/QuestRewardHelper";
 import { RagfairHelper } from "@spt/helpers/RagfairHelper";
 import { RagfairOfferHelper } from "@spt/helpers/RagfairOfferHelper";
 import { RagfairSellHelper } from "@spt/helpers/RagfairSellHelper";
@@ -607,6 +608,7 @@ export class Container {
         depContainer.register<PresetHelper>("PresetHelper", PresetHelper, { lifecycle: Lifecycle.Singleton });
         depContainer.register<ProfileHelper>("ProfileHelper", { useClass: ProfileHelper });
         depContainer.register<QuestHelper>("QuestHelper", { useClass: QuestHelper });
+        depContainer.register<QuestRewardHelper>("QuestRewardHelper", { useClass: QuestRewardHelper });
         depContainer.register<QuestConditionHelper>("QuestConditionHelper", QuestConditionHelper);
         depContainer.register<RagfairHelper>("RagfairHelper", { useClass: RagfairHelper });
         depContainer.register<RagfairSortHelper>("RagfairSortHelper", { useClass: RagfairSortHelper });

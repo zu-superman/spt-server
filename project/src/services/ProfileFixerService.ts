@@ -2,7 +2,7 @@ import { HideoutHelper } from "@spt/helpers/HideoutHelper";
 import { InventoryHelper } from "@spt/helpers/InventoryHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
-import { QuestHelper } from "@spt/helpers/QuestHelper";
+import { QuestRewardHelper } from "@spt/helpers/QuestRewardHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { IBonus, IHideoutSlot } from "@spt/models/eft/common/tables/IBotBase";
@@ -49,7 +49,7 @@ export class ProfileFixerService {
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("PrimaryCloner") protected cloner: ICloner,
-        @inject("QuestHelper") protected questHelper: QuestHelper,
+        @inject("QuestRewardHelper") protected questRewardHelper: QuestRewardHelper,
     ) {
         this.coreConfig = this.configServer.getConfig(ConfigTypes.CORE);
         this.ragfairConfig = this.configServer.getConfig(ConfigTypes.RAGFAIR);
@@ -78,7 +78,7 @@ export class ProfileFixerService {
     /**
      * Resolve any dialogue attachments that were accidentally created using the player's equipment ID as
      * the stash root object ID
-     * @param fullProfile 
+     * @param fullProfile
      */
     public checkForAndFixDialogueAttachments(fullProfile: ISptProfile): void {
         for (const traderDialogues of Object.values(fullProfile.dialogues)) {
@@ -352,7 +352,10 @@ export class ProfileFixerService {
         productionUnlockReward: IQuestReward,
         questDetails: IQuest,
     ): void {
-        const matchingProductions = this.questHelper.getRewardProductionMatch(productionUnlockReward, questDetails);
+        const matchingProductions = this.questRewardHelper.getRewardProductionMatch(
+            productionUnlockReward,
+            questDetails,
+        );
         if (matchingProductions.length !== 1) {
             this.logger.error(
                 this.localisationService.getText("quest-unable_to_find_matching_hideout_production", {

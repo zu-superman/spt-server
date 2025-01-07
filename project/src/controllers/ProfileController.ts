@@ -3,6 +3,7 @@ import { DialogueHelper } from "@spt/helpers/DialogueHelper";
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { QuestHelper } from "@spt/helpers/QuestHelper";
+import { QuestRewardHelper } from "@spt/helpers/QuestRewardHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { ITemplateSide } from "@spt/models/eft/common/tables/IProfileTemplate";
@@ -55,6 +56,7 @@ export class ProfileController {
         @inject("TraderHelper") protected traderHelper: TraderHelper,
         @inject("DialogueHelper") protected dialogueHelper: DialogueHelper,
         @inject("QuestHelper") protected questHelper: QuestHelper,
+        @inject("QuestRewardHelper") protected questRewardHelper: QuestRewardHelper,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
     ) {}
 
@@ -405,7 +407,7 @@ export class ProfileController {
                 questFromDb.startedMessageText,
                 questFromDb.description,
             );
-            const itemRewards = this.questHelper.applyQuestReward(
+            const itemRewards = this.questRewardHelper.applyQuestReward(
                 profileDetails.characters.pmc,
                 quest.qid,
                 QuestStatus.Started,
