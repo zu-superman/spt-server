@@ -7,9 +7,6 @@ export interface IGlobals {
     LocationInfection: ILocationInfection;
     bot_presets: IBotPreset[];
     AudioSettings: IAudioSettings;
-    EnvironmentSettings: IEnvironmentSettings;
-    PlayerSettings: IPlayerSettings;
-    RadioBroadcastSettings: IRadioBroadcastSettings;
     BotWeaponScatterings: IBotWeaponScattering[];
     ItemPresets: Record<string, IPreset>;
 }
@@ -1395,6 +1392,7 @@ export interface IPathConfig {
     once: boolean;
     circle: boolean;
     circleCount: number;
+    skinType: string[];
 }
 
 export interface ISquadSettings {
@@ -1974,6 +1972,9 @@ export interface IBotPreset {
 
 export interface IAudioSettings {
     AudioGroupPresets: IAudioGroupPreset[];
+    EnvironmentSettings: IEnvironmentSettings;
+    PlayerSettings: IPlayerSettings;
+    RadioBroadcastSettings: IRadioBroadcastSettings;
 }
 
 export interface IAudioGroupPreset {
