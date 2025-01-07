@@ -659,8 +659,6 @@ export class LocationLifecycleService {
         pmcProfile.TaskConditionCounters = postRaidProfile.TaskConditionCounters;
         pmcProfile.SurvivorClass = postRaidProfile.SurvivorClass;
 
-        // DEBUG DONT FORGET TO REMOVE
-        postRaidProfile.Achievements["65140ab8ec10ff011f17cc10"] = this.timeUtil.getTimestamp();
         // MUST occur prior to profile achievements being overwritten by post-raid achievements
         this.processAchievementCustomisationRewards(fullProfile, postRaidProfile.Achievements);
 
