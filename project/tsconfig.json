@@ -2,7 +2,7 @@
     "compilerOptions": {
         "strict": true,
         "moduleDetection": "force",
-        "target": "es2022",
+        "target": "ESNext",
         "module": "Preserve",
         "resolveJsonModule": true,
         "allowJs": true,
