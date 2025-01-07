@@ -603,6 +603,11 @@ export class LocationLifecycleService {
         // Copy scav fence values to PMC profile
         pmcProfile.TradersInfo[Traders.FENCE] = scavProfile.TradersInfo[Traders.FENCE];
 
+        if (this.profileHasConditionCounters(scavProfile)) {
+            // Scav quest progress needs to be moved to pmc so player can see it in menu / hand them in
+            this.migrateScavQuestProgressToPmcProfile(scavProfile, pmcProfile);
+        }
+
         // Must occur after encyclopedia updated
         this.mergePmcAndScavEncyclopedias(scavProfile, pmcProfile);
 
@@ -1121,5 +1126,57 @@ export class LocationLifecycleService {
         const merged = extend(extend({}, primary.Encyclopedia), secondary.Encyclopedia);
         primary.Encyclopedia = merged;
         secondary.Encyclopedia = merged;
+    }
+
+    /**
+     * Does provided profile contain any condition counters
+     * @param profile Profile to check for condition counters
+     * @returns Profile has condition counters
+     */
+    protected profileHasConditionCounters(profile: IPmcData): boolean {
+        if (!profile.TaskConditionCounters) {
+            return false;
+        }
+
+        return Object.keys(profile.TaskConditionCounters).length > 0;
+    }
+
+    /**
+     * Scav quest progress isnt transferred automatically from scav to pmc, we do this manually
+     * @param scavProfile Scav profile with quest progress post-raid
+     * @param pmcProfile Server pmc profile to copy scav quest progress into
+     */
+    protected migrateScavQuestProgressToPmcProfile(scavProfile: IPmcData, pmcProfile: IPmcData): void {
+        for (const scavQuest of scavProfile.Quests) {
+            const pmcQuest = pmcProfile.Quests.find((quest) => quest.qid === scavQuest.qid);
+            if (!pmcQuest) {
+                this.logger.warning(
+                    this.localisationService.getText(
+                        "inraid-unable_to_migrate_pmc_quest_not_found_in_profile",
+                        scavQuest.qid,
+                    ),
+                );
+                continue;
+            }
+
+            // Get counters related to scav quest
+            const matchingCounters = Object.values(scavProfile.TaskConditionCounters).filter(
+                (counter) => counter.sourceId === scavQuest.qid,
+            );
+
+            if (!matchingCounters) {
+                continue;
+            }
+
+            // insert scav quest counters into pmc profile
+            for (const counter of matchingCounters) {
+                pmcProfile.TaskConditionCounters[counter.id] = counter;
+            }
+
+            // Find Matching PMC Quest
+            // Update Status and StatusTimer properties
+            pmcQuest.status = scavQuest.status;
+            pmcQuest.statusTimers = scavQuest.statusTimers;
+        }
     }
 }
