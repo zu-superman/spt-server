@@ -673,7 +673,7 @@ export class ProfileHelper {
         }
 
         const rewardToStore: ICustomisationStorage = {
-            id: hideoutCustomisationDb.id,
+            id: hideoutCustomisationDb.itemId,
             source: source,
             type: hideoutCustomisationDb.type,
         };
