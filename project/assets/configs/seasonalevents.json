@@ -8388,7 +8388,7 @@
             "type": "CHRISTMAS",
             "startDay": "2",
             "startMonth": "1",
-            "endDay": "7",
+            "endDay": "14",
             "endMonth": "1",
             "settings": {
                 "enableChristmasHideout": true,
