@@ -433,20 +433,19 @@ export class BotGenerator {
         appearance: IAppearance,
         botGenerationDetails: IBotGenerationDetails,
     ): void {
+        // Choose random values by weight
         bot.Customization.Head = this.weightedRandomHelper.getWeightedValue<string>(appearance.head);
-        bot.Customization.Body = this.weightedRandomHelper.getWeightedValue<string>(appearance.body);
         bot.Customization.Feet = this.weightedRandomHelper.getWeightedValue<string>(appearance.feet);
-        bot.Customization.Hands = this.weightedRandomHelper.getWeightedValue<string>(appearance.hands);
+        bot.Customization.Body = this.weightedRandomHelper.getWeightedValue<string>(appearance.body);
 
-        const bodyGlobalDict = this.databaseService.getGlobals().config.Customization.SavageBody;
+        const bodyGlobalDictDb = this.databaseService.getGlobals().config.Customization.SavageBody;
         const chosenBodyTemplate = this.databaseService.getCustomization()[bot.Customization.Body];
 
-        // Find the body/hands mapping
-        const matchingBody: IWildBody = bodyGlobalDict[chosenBodyTemplate?._name]?.[bot.Customization.Body];
-        if (matchingBody?.isNotRandom) {
-            // Has fixed hands for this body, set them
-            bot.Customization.Hands = matchingBody.hands;
-        }
+        // Some bodies have matching hands, look up body to see if this is the case
+        const chosenBody = bodyGlobalDictDb[chosenBodyTemplate?._name.trim()];
+        bot.Customization.Hands = chosenBody?.isNotRandom
+            ? chosenBody.hands // Has fixed hands for chosen body, update to match
+            : this.weightedRandomHelper.getWeightedValue<string>(appearance.hands); // Hands can be random, choose any from weighted dict
     }
 
     /**

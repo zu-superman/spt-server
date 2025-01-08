@@ -539,9 +539,9 @@ export interface IMastering {
 }
 
 export interface ICustomization {
-    SavageHead: Record<string, Record<string, IWildHead>>;
-    SavageBody: Record<string, Record<string, IWildBody>>;
-    SavageFeet: Record<string, Record<string, IWildFeet>>;
+    SavageHead: Record<string, IWildHead>;
+    SavageBody: Record<string, IWildBody>;
+    SavageFeet: Record<string, IWildFeet>;
     CustomizationVoice: ICustomizationVoice[];
     BodyParts: IBodyParts;
 }
