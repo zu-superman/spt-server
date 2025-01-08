@@ -1,11 +1,8 @@
 import { MinMax } from "@spt/models/common/MinMax";
 import { IBossLocationSpawn, IWave } from "@spt/models/eft/common/ILocationBase";
-import { ExitStatus } from "@spt/models/enums/ExitStatis";
 import { IBaseConfig } from "@spt/models/spt/config/IBaseConfig";
 
 export interface ILocationConfig extends IBaseConfig {
-    /** What state to force the raid to end as, e.g "Survived"/"Killed"/"Runner" */
-    forcedRaidEndState: ExitStatus;
     kind: "spt-location";
     /** Rogues are classified as bosses and spawn immediatly, this can result in no scavs spawning, delay rogues spawning to allow scavs to spawn first */
     rogueLighthouseSpawnTimeSettings: IRogueLighthouseSpawnTimeSettings;

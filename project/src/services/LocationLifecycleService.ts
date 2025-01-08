@@ -336,10 +336,6 @@ export class LocationLifecycleService {
         // Clear bot loot cache
         this.botLootCacheService.clearCache();
 
-        if (this.locationConfig.forcedRaidEndState !== null) {
-            request.results.result = this.locationConfig.forcedRaidEndState;
-        }
-
         const fullProfile = this.profileHelper.getFullProfile(sessionId);
         const pmcProfile = fullProfile.characters.pmc;
         const scavProfile = fullProfile.characters.scav;
