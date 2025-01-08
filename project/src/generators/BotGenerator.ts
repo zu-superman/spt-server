@@ -191,6 +191,7 @@ export class BotGenerator {
             botRoleLowercase,
             this.botConfig.botRolesThatMustHaveUniqueName,
         );
+        bot.Info.LowerNickname = bot.Info.Nickname.toLowerCase();
 
         // Only run when generating a 'fake' playerscav, not actual player scav
         if (!botGenerationDetails.isPlayerScav && this.shouldSimulatePlayerScav(botRoleLowercase)) {
