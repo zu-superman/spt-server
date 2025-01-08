@@ -784,7 +784,7 @@ export class QuestHelper {
                 continue;
             }
 
-            const statusesDict: Record<QuestStatus, number> = {};
+            const statusesDict = {} as Record<QuestStatus, number>;
             for (const status of statuses) {
                 statusesDict[status] = this.timeUtil.getTimestamp();
             }
@@ -1124,7 +1124,7 @@ export class QuestHelper {
                 }
             } else {
                 // Failing an entirely new quest that doesn't exist in profile
-                const statusTimers: Record<QuestStatus, number> = {};
+                const statusTimers = {} as Record<QuestStatus, number>;
                 statusTimers[QuestStatus.Fail] = this.timeUtil.getTimestamp();
                 const questData: IQuestStatus = {
                     qid: questToFail._id,
