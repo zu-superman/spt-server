@@ -429,7 +429,10 @@ export class LocationLootGenerator {
         const tplsToAddToContainer = tplsForced.concat(chosenTpls);
         for (const tplToAdd of tplsToAddToContainer) {
             const chosenItemWithChildren = this.createStaticLootItem(tplToAdd, staticAmmoDist, parentId);
-            const items = chosenItemWithChildren.items;
+
+            const items = this.locationConfig.tplsToStripChildItemsFrom.includes(tplToAdd)
+                ? [chosenItemWithChildren.items[0]] // Strip children from parent
+                : chosenItemWithChildren.items;
             const width = chosenItemWithChildren.width;
             const height = chosenItemWithChildren.height;
 
@@ -917,6 +920,11 @@ export class LocationLootGenerator {
 
             // Ensure all IDs are unique
             itemWithChildren = this.itemHelper.replaceIDs(itemWithChildren);
+
+            if (this.locationConfig.tplsToStripChildItemsFrom.includes(chosenItem._tpl)) {
+                // Strip children from parent before adding
+                itemWithChildren = [itemWithChildren[0]];
+            }
 
             itemWithMods.push(...itemWithChildren);
         }
