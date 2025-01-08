@@ -764,8 +764,8 @@
                 "max": 35
             },
             "cursedassault": {
-                "min": 15,
-                "max": 30
+                "min": 0,
+                "max": 0
             },
             "pmcbot": {
                 "min": 5,
