@@ -148,7 +148,7 @@ export class InventoryHelper {
             }
         } catch (err) {
             // Callback failed
-            const message =
+            const message: string =
                 typeof err?.message === "string" ? err.message : this.localisationService.getText("http-unknown_error");
 
             this.httpResponse.appendErrorToOutput(output, message);
@@ -267,7 +267,7 @@ export class InventoryHelper {
                     findSlotResult.rotation,
                 );
             } catch (err) {
-                const errorText = typeof err === "string" ? ` -> ${err}` : err.message;
+                const errorText: string = typeof err === "string" ? ` -> ${err}` : err.message;
                 this.logger.error(
                     this.localisationService.getText("inventory-unable_to_fit_item_into_inventory", errorText),
                 );
@@ -312,7 +312,7 @@ export class InventoryHelper {
                     findSlotResult.rotation,
                 );
             } catch (err) {
-                const errorText = typeof err === "string" ? ` -> ${err}` : err.message;
+                const errorText: string = typeof err === "string" ? ` -> ${err}` : err.message;
                 this.logger.error(this.localisationService.getText("inventory-fill_container_failed", errorText));
 
                 return;

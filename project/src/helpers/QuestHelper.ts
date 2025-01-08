@@ -6,7 +6,7 @@ import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Common, IQuestStatus } from "@spt/models/eft/common/tables/IBotBase";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
-import { IQuest, IQuestCondition } from "@spt/models/eft/common/tables/IQuest";
+import { IQuest, IQuestCondition, IQuestReward } from "@spt/models/eft/common/tables/IQuest";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
 import { IAcceptQuestRequestData } from "@spt/models/eft/quests/IAcceptQuestRequestData";
 import { ICompleteQuestRequestData } from "@spt/models/eft/quests/ICompleteQuestRequestData";
@@ -106,7 +106,7 @@ export class QuestHelper {
      * @returns Reduction of cartesian product between two quest arrays
      */
     public getDeltaQuests(before: IQuest[], after: IQuest[]): IQuest[] {
-        const knownQuestsIds = [];
+        const knownQuestsIds: string[] = [];
         for (const q of before) {
             knownQuestsIds.push(q._id);
         }
@@ -784,7 +784,7 @@ export class QuestHelper {
                 continue;
             }
 
-            const statusesDict = {};
+            const statusesDict: Record<QuestStatus, number> = {};
             for (const status of statuses) {
                 statusesDict[status] = this.timeUtil.getTimestamp();
             }
@@ -798,7 +798,8 @@ export class QuestHelper {
                 availableAfter: 0,
             };
 
-            if (pmcProfile.Quests.some((x) => x.qid === questIdKey)) {
+            // Does quest already exist in profile
+            if (pmcProfile.Quests.some((questStatus) => questStatus.qid === questIdKey)) {
                 // Update existing
                 const existingQuest = pmcProfile.Quests.find((x) => x.qid === questIdKey);
                 existingQuest.status = questRecordToAdd.status;
@@ -1056,7 +1057,7 @@ export class QuestHelper {
         for (const quest of modifiedQuests) {
             // Remove any reward that doesn't pass the game edition check
             for (const rewardType of Object.keys(quest.rewards)) {
-                quest.rewards[rewardType] = quest.rewards[rewardType].filter((reward) =>
+                quest.rewards[rewardType] = quest.rewards[rewardType].filter((reward: IQuestReward) =>
                     this.questRewardHelper.questRewardIsForGameEdition(reward, gameVersion),
                 );
             }
@@ -1122,8 +1123,8 @@ export class QuestHelper {
                     this.failQuest(pmcData, failBody, sessionID, output);
                 }
             } else {
-                // Failing an entirely new quest that doesnt exist in profile
-                const statusTimers = {};
+                // Failing an entirely new quest that doesn't exist in profile
+                const statusTimers: Record<QuestStatus, number> = {};
                 statusTimers[QuestStatus.Fail] = this.timeUtil.getTimestamp();
                 const questData: IQuestStatus = {
                     qid: questToFail._id,

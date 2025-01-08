@@ -628,7 +628,7 @@ export class ProfileHelper {
      * @returns An array of IItem objects representing the favorited data
      */
     public getOtherProfileFavorites(profile: IPmcData): IItem[] {
-        let fullFavorites = [];
+        let fullFavorites: IItem[] = [];
 
         for (const itemId of profile.Inventory.favoriteItems ?? []) {
             // When viewing another users profile, the client expects a full item with children, so get that
