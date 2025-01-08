@@ -51,7 +51,7 @@ export class HealthController {
         if (!healingItemToUse) {
             const errorMessage = this.localisationService.getText(
                 "health-healing_item_not_found",
-                healingItemToUse._id,
+                request.item,
             );
             this.logger.error(errorMessage);
 
