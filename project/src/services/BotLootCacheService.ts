@@ -126,7 +126,7 @@ export class BotLootCacheService {
                 return false;
             });
 
-            return this.cloner.clone(Object.fromEntries(filteredResult));
+            return this.cloner.clone(Object.fromEntries(filteredResult) as Record<string, number>);
         }
 
         return this.cloner.clone(result);

@@ -442,7 +442,7 @@ export class BotGenerator {
         const chosenBodyTemplate = this.databaseService.getCustomization()[bot.Customization.Body];
 
         // Find the body/hands mapping
-        const matchingBody: IWildBody = bodyGlobalDict[chosenBodyTemplate?._name];
+        const matchingBody: IWildBody = bodyGlobalDict[chosenBodyTemplate?._name]?.[bot.Customization.Body];
         if (matchingBody?.isNotRandom) {
             // Has fixed hands for this body, set them
             bot.Customization.Hands = matchingBody.hands;

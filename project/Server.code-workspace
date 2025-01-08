@@ -30,11 +30,10 @@
             {
                 "name": "Debug",
                 "type": "node",
-                "program": "${workspaceFolder}/src/entry/run.ts",
                 "runtimeVersion": "22.12.0",
-                "runtimeExecutable": "tsx",
+                "runtimeExecutable": "npm",
                 "request": "launch",
-                "runtimeArgs": ["watch", "--clear-screen=false"],
+                "runtimeArgs": ["run", "run:debug"],
                 "console": "integratedTerminal",
                 "internalConsoleOptions": "neverOpen",
                 "skipFiles": ["<node_internals>/**", "${workspaceFolder}/node_modules/**"]
