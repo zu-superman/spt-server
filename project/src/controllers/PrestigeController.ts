@@ -58,5 +58,6 @@ export class PrestigeController {
         // Take items passed in from request and add to inventory
         // Set prestige level in profile
         // Update dogtags to prestige type
+        // Iterate over prestige.json rewards and add to profile
     }
 }
