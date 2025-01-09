@@ -4,6 +4,7 @@ import { PresetHelper } from "@spt/helpers/PresetHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
+import { CustomisationSource } from "@spt/models/eft/common/tables/ICustomisationStorage";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IQuest, IQuestReward } from "@spt/models/eft/common/tables/IQuest";
 import { IHideoutProduction } from "@spt/models/eft/hideout/IHideoutProduction";
@@ -131,7 +132,11 @@ export class QuestRewardHelper {
                     this.profileHelper.replaceProfilePocketTpl(pmcProfile, reward.target);
                     break;
                 case QuestRewardType.CUSTOMIZATION_DIRECT:
-                    this.profileHelper.addHideoutCustomisationUnlock(fullProfile, reward, "unlockedInGame");
+                    this.profileHelper.addHideoutCustomisationUnlock(
+                        fullProfile,
+                        reward,
+                        CustomisationSource.UNLOCKED_IN_GAME,
+                    );
                     break;
                 default:
                     this.logger.error(

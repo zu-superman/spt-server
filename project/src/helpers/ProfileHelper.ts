@@ -1,7 +1,11 @@
 import { ItemHelper } from "@spt/helpers/ItemHelper";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { BanType, Common, ICounterKeyValue, IStats } from "@spt/models/eft/common/tables/IBotBase";
-import { ICustomisationStorage } from "@spt/models/eft/common/tables/ICustomisationStorage";
+import {
+    CustomisationSource,
+    CustomisationType,
+    ICustomisationStorage,
+} from "@spt/models/eft/common/tables/ICustomisationStorage";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
 import { IQuestReward } from "@spt/models/eft/common/tables/IQuest";
 import { ISearchFriendResponse } from "@spt/models/eft/profile/ISearchFriendResponse";
@@ -582,8 +586,8 @@ export class ProfileHelper {
         // Reward found, add to profile
         fullProfile.customisationUnlocks.push({
             id: customizationDirectReward.target,
-            source: "achievement",
-            type: customisationDataDb.type,
+            source: CustomisationSource.ACHIEVEMENT,
+            type: customisationDataDb.type as CustomisationType,
         });
     }
 
@@ -651,33 +655,75 @@ export class ProfileHelper {
      * @param reward reward given to player with customisation data
      * @param source Source of reward, e.g. "unlockedInGame" for quests and "achievement" for achievements
      */
-    public addHideoutCustomisationUnlock(fullProfile: ISptProfile, reward: IQuestReward, source: string): void {
-        // Get matching db data for reward
-        const hideoutCustomisationDb = this.databaseService
-            .getHideout()
-            .customisation.globals.find((customisation) => customisation.itemId === reward.target);
-        if (!hideoutCustomisationDb) {
-            this.logger.warning(
-                `Unable to add hideout customisaiton reward: ${reward.target} to profile: ${fullProfile.info.id} as matching object cannot be found in hideout/customisation.json`,
-            );
-
-            return;
-        }
-
+    public addHideoutCustomisationUnlock(
+        fullProfile: ISptProfile,
+        reward: IQuestReward,
+        source: CustomisationSource,
+    ): void {
         fullProfile.customisationUnlocks ||= [];
-        if (fullProfile.customisationUnlocks?.some((unlock) => unlock.id === hideoutCustomisationDb.id)) {
+        if (fullProfile.customisationUnlocks?.some((unlock) => unlock.id === reward.target)) {
             this.logger.warning(
                 `Profile: ${fullProfile.info.id} already has hideout customisaiton reward: ${reward.target}, skipping`,
             );
             return;
         }
 
-        const rewardToStore: ICustomisationStorage = {
-            id: hideoutCustomisationDb.itemId,
-            source: source,
-            type: hideoutCustomisationDb.type,
-        };
+        const customisationTemplateDb = this.databaseService.getTemplates().customization;
+        const matchingCustomisation = customisationTemplateDb[reward.target];
 
-        fullProfile.customisationUnlocks.push(rewardToStore);
+        if (matchingCustomisation) {
+            const rewardToStore: ICustomisationStorage = {
+                id: reward.target,
+                source: source,
+                type: null,
+            };
+            switch (matchingCustomisation._parent) {
+                case "675ff48ce8d2356707079617": {
+                    // MannequinPose
+                    rewardToStore.type = CustomisationType.MANNEQUIN_POSE;
+                    break;
+                }
+                case "6751848eba5968fd800a01d6": {
+                    // Gestures
+                    rewardToStore.type = CustomisationType.GESTURE;
+                    break;
+                }
+                case "67373f170eca6e03ab0d5391": {
+                    // Floor
+                    rewardToStore.type = CustomisationType.FLOOR;
+                    break;
+                }
+                case "6746fafabafff8500804880e": {
+                    // DogTags
+                    rewardToStore.type = CustomisationType.DOG_TAG;
+                    break;
+                }
+                case "673b3f595bf6b605c90fcdc2": {
+                    // Ceiling
+                    rewardToStore.type = CustomisationType.CEILING;
+                    break;
+                }
+                case "67373f1e5a5ee73f2a081baf": {
+                    // Wall
+                    rewardToStore.type = CustomisationType.WALL;
+                    break;
+                }
+                default:
+                    this.logger.error(
+                        `Unhandled customisation unlock type: ${matchingCustomisation._parent} not added to profile`,
+                    );
+                    return;
+            }
+
+            fullProfile.customisationUnlocks.push(rewardToStore);
+        }
+
+        // const rewardToStore: ICustomisationStorage = {
+        //     id: matchingHideoutCustomisation.itemId,
+        //     source: source,
+        //     type: matchingHideoutCustomisation.type as CustomisationType,
+        // };
+
+        // fullProfile.customisationUnlocks.push(rewardToStore);
     }
 }

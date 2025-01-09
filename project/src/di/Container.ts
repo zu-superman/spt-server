@@ -209,6 +209,7 @@ import { BotLootCacheService } from "@spt/services/BotLootCacheService";
 import { BotNameService } from "@spt/services/BotNameService";
 import { BotWeaponModLimitService } from "@spt/services/BotWeaponModLimitService";
 import { CircleOfCultistService } from "@spt/services/CircleOfCultistService";
+import { CreateProfileService } from "@spt/services/CreateProfileService";
 import { CustomLocationWaveService } from "@spt/services/CustomLocationWaveService";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { FenceService } from "@spt/services/FenceService";
@@ -818,6 +819,9 @@ export class Container {
             lifecycle: Lifecycle.Singleton,
         });
         depContainer.register<PostDbLoadService>("PostDbLoadService", PostDbLoadService, {
+            lifecycle: Lifecycle.Singleton,
+        });
+        depContainer.register<CreateProfileService>("CreateProfileService", CreateProfileService, {
             lifecycle: Lifecycle.Singleton,
         });
     }

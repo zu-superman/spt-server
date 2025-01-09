@@ -1,7 +1,7 @@
 import type { IQuestCondition, IQuestReward } from "./IQuest";
 
 export interface IPrestige {
-    elements: IPretigeElement;
+    elements: IPretigeElement[];
 }
 
 export interface IPretigeElement {

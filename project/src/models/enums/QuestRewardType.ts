@@ -12,4 +12,6 @@ export enum QuestRewardType {
     ACHIEVEMENT = "Achievement",
     POCKETS = "Pockets",
     CUSTOMIZATION_DIRECT = "CustomizationDirect",
+    CUSTOMIZATION_OFFER = "CustomizationOffer",
+    EXTRA_DAILY_QUEST = "ExtraDailyQuest",
 }
