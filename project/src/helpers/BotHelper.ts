@@ -7,7 +7,6 @@ import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { RandomUtil } from "@spt/utils/RandomUtil";
-import { max } from "date-fns";
 import { inject, injectable } from "tsyringe";
 
 @injectable()

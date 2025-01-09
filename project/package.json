@@ -36,8 +36,6 @@
     },
     "dependencies": {
         "atomically": "2.0.3",
-        "date-fns": "~3.6",
-        "date-fns-tz": "~3.1",
         "fs-extra": "11.2.0",
         "i18n": "~0.15",
         "json5": "~2.2",
