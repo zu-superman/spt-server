@@ -1,3 +1,4 @@
+import { ProgramStatics } from "@spt/ProgramStatics";
 import { RagfairAssortGenerator } from "@spt/generators/RagfairAssortGenerator";
 import { BotHelper } from "@spt/helpers/BotHelper";
 import { HandbookHelper } from "@spt/helpers/HandbookHelper";
@@ -386,9 +387,13 @@ export class RagfairOfferGenerator {
 
         // Get number of offers to create
         // Limit to 1 offer when processing expired - like-for-like replacement
-        const offerCount = isExpiredOffer
+        let offerCount = isExpiredOffer
             ? 1
             : Math.round(this.randomUtil.getInt(config.offerItemCount.min, config.offerItemCount.max));
+
+        if (ProgramStatics.DEBUG && !ProgramStatics.COMPILED) {
+            offerCount = 2;
+        }
 
         // Store all functions to create offers for this item and pass into Promise.all to run async
         const assortSingleOfferProcesses = [];
