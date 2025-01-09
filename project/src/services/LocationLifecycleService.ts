@@ -11,6 +11,7 @@ import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
 import { Common, IQuestStatus, ITraderInfo } from "@spt/models/eft/common/tables/IBotBase";
+import { CustomisationSource } from "@spt/models/eft/common/tables/ICustomisationStorage";
 import { IItem } from "@spt/models/eft/common/tables/IItem";
 import {
     IEndLocalRaidRequestData,
@@ -762,7 +763,7 @@ export class LocationLifecycleService {
 
         // Insert customisations into profile
         for (const reward of customisationRewards) {
-            this.profileHelper.addHideoutCustomisationUnlock(fullProfile, reward, "achievement");
+            this.profileHelper.addHideoutCustomisationUnlock(fullProfile, reward, CustomisationSource.ACHIEVEMENT);
         }
     }
 

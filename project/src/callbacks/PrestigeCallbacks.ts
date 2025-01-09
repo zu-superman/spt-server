@@ -22,7 +22,7 @@ export class PrestigeCallbacks {
     }
 
     /** Handle client/prestige/obtain */
-    public obtainPrestige(url: string, info: IObtainPrestigeRequest, sessionID: string): INullResponseData {
+    public obtainPrestige(url: string, info: IObtainPrestigeRequest[], sessionID: string): INullResponseData {
         this.prestigeController.obtainPrestige(sessionID, info);
 
         return this.httpResponse.nullResponse();
