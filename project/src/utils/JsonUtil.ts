@@ -1,10 +1,10 @@
 import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { FileSystemSync } from "@spt/utils/FileSystemSync";
 import { HashUtil } from "@spt/utils/HashUtil";
-import fixJson from "json-fixer";
 import { parse, stringify } from "json5";
 import { jsonc } from "jsonc";
 import { IParseOptions, IStringifyOptions, Reviver } from "jsonc/lib/interfaces";
+import { jsonrepair } from "jsonrepair";
 import { inject, injectable } from "tsyringe";
 
 @injectable()
@@ -153,10 +153,13 @@ export class JsonUtil {
         let savedHash = this.fileHashes[filePath];
         if (!savedHash || savedHash !== generatedHash) {
             try {
-                const { data, changed } = fixJson(jsonString);
+                const fixedJsonString = jsonrepair(jsonString);
+                const data = this.deserialize<T>(fixedJsonString);
+                const changed = jsonString !== fixedJsonString;
+
                 if (changed) {
                     // data invalid, return it
-                    this.logger.error(`${filePath} - Detected faulty json, please fix your json file using VSCodium`);
+                    this.logger.error(`${filePath} - Detected faulty JSON, please fix using a validator`);
                 } else {
                     // data valid, save hash and call function again
                     this.fileHashes[filePath] = generatedHash;
