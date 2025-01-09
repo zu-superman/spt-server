@@ -1,3 +1,4 @@
+import path from "node:path";
 import { ProgramStatics } from "@spt/ProgramStatics";
 import { OnLoad } from "@spt/di/OnLoad";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
@@ -71,17 +72,7 @@ export class DatabaseImporter implements OnLoad {
         await this.hydrateDatabase(this.filepath);
 
         const imageFilePath = `${this.filepath}images/`;
-        const directories = await this.fileSystem.getDirectories(imageFilePath);
-        await this.loadImagesAsync(imageFilePath, directories, [
-            "/files/achievement/",
-            "/files/CONTENT/banners/",
-            "/files/handbook/",
-            "/files/Hideout/",
-            "/files/launcher/",
-            "/files/prestige/",
-            "/files/quest/icon/",
-            "/files/trader/avatar/",
-        ]);
+        await this.createRouteMappingAsync(imageFilePath, "files");
     }
 
     /**
@@ -139,6 +130,7 @@ export class DatabaseImporter implements OnLoad {
     }
 
     /**
+     * @deprecated
      * Find and map files with image router inside a designated path
      * @param filepath Path to find files in
      */
@@ -164,6 +156,21 @@ export class DatabaseImporter implements OnLoad {
 
         // Map icon file separately
         this.imageRouter.addRoute("/favicon.ico", `${filepath}icon.ico`);
+    }
+
+    /**
+     * Add routes into imageRouter
+     * @param directory Directory with files to add to router
+     * @param newBasePath new starting path
+     */
+    public async createRouteMappingAsync(directory: string, newBasePath: string): Promise<void> {
+        const directoryContent = await this.fileSystem.getFiles(directory, true);
+
+        for (const fileNameWithPath of directoryContent) {
+            const bsgPath = `/${newBasePath}/${FileSystem.stripExtension(fileNameWithPath)}`;
+            const sptPath = `${directory}${fileNameWithPath}`;
+            this.imageRouter.addRoute(bsgPath, sptPath);
+        }
     }
 
     /**
