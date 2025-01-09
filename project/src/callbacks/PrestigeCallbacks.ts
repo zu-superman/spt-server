@@ -3,6 +3,8 @@ import { HttpServerHelper } from "@spt/helpers/HttpServerHelper";
 import type { IEmptyRequestData } from "@spt/models/eft/common/IEmptyRequestData";
 import { IPrestige } from "@spt/models/eft/common/tables/IPrestige";
 import type { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
+import { INullResponseData } from "@spt/models/eft/httpResponse/INullResponseData";
+import { IObtainPrestigeRequest } from "@spt/models/eft/prestige/IObtainPrestigeRequest";
 import { HttpResponseUtil } from "@spt/utils/HttpResponseUtil";
 import { inject, injectable } from "tsyringe";
 
@@ -20,7 +22,9 @@ export class PrestigeCallbacks {
     }
 
     /** Handle client/prestige/obtain */
-    public obtainPrestige(url: string, info: IEmptyRequestData, sessionID: string): IGetBodyResponseData<any> {
-        return this.httpResponse.getBody(this.prestigeController.obtainPrestige(sessionID, info));
+    public obtainPrestige(url: string, info: IObtainPrestigeRequest, sessionID: string): INullResponseData {
+        this.prestigeController.obtainPrestige(sessionID, info);
+
+        return this.httpResponse.nullResponse();
     }
 }

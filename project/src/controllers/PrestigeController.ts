@@ -5,6 +5,7 @@ import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { QuestHelper } from "@spt/helpers/QuestHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { IPrestige } from "@spt/models/eft/common/tables/IPrestige";
+import { IObtainPrestigeRequest } from "@spt/models/eft/prestige/IObtainPrestigeRequest";
 import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { SaveServer } from "@spt/servers/SaveServer";
@@ -51,7 +52,11 @@ export class PrestigeController {
     /**
      * Handle /client/prestige/obtain
      */
-    public obtainPrestige(sessionID: string, info: IEmptyRequestData): any {
-        throw new Error("Method not implemented.");
+    public obtainPrestige(sessionID: string, request: IObtainPrestigeRequest): void {
+        // TODO
+        // Reset profile back to default from template
+        // Take items passed in from request and add to inventory
+        // Set prestige level in profile
+        // Update dogtags to prestige type
     }
 }
