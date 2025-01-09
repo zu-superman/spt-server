@@ -1,4 +1,5 @@
 import { IncomingMessage, ServerResponse } from "node:http";
+import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ImageRouteService } from "@spt/services/mod/image/ImageRouteService";
 import { FileSystemSync } from "@spt/utils/FileSystemSync";
 import { HttpFileUtil } from "@spt/utils/HttpFileUtil";
@@ -7,6 +8,7 @@ import { inject, injectable } from "tsyringe";
 @injectable()
 export class ImageRouter {
     constructor(
+        @inject("PrimaryLogger") protected logger: ILogger,
         @inject("ImageRouteService") protected imageRouteService: ImageRouteService,
         @inject("HttpFileUtil") protected httpFileUtil: HttpFileUtil,
     ) {}
@@ -22,6 +24,8 @@ export class ImageRouter {
         // send image
         if (this.imageRouteService.existsByKey(url)) {
             await this.httpFileUtil.sendFileAsync(resp, this.imageRouteService.getByKey(url));
+        } else {
+            this.logger.error(`File not found: ${url}`);
         }
     }
 
