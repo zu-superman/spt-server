@@ -10,11 +10,10 @@ import { IQuest } from "@spt/models/eft/common/tables/IQuest";
 import { IReward } from "@spt/models/eft/common/tables/IReward";
 import { IHideoutProduction } from "@spt/models/eft/hideout/IHideoutProduction";
 import { IItemEventRouterResponse } from "@spt/models/eft/itemEvent/IItemEventRouterResponse";
-import { RewardType } from "@spt/models/enums/RewardType";
 import { QuestStatus } from "@spt/models/enums/QuestStatus";
+import { RewardType } from "@spt/models/enums/RewardType";
 import { SkillTypes } from "@spt/models/enums/SkillTypes";
 import type { ILogger } from "@spt/models/spt/utils/ILogger";
-import { EventOutputHolder } from "@spt/routers/EventOutputHolder";
 import { DatabaseService } from "@spt/services/DatabaseService";
 import { LocalisationService } from "@spt/services/LocalisationService";
 import { HashUtil } from "@spt/utils/HashUtil";
@@ -28,7 +27,6 @@ export class QuestRewardHelper {
         @inject("HashUtil") protected hashUtil: HashUtil,
         @inject("ItemHelper") protected itemHelper: ItemHelper,
         @inject("DatabaseService") protected databaseService: DatabaseService,
-        @inject("EventOutputHolder") protected eventOutputHolder: EventOutputHolder,
         @inject("ProfileHelper") protected profileHelper: ProfileHelper,
         @inject("PaymentHelper") protected paymentHelper: PaymentHelper,
         @inject("LocalisationService") protected localisationService: LocalisationService,
@@ -160,7 +158,7 @@ export class QuestRewardHelper {
      * @param gameVersion Version of game to check reward against
      * @returns True if it has requirement, false if it doesnt pass check
      */
-    public questRewardIsForGameEdition(reward: IReward, gameVersion: string) {
+    public questRewardIsForGameEdition(reward: IReward, gameVersion: string): boolean {
         if (reward.availableInGameEditions?.length > 0 && !reward.availableInGameEditions?.includes(gameVersion)) {
             // Reward has edition whitelist and game version isnt in it
             return false;
