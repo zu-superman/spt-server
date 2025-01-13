@@ -1,7 +1,6 @@
 import { CustomizationCallbacks } from "@spt/callbacks/CustomizationCallbacks";
 import { RouteAction, StaticRouter } from "@spt/di/Router";
 import { ICustomisationStorage } from "@spt/models/eft/common/tables/ICustomisationStorage";
-import { IGetSuitsResponse } from "@spt/models/eft/customization/IGetSuitsResponse";
 import { IHideoutCustomisation } from "@spt/models/eft/hideout/IHideoutCustomisation";
 import { IGetBodyResponseData } from "@spt/models/eft/httpResponse/IGetBodyResponseData";
 import { inject, injectable } from "tsyringe";
