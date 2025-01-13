@@ -17,8 +17,8 @@ export class CustomizationStaticRouter extends StaticRouter {
                     info: any,
                     sessionID: string,
                     output: string,
-                ): Promise<IGetBodyResponseData<IGetSuitsResponse>> => {
-                    return this.customizationCallbacks.getSuits(url, info, sessionID);
+                ): Promise<IGetBodyResponseData<ICustomisationStorage[]>> => {
+                    return this.customizationCallbacks.getCustomisationUnlocks(url, info, sessionID);
                 },
             ),
             new RouteAction(
