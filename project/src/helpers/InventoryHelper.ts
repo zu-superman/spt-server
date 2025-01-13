@@ -1162,7 +1162,7 @@ export class InventoryHelper {
         return isParentInStash(itemToCheck._id);
     }
 
-    public validateInventoryUsesMonogoIds(itemsToValidate: IItem[]) {
+    public validateInventoryUsesMongoIds(itemsToValidate: IItem[]) {
         for (const item of itemsToValidate) {
             if (!this.hashUtil.isValidMongoId(item._id)) {
                 throw new Error(
