@@ -237,14 +237,14 @@ export class BotEquipmentModGenerator {
      * Filter a bots plate pool based on its current level
      * @param settings Bot equipment generation settings
      * @param modSlot Armor slot being filtered
-     * @param existingPlateTplPool Plates tpls to choose from
+     * @param compatiblePlateTplPool Compatible plate tpl pool to choose from
      * @param armorItem The armor items db template
      * @returns Array of plate tpls to choose from
      */
     protected filterPlateModsForSlotByLevel(
         settings: IGenerateEquipmentProperties,
         modSlot: string,
-        existingPlateTplPool: string[],
+        compatiblePlateTplPool: string[],
         armorItem: ITemplateItem,
     ): IFilterPlateModsForSlotByLevelResult {
         const result: IFilterPlateModsForSlotByLevelResult = {
@@ -255,7 +255,7 @@ export class BotEquipmentModGenerator {
         // Not pmc or not a plate slot, return original mod pool array
         if (!this.itemHelper.isRemovablePlateSlot(modSlot)) {
             result.result = Result.NOT_PLATE_HOLDING_SLOT;
-            result.plateModTpls = existingPlateTplPool;
+            result.plateModTpls = compatiblePlateTplPool;
 
             return result;
         }
@@ -269,7 +269,7 @@ export class BotEquipmentModGenerator {
         if (!plateSlotWeights) {
             // No weights, return original array of plate tpls
             result.result = Result.LACKS_PLATE_WEIGHTS;
-            result.plateModTpls = existingPlateTplPool;
+            result.plateModTpls = compatiblePlateTplPool;
 
             return result;
         }
@@ -279,7 +279,7 @@ export class BotEquipmentModGenerator {
         if (!plateWeights) {
             // No weights, return original array of plate tpls
             result.result = Result.LACKS_PLATE_WEIGHTS;
-            result.plateModTpls = existingPlateTplPool;
+            result.plateModTpls = compatiblePlateTplPool;
 
             return result;
         }
@@ -288,70 +288,73 @@ export class BotEquipmentModGenerator {
         let chosenArmorPlateLevel = this.weightedRandomHelper.getWeightedValue<string>(plateWeights);
 
         // Convert the array of ids into database items
-        const platesFromDb = existingPlateTplPool.map((plateTpl) => this.itemHelper.getItem(plateTpl)[1]);
+        const platesFromDb = compatiblePlateTplPool.map((plateTpl) => this.itemHelper.getItem(plateTpl)[1]);
 
         // Filter plates to the chosen level based on its armorClass property
         let platesOfDesiredLevel = platesFromDb.filter((item) => item._props.armorClass === chosenArmorPlateLevel);
-        if (platesOfDesiredLevel.length === 0) {
-            // Get lowest and highest plate classes available for this armor
-            const minMaxArmorPlateClass = this.getMinMaxArmorPlateClass(platesFromDb);
+        if (platesOfDesiredLevel.length > 0) {
+            // Plates found
+            result.result = Result.SUCCESS;
+            result.plateModTpls = platesOfDesiredLevel.map((item) => item._id);
 
-            let fitPlateIntoArmorAttempts = 0;
-            const maxTries = 3;
+            return result;
+        }
 
-            // Attempt to increase plate class level to attempt getting minimum plate level useable based on original selection
-            for (let i = 0; i < maxTries; i++) {
-                chosenArmorPlateLevel = (Number.parseInt(chosenArmorPlateLevel) + 1).toString();
+        // no plates found that fit requirements, lets get creative
 
-                // If new chosen plate class is higher than max, then set to min and check if valid
-                if (Number(chosenArmorPlateLevel) > minMaxArmorPlateClass.max) {
-                    chosenArmorPlateLevel = minMaxArmorPlateClass.min.toString();
-                }
+        // Get lowest and highest plate classes available for this armor
+        const minMaxArmorPlateClass = this.getMinMaxArmorPlateClass(platesFromDb);
 
-                platesOfDesiredLevel = platesFromDb.filter((item) => item._props.armorClass === chosenArmorPlateLevel);
+        // Increment plate class level in attempt to get useable plate
+        let findCompatiblePlateAttempts = 0;
+        const maxAttempts = 3;
+        for (let i = 0; i < maxAttempts; i++) {
+            chosenArmorPlateLevel = (Number.parseInt(chosenArmorPlateLevel) + 1).toString();
 
-                fitPlateIntoArmorAttempts++;
-                // Break loop if valid plate class is found
-                if (platesOfDesiredLevel.length > 0) {
-                    break;
-                }
+            // New chosen plate class is higher than max, then set to min and check if valid
+            if (Number(chosenArmorPlateLevel) > minMaxArmorPlateClass.max) {
+                chosenArmorPlateLevel = minMaxArmorPlateClass.min.toString();
+            }
 
-                // If no valid plate class is found in 3 tries then attempt default plates
-                if (fitPlateIntoArmorAttempts >= maxTries) {
-                    this.logger.debug(
-                        `Plate filter was too restrictive for armor: ${armorItem._name} ${armorItem._id}, unable to find plates of level: ${chosenArmorPlateLevel}. Using mod items default plate`,
-                    );
-                    const relatedItemDbModSlot = armorItem._props.Slots.find(
-                        (slot) => slot._name.toLowerCase() === modSlot,
-                    );
-                    const defaultPlate = relatedItemDbModSlot._props.filters[0].Plate;
-                    if (!defaultPlate) {
-                        // No relevant plate found after filtering AND no default plate
+            findCompatiblePlateAttempts++;
 
-                        // Last attempt, get default preset and see if it has a plate default
-                        const defaultPreset = this.presetHelper.getDefaultPreset(armorItem._id);
-                        if (defaultPreset) {
-                            const relatedPresetSlot = defaultPreset._items.find(
-                                (item) => item.slotId?.toLowerCase() === modSlot,
-                            );
-                            if (relatedPresetSlot) {
-                                result.result = Result.SUCCESS;
-                                result.plateModTpls = [relatedPresetSlot._tpl];
+            platesOfDesiredLevel = platesFromDb.filter((item) => item._props.armorClass === chosenArmorPlateLevel);
+            // Valid plates found, exit
+            if (platesOfDesiredLevel.length > 0) {
+                break;
+            }
 
-                                return result;
-                            }
-                        }
-                        // Return Default Preset cause didn't have default plates
-                        result.result = Result.NO_DEFAULT_FILTER;
+            // No valid plate class found in 3 tries, attempt default plates
+            if (findCompatiblePlateAttempts >= maxAttempts) {
+                this.logger.debug(
+                    `Plate filter too restrictive for armor: ${armorItem._name} ${armorItem._id}, unable to find plates of level: ${chosenArmorPlateLevel}, using items default plate`,
+                );
 
-                        return result;
-                    }
+                const defaultPlate = this.getDefaultPlateTpl(armorItem, modSlot);
+                if (defaultPlate) {
                     // Return Default Plates cause couldn't get lowest level available from original selection
                     result.result = Result.SUCCESS;
                     result.plateModTpls = [defaultPlate];
 
                     return result;
                 }
+
+                // No plate found after filtering AND no default plate
+
+                // Last attempt, get default preset and see if it has a plate default
+                const defaultPresetPlateSlot = this.getDefaultPresetArmorSlot(armorItem._id, modSlot);
+                if (defaultPresetPlateSlot) {
+                    // Found a plate, exit
+                    const plateItem = this.itemHelper.getItem(defaultPresetPlateSlot._tpl);
+                    platesOfDesiredLevel = [plateItem[1]];
+
+                    break;
+                }
+
+                // Everything failed, no default plate or no default preset armor plate
+                result.result = Result.NO_DEFAULT_FILTER;
+
+                return result;
             }
         }
 
@@ -360,6 +363,32 @@ export class BotEquipmentModGenerator {
         result.plateModTpls = platesOfDesiredLevel.map((item) => item._id);
 
         return result;
+    }
+
+    /**
+     * Get the default plate an armor has in its db item
+     * @param armorItem Item to look up default plate
+     * @param modSlot front/back
+     * @returns Tpl of plate
+     */
+    protected getDefaultPlateTpl(armorItem: ITemplateItem, modSlot: string): string | undefined {
+        const relatedItemDbModSlot = armorItem._props.Slots?.find(
+            (slot: { _name: string }) => slot._name.toLowerCase() === modSlot,
+        );
+
+        return relatedItemDbModSlot?._props.filters[0].Plate;
+    }
+
+    /**
+     * Get the matching armor slot from the default preset matching passed in armor tpl
+     * @param presetItemId Id of preset
+     * @param modSlot front/back
+     * @returns Armor IItem
+     */
+    protected getDefaultPresetArmorSlot(armorItemTpl: string, modSlot: string): IItem | undefined {
+        const defaultPreset = this.presetHelper.getDefaultPreset(armorItemTpl);
+
+        return defaultPreset?._items.find((item) => item.slotId?.toLowerCase() === modSlot);
     }
 
     /**
