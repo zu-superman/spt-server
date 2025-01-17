@@ -88,6 +88,7 @@ export class PrestigeController {
         }
 
         // Skill copy
+        // TODO - Find what skills should be prestiged over
         const commonSKillsToCopy = prePrestigePmc.Skills.Common;
         for (const skillToCopy of commonSKillsToCopy) {
             // Set progress to max level 20
