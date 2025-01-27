@@ -78,6 +78,7 @@ export class SeasonalEventService {
             ItemTpl.ARMOR_6B13_M_ASSAULT_ARMOR_CHRISTMAS_EDITION,
             ItemTpl.HEADWEAR_HAT_WITH_HORNS,
             ItemTpl.BARTER_JAR_OF_PICKLES,
+            ItemTpl.BARTER_OLIVIER_SALAD_BOX,
         ];
     }
 
