@@ -72,12 +72,19 @@ export class SaveServer {
      */
     public async save(): Promise<void> {
         const timer = new Timer();
+        let savedProfiles = 0;
+
         for (const [sessionId] of this.profiles) {
-            await this.saveProfile(sessionId);
+            try {
+                await this.saveProfile(sessionId);
+                savedProfiles++;
+            } catch (error) {
+                this.logger.error(`Could not save profile ${sessionId} | ${error}`);
+            }
         }
-        const profileCount = this.profiles.size;
+
         this.logger.debug(
-            `Saving ${profileCount} profile${profileCount > 1 ? "s" : ""} took ${timer.getTime("ms")}ms`,
+            `Saving ${savedProfiles} profile${savedProfiles > 1 ? "s" : ""} took ${timer.getTime("ms")}ms`,
             false,
         );
     }
