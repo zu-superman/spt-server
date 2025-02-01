@@ -180,8 +180,7 @@ export class CircleOfCultistService {
                 cultistCircleStashId,
                 CircleOfCultistService.circleOfCultistSlotId,
             );
-            // Add item + mods to output and profile inventory
-            output.profileChanges[sessionId].items.new.push(...itemToAdd);
+            // Add item + mods to profile inventory, NOT output object (confirmed on live)
             pmcData.Inventory.items.push(...itemToAdd);
         }
     }
