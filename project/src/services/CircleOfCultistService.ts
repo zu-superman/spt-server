@@ -403,8 +403,7 @@ export class CircleOfCultistService {
                 this.itemHelper.remapRootItemId(presetAndMods);
 
                 // Set item as FiR
-                presetAndMods[0].upd ||= {};
-                presetAndMods[0].upd.SpawnedInSession = true;
+                this.itemHelper.setFoundInRaid(presetAndMods);
 
                 rewardItemCount++;
                 totalRewardCost += this.itemHelper.getItemPrice(randomItemTplFromPool);
@@ -490,8 +489,7 @@ export class CircleOfCultistService {
                 this.itemHelper.remapRootItemId(presetAndMods);
 
                 // Set item as FiR
-                presetAndMods[0].upd ||= {};
-                presetAndMods[0].upd.SpawnedInSession = true;
+                this.itemHelper.setFoundInRaid(presetAndMods);
 
                 rewards.push(presetAndMods);
 
