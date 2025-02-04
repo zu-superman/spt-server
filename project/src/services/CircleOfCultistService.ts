@@ -402,6 +402,10 @@ export class CircleOfCultistService {
                 const presetAndMods = this.itemHelper.replaceIDs(defaultPreset._items);
                 this.itemHelper.remapRootItemId(presetAndMods);
 
+                // Set item as FiR
+                presetAndMods[0].upd ||= {};
+                presetAndMods[0].upd.SpawnedInSession = true;
+
                 rewardItemCount++;
                 totalRewardCost += this.itemHelper.getItemPrice(randomItemTplFromPool);
                 rewards.push(presetAndMods);
