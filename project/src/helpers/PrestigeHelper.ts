@@ -24,7 +24,7 @@ export class PrestigeHelper {
         @inject("RewardHelper") protected rewardHelper: RewardHelper,
     ) {}
 
-    public processPendingPrestige(oldProfile: ISptProfile, newProfile: ISptProfile, prestige: IPendingPrestige) {
+    public processPendingPrestige(oldProfile: ISptProfile, newProfile: ISptProfile, prestige: IPendingPrestige): void {
         const prePrestigePmc = oldProfile.characters.pmc;
         const sessionId = newProfile.info.id;
 
