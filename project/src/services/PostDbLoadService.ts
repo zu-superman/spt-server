@@ -138,7 +138,7 @@ export class PostDbLoadService {
         const prestigeDb = this.databaseService.getTemplates().prestige;
         for (const prestige of prestigeDb.elements) {
             prestige.conditions = prestige.conditions.filter(
-                (condition) => condition.target !== "6761ff17cdc36bd66102e9d0",
+                (condition) => condition.target !== "6761f28a022f60bb320f3e95",
             );
         }
     }
