@@ -296,33 +296,6 @@ export class GameController {
                     clothingToRemove.push(clothing);
                 }
             }
-
-            if (Object.keys(fullProfile.characters.pmc.Achievements).length > 0) {
-                const achievementsDb = this.databaseService.getTemplates().achievements;
-
-                for (const achievementId in fullProfile.characters.pmc.Achievements) {
-                    let rewards = achievementsDb.find((achievementDb) => achievementDb.id === achievementId)?.rewards;
-
-                    if (!rewards) {
-                        continue;
-                    }
-
-                    // Only hand out the new hideout customization rewards.
-                    rewards = rewards.filter(
-                        (achievementReward) => achievementReward.type === RewardType.CUSTOMIZATION_DIRECT,
-                    );
-
-                    this.rewardHelper.applyRewards(
-                        rewards,
-                        CustomisationSource.ACHIEVEMENT,
-                        fullProfile,
-                        fullProfile.characters.pmc,
-                        achievementId,
-                    );
-                }
-            }
-
-            fullProfile.spt.version = `${this.profileHelper.getDefaultSptDataObject().version} (Migrated from 3.10)`;
         }
 
         if (fullProfile.characters.pmc.Info.Side === "Usec") {
@@ -371,6 +344,33 @@ export class GameController {
             // Filter out modded items, we dont need to keep any of those here as these will not appear as bought
             fullProfile.suits = fullProfile.suits.filter((clothing) => !clothingToRemove.includes(clothing));
         }
+
+        if (Object.keys(fullProfile.characters.pmc.Achievements).length > 0) {
+            const achievementsDb = this.databaseService.getTemplates().achievements;
+
+            for (const achievementId in fullProfile.characters.pmc.Achievements) {
+                let rewards = achievementsDb.find((achievementDb) => achievementDb.id === achievementId)?.rewards;
+
+                if (!rewards) {
+                    continue;
+                }
+
+                // Only hand out the new hideout customization rewards.
+                rewards = rewards.filter(
+                    (achievementReward) => achievementReward.type === RewardType.CUSTOMIZATION_DIRECT,
+                );
+
+                this.rewardHelper.applyRewards(
+                    rewards,
+                    CustomisationSource.ACHIEVEMENT,
+                    fullProfile,
+                    fullProfile.characters.pmc,
+                    achievementId,
+                );
+            }
+        }
+
+        fullProfile.spt.version = `${this.profileHelper.getDefaultSptDataObject().version} (Migrated from 3.10)`;
     }
 
     protected migrate39xProfile(fullProfile: ISptProfile) {
