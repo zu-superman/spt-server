@@ -3,10 +3,12 @@ import { ContextVariableType } from "@spt/context/ContextVariableType";
 import { LocationLootGenerator } from "@spt/generators/LocationLootGenerator";
 import { LootGenerator } from "@spt/generators/LootGenerator";
 import { PlayerScavGenerator } from "@spt/generators/PlayerScavGenerator";
+import { PmcWaveGenerator } from "@spt/generators/PmcWaveGenerator";
 import { HealthHelper } from "@spt/helpers/HealthHelper";
 import { InRaidHelper } from "@spt/helpers/InRaidHelper";
 import { ProfileHelper } from "@spt/helpers/ProfileHelper";
 import { QuestHelper } from "@spt/helpers/QuestHelper";
+import { RewardHelper } from "@spt/helpers/RewardHelper";
 import { TraderHelper } from "@spt/helpers/TraderHelper";
 import { ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { IPmcData } from "@spt/models/eft/common/IPmcData";
@@ -26,6 +28,7 @@ import { ExitStatus } from "@spt/models/enums/ExitStatis";
 import { MessageType } from "@spt/models/enums/MessageType";
 import { QuestStatus } from "@spt/models/enums/QuestStatus";
 import { Traders } from "@spt/models/enums/Traders";
+import { TransitionType } from "@spt/models/enums/TransitionType";
 import { IHideoutConfig } from "@spt/models/spt/config/IHideoutConfig";
 import { IInRaidConfig } from "@spt/models/spt/config/IInRaidConfig";
 import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
@@ -51,8 +54,6 @@ import { RandomUtil } from "@spt/utils/RandomUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
 import type { ICloner } from "@spt/utils/cloners/ICloner";
 import { inject, injectable } from "tsyringe";
-import { TransitionType } from "@spt/models/enums/TransitionType";
-import { RewardHelper } from "@spt/helpers/RewardHelper";
 
 @injectable()
 export class LocationLifecycleService {
@@ -90,6 +91,7 @@ export class LocationLifecycleService {
         @inject("LootGenerator") protected lootGenerator: LootGenerator,
         @inject("ApplicationContext") protected applicationContext: ApplicationContext,
         @inject("LocationLootGenerator") protected locationLootGenerator: LocationLootGenerator,
+        @inject("PmcWaveGenerator") protected pmcWaveGenerator: PmcWaveGenerator,
         @inject("PrimaryCloner") protected cloner: ICloner,
     ) {
         this.inRaidConfig = this.configServer.getConfig(ConfigTypes.IN_RAID);
@@ -286,6 +288,9 @@ export class LocationLifecycleService {
         if (!generateLoot) {
             return locationBaseClone;
         }
+
+        // Add cusom pmcs to map every time its run
+        this.pmcWaveGenerator.applyWaveChangesToMap(locationBaseClone);
 
         // Check for a loot multipler adjustment in app context and apply if one is found
         let locationConfigClone: ILocationConfig;

@@ -865,5 +865,76 @@
         }
     },
     "addSecureContainerLootFromBotConfig": false,
-	"removeExistingPmcWaves": true
+	"removeExistingPmcWaves": true,
+	"customPmcWaves": {
+		"factory4_day": [
+		{
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0,0,0,0,2,2,2,1,1,1,1,1,0,2,3",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "pmcUSEC",
+                    "BossName": "pmcUSEC",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "SpawnMode": ["pve"],
+                    "Supports": null,
+                    "Time": -1.0,
+                    "TriggerId": "",
+                    "TriggerName": ""
+                }, 
+				{
+                    "BossChance": 100,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0,0,0,0,2,2,2,1,1,1,1,1,0,2,3",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "pmcBEAR",
+                    "BossName": "pmcBEAR",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "SpawnMode": ["pve"],
+                    "Supports": null,
+                    "Time": -1.0,
+                    "TriggerId": "",
+                    "TriggerName": ""
+                },
+				{
+                    "BossChance": 50.0,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0,0,0,0,2,2,2,1,1,1,1,1,0,2,3",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "pmcUSEC",
+                    "BossName": "pmcUSEC",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "SpawnMode": ["pve"],
+                    "Supports": null,
+                    "Time": 250,
+                    "TriggerId": "",
+                    "TriggerName": ""
+                }, {
+                    "BossChance": 50.0,
+                    "BossDifficult": "normal",
+                    "BossEscortAmount": "0,0,0,0,2,2,2,1,1,1,1,1,0,2,3",
+                    "BossEscortDifficult": "normal",
+                    "BossEscortType": "pmcBEAR",
+                    "BossName": "pmcBEAR",
+                    "BossPlayer": false,
+                    "BossZone": "",
+                    "IgnoreMaxBots": true,
+                    "RandomTimeSpawn": false,
+                    "SpawnMode": ["pve"],
+                    "Supports": null,
+                    "Time": 250,
+                    "TriggerId": "",
+                    "TriggerName": ""
+                }
+		]
+	}
 }

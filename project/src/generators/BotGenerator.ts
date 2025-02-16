@@ -131,8 +131,8 @@ export class BotGenerator {
         }
 
         // The client expects the Side for PMCs to be Savage
-        if (botRole === "Bear" || botRole === "Usec")
-        {
+        if (botRole === "Bear" || botRole === "Usec") {
+            // TODO: cleanup later
             preparedBotBase.Info.Side = "Savage";
         }
 
