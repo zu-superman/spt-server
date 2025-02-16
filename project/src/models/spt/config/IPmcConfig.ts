@@ -38,8 +38,6 @@ export interface IPmcConfig extends IBaseConfig {
     lootItemLimitsRub: IMinMaxLootItemValue[];
     maxPocketLootTotalRub: number;
     maxVestLootTotalRub: number;
-    /** Percentage chance a bot from a wave is converted into a PMC, first key = map, second key = bot wildspawn type (assault/exusec), value: min+max chance to be converted */
-    convertIntoPmcChance: Record<string, Record<string, MinMax>>;
     /** How many levels above player level can a PMC be */
     botRelativeLevelDeltaMax: number;
     /** How many levels below player level can a PMC be */
