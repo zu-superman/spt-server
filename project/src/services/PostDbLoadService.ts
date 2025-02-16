@@ -83,8 +83,12 @@ export class PostDbLoadService {
             this.openZoneService.applyZoneChangesToAllMaps();
         }
 
+        if (this.pmcConfig.removeExistingPmcWaves) {
+            this.removeExistingPmcWaves();
+        }
+
         if (this.locationConfig.addCustomBotWavesToMaps) {
-            this.customLocationWaveService.applyWaveChangesToAllMaps();
+            //this.customLocationWaveService.applyWaveChangesToAllMaps();
         }
 
         if (this.locationConfig.enableBotTypeLimits) {
@@ -132,6 +136,20 @@ export class PostDbLoadService {
         this.applyFleaPriceOverrides();
 
         this.addCustomItemPresetsToGlobals();
+    }
+
+    protected removeExistingPmcWaves() {
+        const locations: ILocation[] = Object.values(this.databaseService.getLocations());
+
+        for (const location of locations) {
+            if (!location || !location?.base?.BossLocationSpawn) {
+                continue;
+            }
+
+            location.base.BossLocationSpawn = location.base.BossLocationSpawn.filter(
+                (x) => !["pmcUSEC", "pmcBEAR"].includes(x.BossName),
+            );
+        }
     }
 
     protected removeNewBeginningRequirementFromPrestige() {

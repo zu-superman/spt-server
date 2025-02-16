@@ -1,5 +1,5 @@
 import { MinMax } from "@spt/models/common/MinMax";
-import { IChancedEnemy } from "@spt/models/eft/common/ILocationBase";
+import { IBossLocationSpawn, IChancedEnemy } from "@spt/models/eft/common/ILocationBase";
 import { MemberCategory } from "@spt/models/enums/MemberCategory";
 import { IBaseConfig } from "@spt/models/spt/config/IBaseConfig";
 
@@ -49,6 +49,9 @@ export interface IPmcConfig extends IBaseConfig {
     locationSpecificPmcLevelOverride: Record<string, MinMax>;
     /** Should secure container loot from usec.json/bear.json be added to pmc bots secure */
     addSecureContainerLootFromBotConfig: boolean;
+    /** key = mapid */
+    removeExistingPmcWaves: boolean;
+    customPmcWaves: Record<string, IBossLocationSpawn[]>;
 }
 
 export interface IHostilitySettings {
