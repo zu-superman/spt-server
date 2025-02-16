@@ -1,3 +1,4 @@
+import { PmcWaveGenerator } from "@spt/generators/PmcWaveGenerator";
 import { ILocation } from "@spt/models/eft/common/ILocation";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
 import { ELocationName } from "@spt/models/enums/ELocationName";
@@ -44,6 +45,7 @@ export class PostDbLoadService {
         @inject("OpenZoneService") protected openZoneService: OpenZoneService,
         @inject("SeasonalEventService") protected seasonalEventService: SeasonalEventService,
         @inject("ItemBaseClassService") protected itemBaseClassService: ItemBaseClassService,
+        @inject("PmcWaveGenerator") protected pmcWaveGenerator: PmcWaveGenerator,
         @inject("ConfigServer") protected configServer: ConfigServer,
         @inject("PrimaryCloner") protected cloner: ICloner,
     ) {
@@ -87,8 +89,10 @@ export class PostDbLoadService {
             this.removeExistingPmcWaves();
         }
 
+        this.pmcWaveGenerator.applyWaveChangesToAllMaps();
+
         if (this.locationConfig.addCustomBotWavesToMaps) {
-            //this.customLocationWaveService.applyWaveChangesToAllMaps();
+            this.customLocationWaveService.applyWaveChangesToAllMaps();
         }
 
         if (this.locationConfig.enableBotTypeLimits) {

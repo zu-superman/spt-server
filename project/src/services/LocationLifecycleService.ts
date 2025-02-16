@@ -289,9 +289,6 @@ export class LocationLifecycleService {
             return locationBaseClone;
         }
 
-        // Add cusom pmcs to map every time its run
-        this.pmcWaveGenerator.applyWaveChangesToMap(locationBaseClone);
-
         // Check for a loot multipler adjustment in app context and apply if one is found
         let locationConfigClone: ILocationConfig;
         const raidAdjustments = this.applicationContext

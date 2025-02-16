@@ -1,6 +1,5 @@
-import { IBossLocationSpawn, ILocationBase, IWave } from "@spt/models/eft/common/ILocationBase";
+import { IBossLocationSpawn, ILocationBase } from "@spt/models/eft/common/ILocationBase";
 import { ConfigTypes } from "@spt/models/enums/ConfigTypes";
-import { ILocationConfig } from "@spt/models/spt/config/ILocationConfig";
 import { IPmcConfig } from "@spt/models/spt/config/IPmcConfig";
 import type { ILogger } from "@spt/models/spt/utils/ILogger";
 import { ConfigServer } from "@spt/servers/ConfigServer";
@@ -35,8 +34,6 @@ export class PmcWaveGenerator {
      */
     public applyWaveChangesToAllMaps(): void {
         for (const location of Object.keys(this.pmcConfig.customPmcWaves)) {
-            const data = this.pmcConfig.customPmcWaves[location];
-
             this.applyWaveChangesToMapByName(location);
         }
     }
