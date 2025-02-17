@@ -283,11 +283,6 @@ export class LocationLifecycleService {
             return locationBaseClone;
         }
 
-        // If new spawn system is enabled, clear the spawn waves to prevent x2 spawns
-        if (locationBaseClone.NewSpawn) {
-            locationBaseClone.waves = [];
-        }
-
         // Only requested base data, not loot
         if (!generateLoot) {
             return locationBaseClone;
