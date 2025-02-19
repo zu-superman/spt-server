@@ -34,6 +34,7 @@
         "gen:productionquests": "tsx ./src/tools/ProductionQuestsGen/ProductionQuestsGenProgram.ts"
     },
     "dependencies": {
+        "async-mutex": "^0.5.0",
         "atomically": "2.0.3",
         "fs-extra": "11.2.0",
         "i18n": "0.15.1",
