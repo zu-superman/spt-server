@@ -85,9 +85,16 @@ export class HttpServer {
         } catch (err: unknown) {
             const timer = new Timer();
             credentials = await this.generateSelfSignedCertificate();
-            this.logger.debug(`Generating self-signed SSL certificate took ${timer.getTime("sec")}s`);
+            this.logger.debug(`Generating self-signed SSL certificate took: ${timer.getTime("sec")}s`);
         }
-        return https.createServer(credentials);
+
+        const options: https.ServerOptions = {
+            cert: credentials.cert,
+            key: credentials.key,
+            minVersion: "TLSv1.2",
+            maxVersion: "TLSv1.2",
+        };
+        return https.createServer(options);
     }
 
     /**
