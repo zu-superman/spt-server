@@ -156,8 +156,7 @@ export class BotController {
         const pmcProfile = this.profileHelper.getPmcProfile(sessionId);
 
         // If we don't have enough bots cached to satisfy this request, populate the cache
-        if (!this.cacheSatisfiesRequest(info))
-        {
+        if (!this.cacheSatisfiesRequest(info)) {
             await this.generateAndCacheBots(info, pmcProfile, sessionId);
         }
 
@@ -166,16 +165,13 @@ export class BotController {
 
     /**
      * Return true if the current cache satisfies the passed in bot generation request
-     * @param info 
-     * @returns 
+     * @param info
+     * @returns
      */
     public cacheSatisfiesRequest(info: IGenerateBotsRequestData): boolean {
         return info.conditions.every((condition) => {
             // Create the key that would be used for caching this bot type, so we can check how many exist
-            const cacheKey = this.botGenerationCacheService.createCacheKey(
-                condition.Role,
-                condition.Difficulty
-            );
+            const cacheKey = this.botGenerationCacheService.createCacheKey(condition.Role, condition.Difficulty);
 
             return this.botGenerationCacheService.getCachedBotCount(cacheKey) >= condition.Limit;
         });
@@ -202,13 +198,9 @@ export class BotController {
         // Map conditions to promises for bot generation
         const conditionPromises = request.conditions.map(async (condition) => {
             // If we already have enough for this bot type, don't generate more
-            const cacheKey = this.botGenerationCacheService.createCacheKey(
-                condition.Role,
-                condition.Difficulty
-            );
+            const cacheKey = this.botGenerationCacheService.createCacheKey(condition.Role, condition.Difficulty);
 
-            if (this.botGenerationCacheService.getCachedBotCount(cacheKey) >= condition.Limit)
-            {
+            if (this.botGenerationCacheService.getCachedBotCount(cacheKey) >= condition.Limit) {
                 return;
             }
 
@@ -327,7 +319,7 @@ export class BotController {
         // Get number of bots we have in cache
         const botCacheCount = this.botGenerationCacheService.getCachedBotCount(cacheKey);
 
-        if (botCacheCount >= botGenerationDetails.botCountToGenerate) {
+        if (botCacheCount > botGenerationDetails.botCountToGenerate) {
             this.logger.debug(`Cache already has sufficient ${cacheKey} bots: ${botCacheCount}, skipping generation`);
             return;
         }
