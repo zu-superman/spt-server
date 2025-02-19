@@ -92,7 +92,7 @@ export class HttpServer {
             cert: credentials.cert,
             key: credentials.key,
             minVersion: "TLSv1.2",
-            maxVersion: "TLSv1.2",
+            maxVersion: "TLSv1.3",
         };
         return https.createServer(options);
     }
