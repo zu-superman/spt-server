@@ -9,14 +9,14 @@ import { FileSystem } from "@spt/utils/FileSystem";
 import { HashUtil } from "@spt/utils/HashUtil";
 import { JsonUtil } from "@spt/utils/JsonUtil";
 import { Timer } from "@spt/utils/Timer";
-import { Mutex } from "async-mutex";
+import { Mutex, MutexInterface, withTimeout } from "async-mutex";
 import { inject, injectAll, injectable } from "tsyringe";
 
 @injectable()
 export class SaveServer {
     protected profileFilepath = "user/profiles/";
     protected profiles: Map<string, ISptProfile> = new Map();
-    protected profilesBeingSavedMutex: Map<string, Mutex> = new Map();
+    protected profilesBeingSavedMutex: Map<string, MutexInterface> = new Map();
     protected onBeforeSaveCallbacks: Map<string, (profile: ISptProfile) => Promise<ISptProfile>> = new Map();
     protected saveSHA1: { [key: string]: string } = {};
 
@@ -189,17 +189,19 @@ export class SaveServer {
      * @returns A promise that resolves when saving is completed.
      */
     public async saveProfile(sessionID: string): Promise<void> {
+        if (!this.profiles.get(sessionID)) {
+            throw new Error(`Profile ${sessionID} does not exist! Unable to save this profile!`);
+        }
+
         // Get the current mutex if it exists, create a new one if it doesn't for this profile
-        const mutex = this.profilesBeingSavedMutex.get(sessionID) || new Mutex();
+        const mutex =
+            this.profilesBeingSavedMutex.get(sessionID) ||
+            withTimeout(new Mutex(), 5000, new Error(`Saving timed out for profile ${sessionID}`));
         this.profilesBeingSavedMutex.set(sessionID, mutex);
 
         const release = await mutex.acquire();
 
         try {
-            if (!this.profiles.get(sessionID)) {
-                throw new Error(`Profile ${sessionID} does not exist! Unable to save this profile!`);
-            }
-
             const filePath = `${this.profileFilepath}${sessionID}.json`;
 
             // Run pre-save callbacks before we save into json
