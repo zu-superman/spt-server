@@ -390,24 +390,26 @@ export class BotController {
      * @param request Bot generation request object
      * @returns An array of IBotBase objects as requested by request
      */
-    protected async returnBotsFromCache(
-        request: IGenerateBotsRequestData,
-    ): Promise<IBotBase[]> {
+    protected async returnBotsFromCache(request: IGenerateBotsRequestData): Promise<IBotBase[]> {
         const desiredBots: IBotBase[] = [];
 
         // We can assume that during this call, we have enough bots cached to cover the request
         request.conditions.map((requestedBot) => {
             // Create a compound key to store bots in cache against
-            const cacheKey = this.botGenerationCacheService.createCacheKey(
-                requestedBot.Role,
-                requestedBot.Difficulty,
-            );
+            const cacheKey = this.botGenerationCacheService.createCacheKey(requestedBot.Role, requestedBot.Difficulty);
 
             // Fetch enough bots to satisfy the request
-            for (let i = 0; i < requestedBot.Limit; i++)
-            {
+            for (let i = 0; i < requestedBot.Limit; i++) {
+                // Pull bot out of generation cache
                 const desiredBot = this.botGenerationCacheService.getBot(cacheKey);
+                if (!desiredBot) {
+                    continue;
+                }
+
+                // Store bot inside cache to be referenced after raid
                 this.botGenerationCacheService.storeUsedBot(desiredBot);
+
+                // Add bot to returned array
                 desiredBots.push(desiredBot);
             }
         });
