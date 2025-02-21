@@ -78,29 +78,33 @@ export class TradeHelper {
 
                 // We store ragfair offerid in buyRequestData.item_id
                 const offerWithItem = allOffers.find((x) => x._id === buyRequestData.item_id);
-                const itemPurchased = offerWithItem.items[0];
+                const rootItemPurchased = offerWithItem.items[0];
+
+                // Update offer quantity
+                offerWithItem.quantity -= buyCount;
 
                 // Ensure purchase does not exceed trader item limit
-                const assortHasBuyRestrictions = this.itemHelper.hasBuyRestrictions(itemPurchased);
+                const assortHasBuyRestrictions = this.itemHelper.hasBuyRestrictions(rootItemPurchased);
                 if (assortHasBuyRestrictions) {
                     this.checkPurchaseIsWithinTraderItemLimit(
                         sessionID,
                         pmcData,
                         buyRequestData.tid,
-                        itemPurchased,
+                        rootItemPurchased,
                         buyRequestData.item_id,
                         buyCount,
                     );
 
-                    // Decrement trader item count
+                    // Decrement trader current purchase count in profile
                     const itemPurchaseDetails = {
                         items: [{ itemId: buyRequestData.item_id, count: buyCount }],
                         traderId: buyRequestData.tid,
                     };
-                    this.traderHelper.addTraderPurchasesToPlayerProfile(sessionID, itemPurchaseDetails, itemPurchased);
-
-                    // Update offer quantity
-                    offerWithItem.quantity -= buyCount;
+                    this.traderHelper.addTraderPurchasesToPlayerProfile(
+                        sessionID,
+                        itemPurchaseDetails,
+                        rootItemPurchased,
+                    );
                 }
             };
 
