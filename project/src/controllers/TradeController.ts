@@ -170,6 +170,9 @@ export class TradeController {
             scheme_items: requestOffer.items,
         };
 
+        // Reduce flea offer quanity
+        fleaOffer.quantity -= requestOffer.count;
+
         this.tradeHelper.buyItem(pmcData, buyData, sessionId, this.traderConfig.purchasesAreFoundInRaid, output);
     }
 

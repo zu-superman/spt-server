@@ -98,6 +98,9 @@ export class TradeHelper {
                         traderId: buyRequestData.tid,
                     };
                     this.traderHelper.addTraderPurchasesToPlayerProfile(sessionID, itemPurchaseDetails, itemPurchased);
+
+                    // Update offer quantity
+                    offerWithItem.quantity -= buyCount;
                 }
             };
 

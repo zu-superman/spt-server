@@ -138,6 +138,7 @@ export class RagfairOfferService {
     public removeOfferStack(offerId: string, amount: number): void {
         const offer = this.ragfairOfferHandler.getOfferById(offerId);
         if (offer) {
+            offer.quantity -= amount;
             offer.items[0].upd.StackObjectsCount -= amount;
             if (offer.items[0].upd.StackObjectsCount <= 0) {
                 this.processStaleOffer(offer);

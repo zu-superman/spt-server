@@ -550,10 +550,12 @@ export class RagfairOfferHelper {
         if (offer.sellInOnePiece || boughtAmount === offerStackCount) {
             this.deleteOfferById(offerOwnerSessionId, offer._id);
         } else {
+            // Partial purchase
             const offerRootItem = offer.items[0];
 
             // Reduce offer root items stack count
             offerRootItem.upd.StackObjectsCount -= boughtAmount;
+            offer.quantity -= boughtAmount;
         }
 
         // Assemble payment to send to seller now offer was purchased
