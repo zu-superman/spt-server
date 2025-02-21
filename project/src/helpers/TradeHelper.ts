@@ -73,15 +73,13 @@ export class TradeHelper {
         let offerItems: IItem[] = [];
         let buyCallback: (buyCount: number) => void;
         if (buyRequestData.tid.toLocaleLowerCase() === "ragfair") {
+            // Called when player purchases PMC offer from ragfair
             buyCallback = (buyCount: number) => {
                 const allOffers = this.ragfairServer.getOffers();
 
                 // We store ragfair offerid in buyRequestData.item_id
                 const offerWithItem = allOffers.find((x) => x._id === buyRequestData.item_id);
                 const rootItemPurchased = offerWithItem.items[0];
-
-                // Update offer quantity
-                offerWithItem.quantity -= buyCount;
 
                 // Ensure purchase does not exceed trader item limit
                 const assortHasBuyRestrictions = this.itemHelper.hasBuyRestrictions(rootItemPurchased);
