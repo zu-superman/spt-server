@@ -164,6 +164,7 @@ export class RagfairOfferGenerator {
             loyaltyLevel: loyalLevel,
             sellInOnePiece: isPackOffer,
             locked: false,
+            quantity: items[0].upd?.StackObjectsCount ?? 1,
         };
 
         this.offerCounter++;
