@@ -565,7 +565,7 @@ export class BotWeaponGenerator {
 
         // Get cartridges the weapons first chamber allow
         const compatibleCartridgesInTemplate = this.getCompatibleCartridgesFromWeaponTemplate(weaponTemplate);
-        if (!compatibleCartridgesInTemplate) {
+        if (compatibleCartridgesInTemplate.length === 0) {
             // No chamber data found in weapon, send default
             return weaponTemplate._props.defAmmo;
         }
@@ -611,20 +611,10 @@ export class BotWeaponGenerator {
      * @returns Array of cartridge tpls
      */
     protected getCompatibleCartridgesFromWeaponTemplate(weaponTemplate: ITemplateItem): string[] {
-        let cartridges = weaponTemplate._props.Chambers[0]?._props?.filters[0]?.Filter;
+        const cartridges = weaponTemplate._props?.Chambers[0]?._props?.filters[0]?.Filter;
         if (!cartridges) {
             // Fallback to the magazine if possible, e.g. for revolvers
-            //  Grab the magazines template
-            const firstMagazine = weaponTemplate._props.Slots.find((slot) => slot._name === "mod_magazine");
-            const magazineTemplate = this.itemHelper.getItem(firstMagazine._props.filters[0].Filter[0]);
-
-            // Get the first slots array of cartridges
-            cartridges = magazineTemplate[1]._props.Slots[0]?._props.filters[0].Filter;
-            if (!cartridges) {
-                // Normal magazines
-                // None found, try the cartridges array
-                cartridges = magazineTemplate[1]._props.Cartridges[0]?._props.filters[0].Filter;
-            }
+            return this.getCompatibleCartridgesFromMagazineTemplate(weaponTemplate);
         }
 
         return cartridges;
@@ -637,18 +627,24 @@ export class BotWeaponGenerator {
      */
     protected getCompatibleCartridgesFromMagazineTemplate(weaponTemplate: ITemplateItem): string[] {
         // Get the first magazine's template from the weapon
-        const magazineSlot = weaponTemplate._props.Slots.find((slot) => slot._name === "mod_magazine");
+        const magazineSlot = weaponTemplate._props.Slots?.find((slot) => slot._name === "mod_magazine");
+        if (!magazineSlot) {
+            return [];
+        }
         const magazineTemplate = this.itemHelper.getItem(magazineSlot._props.filters[0].Filter[0]);
+        if (!magazineTemplate[0]) {
+            return [];
+        }
 
         // Get the first slots array of cartridges
-        let cartridges = magazineTemplate[1]._props.Slots[0]?._props.filters[0].Filter;
+        let cartridges = magazineTemplate[1]._props.Slots[0]?._props?.filters[0].Filter;
         if (!cartridges) {
             // Normal magazines
             // None found, try the cartridges array
-            cartridges = magazineTemplate[1]._props.Cartridges[0]?._props.filters[0].Filter;
+            cartridges = magazineTemplate[1]._props.Cartridges[0]?._props?.filters[0].Filter;
         }
 
-        return cartridges;
+        return cartridges ?? [];
     }
 
     /**
