@@ -1,7 +1,7 @@
 {
     "sptVersion": "3.11.0",
     "projectName": "SPT",
-    "compatibleTarkovVersion": "0.16.0.35146",
+    "compatibleTarkovVersion": "0.16.0.35312",
     "serverName": "SPT Server",
     "profileSaveIntervalSeconds": 15,
     "sptFriendNickname": "SPT",
