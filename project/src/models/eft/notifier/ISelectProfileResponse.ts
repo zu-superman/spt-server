@@ -1,3 +1,3 @@
 export interface ISelectProfileResponse {
-    uid: string;
+    status: string;
 }
