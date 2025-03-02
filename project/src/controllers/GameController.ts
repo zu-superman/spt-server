@@ -115,8 +115,6 @@ export class GameController {
             `${sessionID}_${startTimeStampMS}`,
         );
 
-        this.profileActivityService.setActivityTimestamp(sessionID);
-
         // repeatableQuests are stored by in profile.Quests due to the responses of the client (e.g. Quests in
         // offraidData). Since we don't want to clutter the Quests list, we need to remove all completed (failed or
         // successful) repeatable quests. We also have to remove the Counters from the repeatableQuests
@@ -216,6 +214,10 @@ export class GameController {
                 this.profileFixerService.addMissingHideoutBonusesToProfile(pmcProfile);
                 this.hideoutHelper.setHideoutImprovementsToCompleted(pmcProfile);
                 this.hideoutHelper.unlockHideoutWallInProfile(pmcProfile);
+                // Handle if player has been inactive for a long time, catch up on hideout update before the user goes to his hideout
+                if (!this.profileActivityService.activeWithinLastMinutes(sessionID, this.hideoutConfig.updateProfileHideoutWhenActiveWithinMinutes)) {
+                    this.hideoutHelper.updatePlayerHideout(sessionID);
+                }
             }
 
             this.logProfileDetails(fullProfile);
@@ -234,6 +236,9 @@ export class GameController {
 
             this.seasonalEventService.givePlayerSeasonalGifts(sessionID);
         }
+
+        // Set activity timestamp at the end of the method, so that code that checks for an older timestamp (Updating hideout) can still run
+        this.profileActivityService.setActivityTimestamp(sessionID);
     }
 
     protected migrate310xProfile(fullProfile: ISptProfile) {
