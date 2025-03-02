@@ -56,6 +56,7 @@ import { RandomUtil } from "@spt/utils/RandomUtil";
 import { TimeUtil } from "@spt/utils/TimeUtil";
 import type { ICloner } from "@spt/utils/cloners/ICloner";
 import { inject, injectable } from "tsyringe";
+import crypto from "node:crypto";
 
 @injectable()
 export class GameController {
@@ -121,6 +122,12 @@ export class GameController {
         // successful) repeatable quests. We also have to remove the Counters from the repeatableQuests
         if (sessionID) {
             const fullProfile = this.profileHelper.getFullProfile(sessionID);
+
+            if (!fullProfile) {
+                this.logger.error("gameStart requested but the profile linked to the sessionID does not exist!");
+                return;
+            }
+
             if (fullProfile.info.wipe) {
                 // Don't bother doing any fixes, we're resetting profile
                 return;
@@ -140,7 +147,13 @@ export class GameController {
                 fullProfile.friends = [];
             }
 
-            //3.9 migrations
+            // In 0.16.1.3.35312 BSG changed this to from an int to a hex64 encoded value
+            // Handle this outside of the migrations so even BE created profiles get changed
+            if (typeof fullProfile.characters.pmc.Hideout.Seed === "number") {
+                fullProfile.characters.pmc.Hideout.Seed = crypto.randomBytes(16).toString("hex");
+            }
+
+            //3.9 migration
             if (fullProfile.spt.version.includes("3.9.") && !fullProfile.spt.migrations["39x"]) {
                 // Check every item has a valid mongoid
                 this.inventoryHelper.validateInventoryUsesMongoIds(fullProfile.characters.pmc.Inventory.items);
@@ -153,7 +166,7 @@ export class GameController {
                 this.logger.success(`Migration of 3.9.x profile: ${fullProfile.info.username} completed successfully`);
             }
 
-            //3.9 migrations
+            //3.10 migration
             if (fullProfile.spt.version.includes("3.10.") && !fullProfile.spt.migrations["310x"]) {
                 this.migrate310xProfile(fullProfile);
 
