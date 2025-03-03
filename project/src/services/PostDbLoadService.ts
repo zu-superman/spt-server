@@ -186,6 +186,10 @@ export class PostDbLoadService {
             const clonedCraft = this.cloner.clone(
                 hideoutCraftDb.recipes.find((x) => x._id === craftToAdd.craftIdToCopy),
             );
+            if (!clonedCraft) {
+                this.logger.warning(`Unable to find hideout craft: ${craftToAdd.craftIdToCopy}, skipping`);
+                continue;
+            }
             clonedCraft._id = this.hashUtil.generate();
             clonedCraft.requirements = craftToAdd.requirements;
             clonedCraft.endProduct = craftToAdd.craftOutputTpl;
