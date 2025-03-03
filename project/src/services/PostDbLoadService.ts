@@ -190,7 +190,8 @@ export class PostDbLoadService {
                 this.logger.warning(`Unable to find hideout craft: ${craftToAdd.craftIdToCopy}, skipping`);
                 continue;
             }
-            clonedCraft._id = this.hashUtil.generate();
+
+            clonedCraft._id = craftToAdd.newId;
             clonedCraft.requirements = craftToAdd.requirements;
             clonedCraft.endProduct = craftToAdd.craftOutputTpl;
 
