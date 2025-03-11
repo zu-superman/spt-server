@@ -199,14 +199,14 @@
             "season": "christmas",
             "startTimestamp": 1701388800000,
             "endTimestamp": 1703980800000,
-            "yearly": true  
+            "yearly": true
         },
         "675031f57775aada6b0f96a1": {
             "name": "Cheer up",
             "season": "christmas",
             "startTimestamp": 1701388800000,
             "endTimestamp": 1703980800000,
-            "yearly": true  
+            "yearly": true
         }
     },
     "repeatableQuests": [
@@ -1013,7 +1013,7 @@
             "freeChangesAvailable": 2,
             "freeChanges": 2,
             "keepDailyQuestTypeOnReplacement": false,
-			"standingChangeCost": [0, 0.01]
+            "standingChangeCost": [0, 0.01]
         },
         {
             "id": "618035d38012292db3081bf0",
@@ -1876,7 +1876,7 @@
             "rewardAmmoStackMinSize": 5,
             "freeChangesAvailable": 0,
             "freeChanges": 0,
-			"standingChangeCost": [0, 0.01, 0.01]
+            "standingChangeCost": [0, 0.01, 0.01]
         },
         {
             "id": "62825ef60e88d037dc1eb426",
@@ -2291,7 +2291,7 @@
             "rewardAmmoStackMinSize": 5,
             "freeChangesAvailable": 0,
             "freeChanges": 0,
-			"standingChangeCost": [0, 0.01]
+            "standingChangeCost": [0, 0.01]
         }
     ],
     "locationIdMap": {
