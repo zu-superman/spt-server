@@ -2039,7 +2039,8 @@
     },
     "standingForKill": {
       "hard": -0.05,
-      "normal": -0.04
+      "normal": -0.04,
+      "easy": -0.04
     },
     "useSimpleAnimator": false
   },
