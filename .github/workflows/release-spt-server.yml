@@ -1,0 +1,106 @@
+name: Build and Deploy Docker Image
+
+on:
+  push:
+    tags:
+      - "release-*"  # trigger on release tags
+  workflow_dispatch:  # trigger manually
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true  # pull submodules if exist
+
+      - name: Install Git LFS
+        run: |
+          curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
+          sudo apt-get install git-lfs
+          git lfs install
+          git lfs pull
+
+      - name: Set up Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22.12.0'
+
+      - name: Install dependencies and build project
+        run: |
+          cd project
+          npm install
+          npm run build:release
+
+      - name: Build Docker image
+        run: |
+          # create fika-start script
+          cat <<EOF > fika-start
+          #!/bin/sh
+          mkdir -p /fika/logs
+          /fika/server | awk '{ print strftime("%Y-%m-%d %H:%M:%S"), $0; fflush(); }' | tee -a /fika/logs/fika.log
+          EOF
+          chmod +x fika-start
+
+          # create Dockerfile
+          cat <<EOF > Dockerfile
+          FROM alpine:latest
+          RUN apk update && apk add libstdc++ libgcc gcompat
+          COPY project/build /fika
+          COPY fika-start /bin/fika-start
+          CMD ["/bin/fika-start"]
+          EOF
+
+          cat Dockerfile  # print Dockerfile content to check
+          docker build -t fika-alpine:latest .
+
+      - name: Build and Push Docker Image to GitHub Container Registry
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ghcr.io/${{ github.repository }}/${{ github.event.tag_name }}:${{ github.sha }}
+          build-args: |
+            NODE_ENV=production
+
+      - name: Compress Build Artifacts
+        run: |
+          cd project/build
+          tar -czvf ../spt-fika-$(echo {{ github.event.tag_name }} | cut -d '-' -f 2-).tar.gz .
+      
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.tag_name }}  # use trigger tag name
+          release_name: Release $(echo {{ github.event.tag_name }} | cut -d '-' -f 2-)  # Release name
+          draft: false
+          prerelease: false
+
+      - name: Upload Dockerfile to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}  # get upload url from step `create_release`
+          asset_path: ./Dockerfile  # upload Dockerfile as attachment
+          asset_name: Dockerfile
+          asset_content_type: application/octet-stream
+
+      - name: Upload Build Artifacts to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}  # get upload url from step `create_release`
+          asset_path: ./project/spt-fika-$(echo {{ github.event.tag_name }} | cut -d '-' -f 2-).tar.gz  # upload artifact
+          asset_name: spt-fika-$(echo {{ github.event.tag_name }} | cut -d '-' -f 2-).tar.gz
+          asset_content_type: application/gzip
+
+      - name: Notify Completion
+        run: echo "Docker image pushed to GHCR and release created with build artifacts successfully!"
